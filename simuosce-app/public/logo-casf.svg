@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 220" fill="none">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="38%" r="58%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#EFEFEF"/>
+    </radialGradient>
+    <!-- Arcos para texto curvo -->
+    <path id="arcTop" d="M 24,110 A 86,86 0 0,1 196,110"/>
+    <path id="arcBot" d="M 34,138 A 80,80 0 0,0 186,138"/>
+  </defs>
+
+  <!-- Sombra suave -->
+  <circle cx="110" cy="113" r="100" fill="rgba(0,0,0,0.10)"/>
+
+  <!-- Fundo circular -->
+  <circle cx="110" cy="110" r="100" fill="url(#bg)"/>
+
+  <!-- Anel externo -->
+  <circle cx="110" cy="110" r="99"  stroke="#1A1A2E" stroke-width="3"   fill="none"/>
+  <!-- Anel interno tracejado -->
+  <circle cx="110" cy="110" r="86"  stroke="#1A1A2E" stroke-width="1.2" fill="none"
+          stroke-dasharray="3.5 2.5"/>
+
+  <!-- ── Silhueta masculina (referência ao retrato do Sérgio Ferreira) ── -->
+  <!-- Cabeça -->
+  <circle cx="110" cy="78" r="20" fill="#2A2A3E"/>
+  <!-- Ombros/busto -->
+  <path d="M70 130 Q72 102, 110 100 Q148 102, 150 130 Q140 142, 110 145 Q80 142, 70 130Z"
+        fill="#2A2A3E"/>
+  <!-- Gravata (detalhe) -->
+  <path d="M110 105 L106 120 L110 128 L114 120 Z" fill="#1A1A2E" fill-opacity="0.3"/>
+
+  <!-- "SF" monogram sobre a silhueta -->
+  <text x="110" y="86" text-anchor="middle" fill="white" font-size="18"
+        font-family="-apple-system,'Helvetica Neue',sans-serif" font-weight="800"
+        letter-spacing="-0.5">SF</text>
+
+  <!-- Linha separadora inferior -->
+  <line x1="60" y1="152" x2="160" y2="152" stroke="#1A1A2E" stroke-width="0.8" stroke-opacity="0.25"/>
+
+  <!-- "2  0  2  6" -->
+  <text x="110" y="168" text-anchor="middle" fill="#1A1A2E" font-size="10"
+        font-family="-apple-system,sans-serif" font-weight="700"
+        letter-spacing="6" fill-opacity="0.55">2026</text>
+
+  <!-- Texto curvo superior: CHAPA SÉRGIO FERREIRA -->
+  <text font-size="12.5" fill="#1A1A2E" font-family="-apple-system,'Helvetica Neue',sans-serif"
+        font-weight="800" letter-spacing="2.4">
+    <textPath href="#arcTop" startOffset="5%">CHAPA SÉRGIO FERREIRA</textPath>
+  </text>
+
+  <!-- Texto curvo inferior: AFYA · GUANAMBI · BA -->
+  <text font-size="10" fill="#1A1A2E" font-family="-apple-system,sans-serif"
+        font-weight="600" letter-spacing="1.8" fill-opacity="0.70">
+    <textPath href="#arcBot" startOffset="14%">AFYA · GUANAMBI · BA</textPath>
+  </text>
+</svg>

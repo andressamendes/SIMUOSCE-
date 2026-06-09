@@ -1,10 +1,12 @@
-const CACHE = "simuosce-v1";
+const CACHE = "simuosce-v2";
 
 const PRECACHE = [
   "./",
   "./periodo/1/",
   "./periodo/2/",
   "./manifest.json",
+  "./poster.webp",
+  "./logo-casf.jpg",
 ];
 
 self.addEventListener("install", (e) => {

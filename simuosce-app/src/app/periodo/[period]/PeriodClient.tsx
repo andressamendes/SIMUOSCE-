@@ -1,59 +1,114 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Station, Period } from "@/types";
 
 type Props = { periodNum: Period; stations: Station[] };
 
 export default function PeriodClient({ periodNum, stations }: Props) {
   const isTeal = periodNum === 1;
-  const badgeCls = isTeal
-    ? "bg-teal-500/20 text-teal-300 border border-teal-500/30"
-    : "bg-pink-500/20 text-pink-300 border border-pink-500/30";
-  const cardHover = isTeal
-    ? "hover:border-teal-600 hover:bg-teal-950/40"
-    : "hover:border-pink-600 hover:bg-pink-950/40";
-  const numBg = isTeal ? "bg-teal-600" : "bg-pink-600";
+
+  const headerClass  = isTeal ? "bg-teal-brand" : "bg-osce";
+  const shadowBtn    = isTeal ? "rgba(46,201,196,0.35)" : "rgba(238,16,104,0.28)";
+  const accentColor  = isTeal ? "#2EC9C4" : "#EE1068";
+  const accentBg     = isTeal ? "rgba(46,201,196,0.10)" : "rgba(238,16,104,0.08)";
+  const numGradient  = isTeal
+    ? "linear-gradient(135deg,#2EC9C4 0%,#178785 100%)"
+    : "linear-gradient(135deg,#EE1068 0%,#F5956A 100%)";
 
   return (
-    <main className="flex flex-col min-h-dvh bg-slate-900 text-slate-50 pb-6">
-      {/* Header */}
-      <div className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur border-b border-slate-800 px-4 py-3 flex items-center gap-3">
-        <Link href="/" className="p-2 -ml-2 text-slate-400 hover:text-white transition-colors">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-5 h-5">
-            <path d="m15 18-6-6 6-6" />
+    <main className="flex flex-col min-h-dvh bg-[#F4FEFE] select-none">
+
+      {/* ── Header ── */}
+      <div className={`relative overflow-hidden ${headerClass}`}
+           style={{ paddingTop: "calc(env(safe-area-inset-top,0px) + 44px)", paddingBottom: "54px" }}>
+
+        {/* Blob */}
+        <div className="pointer-events-none absolute -top-10 -right-10 w-48 h-48 rounded-full"
+             style={{ background: "radial-gradient(circle,rgba(255,255,255,0.13) 0%,transparent 70%)" }}/>
+
+        <div className="relative z-10 max-w-lg mx-auto px-5">
+          <Link href="/"
+                className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-5 transition-colors">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+            <span className="text-sm font-semibold">Início</span>
+          </Link>
+
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-white/55 text-[10px] font-bold tracking-[0.18em] uppercase mb-2">
+                Selecione a estação
+              </p>
+              <h1 className="text-white font-black text-3xl leading-none">{periodNum}º Período</h1>
+              <p className="text-white/55 text-sm mt-1.5 font-medium">
+                {stations.length} estações disponíveis
+              </p>
+            </div>
+
+            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30
+                            overflow-hidden flex items-center justify-center p-0.5">
+              <Image src="/logo-casf.jpg" alt="Chapa Sérgio Ferreira" width={44} height={44}
+                     unoptimized style={{ objectFit: "cover", objectPosition: "center 20%" }}/>
+            </div>
+          </div>
+        </div>
+
+        {/* Wave */}
+        <div className="absolute bottom-0 left-0 right-0" style={{ height: "44px" }}>
+          <svg viewBox="0 0 390 44" preserveAspectRatio="none" className="w-full h-full">
+            <path d="M0 22 C65 0, 130 44, 195 22 C260 0, 325 44, 390 22 L390 44 L0 44 Z"
+                  fill="#F4FEFE"/>
           </svg>
-        </Link>
-        <h1 className="font-black text-xl text-white flex-1">{periodNum}º Período</h1>
-        <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${badgeCls}`}>
-          {stations.length} estações
-        </span>
+        </div>
       </div>
 
-      {/* Lista de estações */}
-      <div className="flex flex-col gap-3 px-4 pt-5 max-w-lg mx-auto w-full">
-        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest px-1">
-          Selecione a estação
-        </p>
-
+      {/* ── Cards ── */}
+      <div className="flex flex-col gap-3 px-4 pt-2 pb-10 max-w-lg mx-auto w-full">
         {stations.map((station) => (
           <Link
             key={station.id}
             href={`/periodo/${periodNum}/estacao/${station.id}`}
-            className={`flex items-center gap-4 bg-slate-800 border border-slate-700 rounded-2xl px-5 py-4 transition-all active:scale-95 ${cardHover}`}
+            className="pressable flex items-center gap-4 bg-white rounded-[20px] px-5 py-4"
+            style={{
+              boxShadow: "0 2px 14px rgba(0,0,0,0.06), 0 0 0 1.5px rgba(0,0,0,0.04)",
+            }}
           >
-            <div className={`flex-shrink-0 w-10 h-10 rounded-full ${numBg} flex items-center justify-center`}>
-              <span className="text-white font-black text-sm">{station.number}</span>
+            {/* Número */}
+            <div className="flex-shrink-0 w-12 h-12 rounded-[14px] flex items-center justify-center"
+                 style={{
+                   background: numGradient,
+                   boxShadow: `0 4px 14px ${shadowBtn}`,
+                 }}>
+              <span className="text-white font-black text-lg">{station.number}</span>
             </div>
+
+            {/* Info */}
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-white text-base leading-snug">{station.name}</p>
-              <p className="text-slate-500 text-xs mt-0.5">
-                {station.criteria.length} critérios · {station.maxScore} pontos
+              <p className="font-bold text-[#1F2937] text-[15px] leading-snug">
+                {station.name}
               </p>
+              <div className="flex items-center gap-2 mt-1.5">
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
+                      style={{ background: accentBg, color: accentColor }}>
+                  {station.criteria.length} critérios
+                </span>
+                <span className="text-[#9CA3AF] text-[11px] font-semibold">
+                  {station.maxScore} pts máx.
+                </span>
+              </div>
             </div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-slate-600 flex-shrink-0">
-              <path d="m9 18 6-6-6-6" />
-            </svg>
+
+            {/* Arrow */}
+            <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                 style={{ background: accentBg }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2.5"
+                   className="w-4 h-4">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </div>
           </Link>
         ))}
       </div>
