@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Station, Period } from "@/types";
 
 type Props = { periodNum: Period; stations: Station[] };
@@ -8,99 +9,106 @@ type Props = { periodNum: Period; stations: Station[] };
 export default function PeriodClient({ periodNum, stations }: Props) {
   const isTeal = periodNum === 1;
 
-  const headerGradient = isTeal
-    ? "linear-gradient(135deg, #3DC9C9 0%, #2AABAB 100%)"
-    : "linear-gradient(135deg, #FF2E7A 0%, #FF6B6B 50%, #FFB38A 100%)";
-
-  const numberBg = isTeal
-    ? "linear-gradient(135deg, #3DC9C9 0%, #2AABAB 100%)"
-    : "linear-gradient(135deg, #FF2E7A 0%, #FFB38A 100%)";
-
-  const borderHover = isTeal ? "#3DC9C9" : "#FF2E7A";
+  const headerClass = isTeal ? "bg-simu" : "bg-osce";
+  const shadowColor = isTeal
+    ? "rgba(46,201,196,0.35)"
+    : "rgba(240,24,106,0.30)";
+  const accentColor = isTeal ? "#2EC9C4" : "#F0186A";
+  const accentBg = isTeal ? "rgba(46,201,196,0.10)" : "rgba(240,24,106,0.08)";
 
   return (
-    <main className="flex flex-col min-h-dvh bg-white no-select">
+    <main className="flex flex-col min-h-dvh bg-[#F5FEFE] select-none">
+
       {/* Header */}
-      <div
-        className="relative overflow-hidden px-4 pt-12 pb-8"
-        style={{ background: headerGradient }}
-      >
-        {/* Decorative */}
-        <div className="absolute top-[-40px] right-[-40px] w-40 h-40 rounded-full bg-white/8 pointer-events-none" />
-        <div className="absolute bottom-[-20px] left-10 w-24 h-24 rounded-full bg-white/8 pointer-events-none" />
+      <div className={`relative overflow-hidden px-5 ${headerClass}`}
+           style={{ paddingTop: "calc(env(safe-area-inset-top, 0px) + 48px)", paddingBottom: "56px" }}>
 
-        <div className="relative z-10 max-w-lg mx-auto">
-          <Link href="/" className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-5 transition-colors">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-            <span className="text-sm font-medium">Início</span>
-          </Link>
-
-          <h1 className="text-3xl font-black text-white">{periodNum}º Período</h1>
-          <p className="text-white/70 text-sm mt-1">
-            {stations.length} estações · Selecione para avaliar
-          </p>
+        {/* Blobs */}
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute -top-10 -right-10 w-44 h-44 rounded-full"
+               style={{ background: "radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)" }} />
         </div>
 
-        {/* Wave */}
-        <div className="absolute bottom-0 left-0 right-0 h-8 pointer-events-none">
-          <svg viewBox="0 0 390 32" preserveAspectRatio="none" className="w-full h-full">
-            <path d="M0 16 C98 0, 292 32, 390 16 L390 32 L0 32 Z" fill="white" />
+        <div className="relative z-10 max-w-lg mx-auto">
+          <Link href="/"
+                className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-5 transition-colors">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+            <span className="text-sm font-semibold">Início</span>
+          </Link>
+
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-white/60 text-xs font-bold tracking-widest uppercase mb-1">
+                Selecione a estação
+              </p>
+              <h1 className="text-white font-black text-3xl leading-none">
+                {periodNum}º Período
+              </h1>
+              <p className="text-white/60 text-sm mt-1">
+                {stations.length} estações disponíveis
+              </p>
+            </div>
+
+            {/* Mini logo */}
+            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm
+                            border border-white/30 overflow-hidden flex items-center justify-center p-0.5">
+              <Image src="/logo-casf.svg" alt="CASF" width={44} height={44} unoptimized />
+            </div>
+          </div>
+        </div>
+
+        {/* Wave bottom */}
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: "40px" }}>
+          <svg viewBox="0 0 390 40" preserveAspectRatio="none" className="w-full h-full">
+            <path d="M0 20 C65 0, 130 40, 195 20 C260 0, 325 40, 390 20 L390 40 L0 40 Z"
+                  fill="#F5FEFE"/>
           </svg>
         </div>
       </div>
 
-      {/* Station list */}
-      <div className="flex flex-col gap-3 px-4 pt-4 pb-10 max-w-lg mx-auto w-full">
+      {/* Station cards */}
+      <div className="flex flex-col gap-3 px-4 pt-2 pb-10 max-w-lg mx-auto w-full">
         {stations.map((station) => (
           <Link
             key={station.id}
             href={`/periodo/${periodNum}/estacao/${station.id}`}
-            className="flex items-center gap-4 bg-white rounded-2xl px-5 py-4 active:scale-[0.97] transition-all border-2 border-transparent"
+            className="btn-press flex items-center gap-4 bg-white rounded-2xl px-5 py-4"
             style={{
-              boxShadow: "0 2px 12px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = borderHover;
-              (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 20px rgba(0,0,0,0.08), 0 0 0 1px ${borderHover}`;
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "transparent";
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 12px rgba(0,0,0,0.06), 0 0 0 1px rgba(0,0,0,0.04)";
+              boxShadow: "0 2px 12px rgba(0,0,0,0.06), 0 0 0 1.5px rgba(0,0,0,0.04)",
             }}
           >
-            {/* Number bubble */}
-            <div
-              className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center shadow-sm"
-              style={{ background: numberBg }}
-            >
-              <span className="text-white font-black text-base">{station.number}</span>
+            {/* Número */}
+            <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center"
+                 style={{ background: isTeal
+                   ? "linear-gradient(135deg, #2EC9C4 0%, #25ABA7 100%)"
+                   : "linear-gradient(135deg, #F0186A 0%, #F5956A 100%)",
+                   boxShadow: `0 4px 12px ${shadowColor}` }}>
+              <span className="text-white font-black text-lg">{station.number}</span>
             </div>
 
+            {/* Info */}
             <div className="flex-1 min-w-0">
-              <p className="font-bold text-[#1F2937] text-base leading-snug">{station.name}</p>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[#9CA3AF] text-xs">{station.criteria.length} critérios</span>
-                <span className="text-[#D1D5DB] text-xs">·</span>
-                <span className="text-[#9CA3AF] text-xs font-medium">{station.maxScore} pontos</span>
+              <p className="font-bold text-[#1A1A2E] text-[15px] leading-snug">
+                {station.name}
+              </p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                      style={{ background: accentBg, color: accentColor }}>
+                  {station.criteria.length} critérios
+                </span>
+                <span className="text-xs text-[#8A9BB0] font-medium">
+                  {station.maxScore} pts
+                </span>
               </div>
             </div>
 
-            <div
-              className="flex-shrink-0 rounded-full p-1.5"
-              style={{ background: isTeal ? "rgba(61,201,201,0.12)" : "rgba(255,46,122,0.1)" }}
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={isTeal ? "#3DC9C9" : "#FF2E7A"}
-                strokeWidth="2.5"
-                className="w-4 h-4"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </div>
+            {/* Arrow */}
+            <svg viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2.5"
+                 className="w-5 h-5 flex-shrink-0">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
           </Link>
         ))}
       </div>

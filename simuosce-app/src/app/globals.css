@@ -1,30 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand colors */
-  --color-teal-brand: #3DC9C9;
-  --color-teal-dark: #2AABAB;
-  --color-teal-deeper: #1F8888;
-  --color-teal-light: #E0F8F8;
-  --color-teal-bg: #F2FCFC;
+  /* Teal exato do cartaz SIMUOSCE */
+  --color-teal:        #2EC9C4;
+  --color-teal-mid:    #25ABA7;
+  --color-teal-deep:   #1A8A87;
 
-  /* Gradient pink-peach */
-  --color-pink-brand: #FF2E7A;
-  --color-peach-brand: #FFB38A;
+  /* Gradiente OSCE (pink → peach) */
+  --color-osce-pink:   #F0186A;
+  --color-osce-mid:    #F55A60;
+  --color-osce-peach:  #F5956A;
 
-  /* Surfaces */
-  --color-surface: #FFFFFF;
-  --color-surface-muted: #F8FEFE;
+  /* Superfícies */
+  --color-surface:     #FFFFFF;
+  --color-surface-dim: #F5FEFE;
 
-  /* Text */
-  --color-ink: #1F2937;
-  --color-ink-muted: #6B7280;
-  --color-ink-light: #9CA3AF;
-
-  /* Score colors */
-  --color-score-good: #10B981;
-  --color-score-mid: #F59E0B;
-  --color-score-low: #EF4444;
+  /* Texto */
+  --color-ink:         #1A1A2E;
+  --color-ink-mid:     #4A5568;
+  --color-ink-soft:    #8A9BB0;
 }
 
 * {
@@ -32,42 +26,36 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 body {
   min-height: 100dvh;
-  background: #FFFFFF;
-  color: #1F2937;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  background: #fff;
+  color: #1A1A2E;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Gradient utility */
-.gradient-osce {
-  background: linear-gradient(135deg, #FF2E7A 0%, #FF6B6B 50%, #FFB38A 100%);
+/* Gradiente do cartaz */
+.bg-simu {
+  background: linear-gradient(170deg, #2EC9C4 0%, #25ABA7 50%, #1A8A87 100%);
+}
+
+/* Gradiente OSCE (vertical — como no cartaz) */
+.text-osce-gradient {
+  background: linear-gradient(180deg, #F0186A 0%, #F55A60 50%, #F5956A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.gradient-osce-bg {
-  background: linear-gradient(135deg, #FF2E7A 0%, #FF6B6B 50%, #FFB38A 100%);
+/* Gradiente OSCE como background */
+.bg-osce {
+  background: linear-gradient(135deg, #F0186A 0%, #F55A60 50%, #F5956A 100%);
 }
 
-.gradient-teal-bg {
-  background: linear-gradient(160deg, #3DC9C9 0%, #2AABAB 60%, #1F8888 100%);
+/* Shimmer suave nos botões ao press */
+.btn-press {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
-
-/* Smooth checkbox transition */
-.criterion-row {
-  transition: background-color 0.15s ease;
-}
-
-/* Prevent text selection during rapid tapping */
-.no-select {
-  user-select: none;
-  -webkit-user-select: none;
+.btn-press:active {
+  transform: scale(0.96);
 }
