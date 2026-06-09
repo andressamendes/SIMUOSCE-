@@ -38,7 +38,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR" className={`h-full ${dancingScript.variable}`}>
       <head>
-        <link rel="apple-touch-icon" href={`${BASE}/icons/icon-512.png`} />
+        <link rel="icon" type="image/x-icon" href={`${BASE}/favicon.ico`} />
+        <link rel="icon" type="image/png" sizes="32x32" href={`${BASE}/icons/icon-192.png`} />
+        <link rel="apple-touch-icon" sizes="180x180" href={`${BASE}/icons/apple-touch-icon.png`} />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body className="min-h-full flex flex-col bg-white select-none">

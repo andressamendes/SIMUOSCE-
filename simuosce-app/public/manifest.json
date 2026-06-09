@@ -6,8 +6,8 @@
   "scope": "./",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone"],
-  "background_color": "#3DC9C9",
-  "theme_color": "#3DC9C9",
+  "background_color": "#2EC9C4",
+  "theme_color": "#2EC9C4",
   "orientation": "portrait-primary",
   "lang": "pt-BR",
   "categories": ["education", "medical"],
@@ -25,9 +25,9 @@
       "purpose": "any maskable"
     },
     {
-      "src": "./icons/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "./icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
       "purpose": "any"
     }
   ]
