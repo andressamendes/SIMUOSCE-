@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Station, Period } from "@/types";
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 type Props = { periodNum: Period; stations: Station[] };
 
 export default function PeriodClient({ periodNum, stations }: Props) {
@@ -50,7 +52,7 @@ export default function PeriodClient({ periodNum, stations }: Props) {
 
             <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30
                             overflow-hidden flex items-center justify-center p-0.5">
-              <Image src="/logo-casf.jpg" alt="Chapa Sérgio Ferreira" width={44} height={44}
+              <Image src={`${BASE}/logo-casf.jpg`} alt="Chapa Sérgio Ferreira" width={44} height={44}
                      unoptimized style={{ objectFit: "cover", objectPosition: "center 20%" }}/>
             </div>
           </div>

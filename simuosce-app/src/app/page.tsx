@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 export default function HomePage() {
   return (
     <main className="flex flex-col min-h-dvh overflow-hidden select-none">
@@ -14,9 +16,10 @@ export default function HomePage() {
            style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
 
         {/* Cartaz oficial como fundo — personagens 3D visíveis na base do hero */}
-        <Image src="/poster.webp" alt="" fill unoptimized priority
-               className="object-cover object-top pointer-events-none select-none"
-               style={{ opacity: 0.28 }}/>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={`${BASE}/poster.webp`} alt=""
+             className="absolute inset-0 w-full h-full object-cover object-top pointer-events-none select-none"
+             style={{ opacity: 0.28 }}/>
 
         {/* Luz ambiente — radiais translúcidos como no cartaz */}
         <div className="pointer-events-none absolute inset-0">
@@ -34,7 +37,7 @@ export default function HomePage() {
             {/* Logo CASF em círculo branco */}
             <div className="w-14 h-14 rounded-full bg-white shadow-xl overflow-hidden flex items-center justify-center"
                  style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.20), 0 0 0 2px rgba(255,255,255,0.60)" }}>
-              <Image src="/logo-casf.jpg" alt="Chapa Sérgio Ferreira" width={56} height={56}
+              <Image src={`${BASE}/logo-casf.jpg`} alt="Chapa Sérgio Ferreira" width={56} height={56}
                      unoptimized priority style={{ objectFit: "cover", objectPosition: "center 20%" }}/>
             </div>
             <div>
