@@ -13,16 +13,3 @@ export type Station = {
 };
 
 export type Period = 1 | 2;
-
-export type Assessment = {
-  id: string;
-  studentName: string;
-  studentId: string;
-  period: Period;
-  stationId: string;
-  stationName: string;
-  date: string;
-  checkedCriteria: string[];
-  score: number;
-  maxScore: number;
-};
