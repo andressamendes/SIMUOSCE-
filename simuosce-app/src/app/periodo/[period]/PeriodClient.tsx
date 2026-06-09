@@ -50,7 +50,8 @@ export default function PeriodClient({ periodNum, stations }: Props) {
 
             <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30
                             overflow-hidden flex items-center justify-center p-0.5">
-              <Image src="/logo-casf.svg" alt="CASF" width={44} height={44} unoptimized/>
+              <Image src="/logo-casf.jpg" alt="Chapa Sérgio Ferreira" width={44} height={44}
+                     unoptimized style={{ objectFit: "cover", objectPosition: "center 20%" }}/>
             </div>
           </div>
         </div>

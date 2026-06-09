@@ -13,6 +13,11 @@ export default function HomePage() {
       <div className="relative flex flex-col bg-teal-brand overflow-hidden"
            style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}>
 
+        {/* Cartaz oficial como fundo — personagens 3D visíveis na base do hero */}
+        <Image src="/poster.webp" alt="" fill unoptimized priority
+               className="object-cover object-top pointer-events-none select-none"
+               style={{ opacity: 0.28 }}/>
+
         {/* Luz ambiente — radiais translúcidos como no cartaz */}
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-24 -right-24 w-80 h-80 rounded-full"
@@ -29,7 +34,8 @@ export default function HomePage() {
             {/* Logo CASF em círculo branco */}
             <div className="w-14 h-14 rounded-full bg-white shadow-xl overflow-hidden flex items-center justify-center"
                  style={{ boxShadow: "0 4px 20px rgba(0,0,0,0.20), 0 0 0 2px rgba(255,255,255,0.60)" }}>
-              <Image src="/logo-casf.svg" alt="CASF" width={56} height={56} unoptimized priority/>
+              <Image src="/logo-casf.jpg" alt="Chapa Sérgio Ferreira" width={56} height={56}
+                     unoptimized priority style={{ objectFit: "cover", objectPosition: "center 20%" }}/>
             </div>
             <div>
               <p className="text-white/60 text-[10px] font-semibold tracking-[0.16em] uppercase leading-tight">
