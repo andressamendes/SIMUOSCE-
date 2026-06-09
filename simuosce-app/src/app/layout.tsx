@@ -6,7 +6,7 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
   title: "SIMUOSCE",
-  description: "Barema digital OSCE – Centro Acadêmico Sergio Ferreira · Afya Guanambi",
+  description: "Barema digital oficial do OSCE – Centro Acadêmico Sérgio Ferreira · Afya Guanambi",
   manifest: `${BASE}/manifest.json`,
   appleWebApp: {
     capable: true,
@@ -24,7 +24,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: "cover",
-  themeColor: "#14b8a6",
+  themeColor: "#3DC9C9",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -32,8 +32,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="pt-BR" className="h-full">
       <head>
         <link rel="apple-touch-icon" href={`${BASE}/icons/icon-512.png`} />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className="min-h-full flex flex-col bg-slate-900 text-slate-50 select-none">
+      <body className="min-h-full flex flex-col bg-white select-none">
         <PWARegister />
         {children}
       </body>

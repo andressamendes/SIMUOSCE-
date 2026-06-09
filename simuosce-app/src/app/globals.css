@@ -1,17 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #0f172a;
-  --foreground: #f8fafc;
+@theme {
+  /* Brand colors */
+  --color-teal-brand: #3DC9C9;
+  --color-teal-dark: #2AABAB;
+  --color-teal-deeper: #1F8888;
+  --color-teal-light: #E0F8F8;
+  --color-teal-bg: #F2FCFC;
+
+  /* Gradient pink-peach */
+  --color-pink-brand: #FF2E7A;
+  --color-peach-brand: #FFB38A;
+
+  /* Surfaces */
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F8FEFE;
+
+  /* Text */
+  --color-ink: #1F2937;
+  --color-ink-muted: #6B7280;
+  --color-ink-light: #9CA3AF;
+
+  /* Score colors */
+  --color-score-good: #10B981;
+  --color-score-mid: #F59E0B;
+  --color-score-low: #EF4444;
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   min-height: 100dvh;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, sans-serif;
+  background: #FFFFFF;
+  color: #1F2937;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Gradient utility */
+.gradient-osce {
+  background: linear-gradient(135deg, #FF2E7A 0%, #FF6B6B 50%, #FFB38A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-osce-bg {
+  background: linear-gradient(135deg, #FF2E7A 0%, #FF6B6B 50%, #FFB38A 100%);
+}
+
+.gradient-teal-bg {
+  background: linear-gradient(160deg, #3DC9C9 0%, #2AABAB 60%, #1F8888 100%);
+}
+
+/* Smooth checkbox transition */
+.criterion-row {
+  transition: background-color 0.15s ease;
+}
+
+/* Prevent text selection during rapid tapping */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
 }

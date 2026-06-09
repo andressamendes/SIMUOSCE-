@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Outer ring -->
+  <circle cx="60" cy="60" r="57" stroke="white" stroke-width="2.5" fill="rgba(255,255,255,0.08)"/>
+  <!-- Inner ring -->
+  <circle cx="60" cy="60" r="48" stroke="white" stroke-width="1.2" stroke-dasharray="3 2"/>
+
+  <!-- Caduceus staff -->
+  <line x1="60" y1="22" x2="60" y2="82" stroke="white" stroke-width="2.8" stroke-linecap="round"/>
+
+  <!-- Wings -->
+  <path d="M60 24 C52 18, 42 20, 40 26 C46 23, 54 26, 60 30 C66 26, 74 23, 80 26 C78 20, 68 18, 60 24Z" fill="white"/>
+
+  <!-- Snake 1 (left spiral) -->
+  <path d="M60 32 C53 34, 50 39, 54 43 C58 47, 62 47, 62 52 C62 57, 57 60, 53 62 C49 64, 50 70, 54 72"
+        stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Snake 1 head -->
+  <circle cx="54" cy="73" r="2" fill="white"/>
+
+  <!-- Snake 2 (right spiral) -->
+  <path d="M60 32 C67 34, 70 39, 66 43 C62 47, 58 47, 58 52 C58 57, 63 60, 67 62 C71 64, 70 70, 66 72"
+        stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Snake 2 head -->
+  <circle cx="66" cy="73" r="2" fill="white"/>
+
+  <!-- Circular text path -->
+  <defs>
+    <path id="topArc" d="M 14,60 A 46,46 0 0,1 106,60"/>
+    <path id="botArc" d="M 18,72 A 46,46 0 0,0 102,72"/>
+  </defs>
+  <text font-size="8.5" fill="white" font-family="-apple-system, system-ui, sans-serif" font-weight="600" letter-spacing="1.8">
+    <textPath href="#topArc" startOffset="5%">CENTRO ACADÊMICO</textPath>
+  </text>
+  <text font-size="8" fill="white" font-family="-apple-system, system-ui, sans-serif" font-weight="600" letter-spacing="1.5">
+    <textPath href="#botArc" startOffset="8%">SÉRGIO FERREIRA</textPath>
+  </text>
+</svg>
