@@ -1,11 +1,10 @@
-const CACHE = "simuosce-v2";
+const CACHE = "simuosce-v3";
 
 const PRECACHE = [
   "./",
   "./periodo/1/",
   "./periodo/2/",
   "./manifest.json",
-  "./poster.webp",
   "./logo-casf.jpg",
 ];
 

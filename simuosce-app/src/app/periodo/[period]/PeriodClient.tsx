@@ -33,7 +33,8 @@ export default function PeriodClient({ periodNum, stations }: Props) {
         <div className="relative z-10 max-w-lg mx-auto px-5">
           <Link href="/"
                 className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-5 transition-colors">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4"
+                 aria-hidden="true">
               <path d="m15 18-6-6 6-6"/>
             </svg>
             <span className="text-sm font-semibold">Início</span>
@@ -107,7 +108,7 @@ export default function PeriodClient({ periodNum, stations }: Props) {
             <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
                  style={{ background: accentBg }}>
               <svg viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2.5"
-                   className="w-4 h-4">
+                   className="w-4 h-4" aria-hidden="true">
                 <path d="m9 18 6-6-6-6"/>
               </svg>
             </div>
