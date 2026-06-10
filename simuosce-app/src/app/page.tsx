@@ -91,7 +91,7 @@ export default function HomePage() {
       </div>
 
       {/* ── BOTÕES DE PERÍODO ── */}
-      <div className="flex flex-col gap-4 px-5 pt-4 pb-10 bg-white max-w-sm mx-auto w-full">
+      <div className="flex flex-col gap-4 px-5 pt-4 pb-4 bg-white max-w-sm mx-auto w-full">
         <p className="text-center text-[11px] font-bold text-[#9CA3AF] tracking-[0.18em] uppercase mb-1">
           Selecione o período
         </p>
@@ -121,6 +121,16 @@ export default function HomePage() {
           );
         })}
       </div>
+
+      <footer className="bg-white text-center px-5 pt-4 pb-10">
+        <p className="text-[11px] font-semibold text-[#9CA3AF] leading-snug">
+          Centro Acadêmico Sérgio Ferreira
+        </p>
+        <p className="text-[10px] font-medium text-[#9CA3AF] leading-snug mt-0.5">
+          Afya Faculdade de Ciências Médicas de Guanambi
+        </p>
+        <p className="text-[10px] font-medium text-[#C4C9D0] mt-2">© 2026</p>
+      </footer>
     </main>
   );
 }
