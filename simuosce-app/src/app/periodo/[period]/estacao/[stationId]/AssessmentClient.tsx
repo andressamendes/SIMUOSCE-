@@ -3,11 +3,10 @@
 import { useState, useCallback } from "react";
 import Link from "next/link";
 import { Station, Period } from "@/types";
+import { periodThemes } from "@/lib/themes";
+import { fmt } from "@/lib/format";
 
 type Props = { periodNum: Period; station: Station | null };
-
-const fmt = (n: number) =>
-  n % 1 === 0 ? `${n}` : n.toFixed(2).replace(/0+$/, "").replace(".", ",");
 
 export default function AssessmentClient({ periodNum, station }: Props) {
   const [checked, setChecked] = useState<Set<string>>(new Set());
@@ -37,37 +36,8 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     );
   }
 
-  const themes = {
-    1: {
-      headerClass: "bg-teal-brand",
-      checkColor:  "#2EC9C4",
-      checkBg:     "rgba(46,201,196,0.10)",
-      checkGlow:   "check-glow-teal",
-      pillOn:      "#2EC9C4",
-      shadow:      "0 -4px 24px rgba(46,201,196,0.28)",
-      waveColor:   "#2EC9C4",
-    },
-    2: {
-      headerClass: "bg-osce",
-      checkColor:  "#EE1068",
-      checkBg:     "rgba(238,16,104,0.08)",
-      checkGlow:   "check-glow-osce",
-      pillOn:      "#EE1068",
-      shadow:      "0 -4px 24px rgba(238,16,104,0.25)",
-      waveColor:   "#EE1068",
-    },
-    3: {
-      headerClass: "bg-period3",
-      checkColor:  "#7C3AED",
-      checkBg:     "rgba(124,58,237,0.08)",
-      checkGlow:   "check-glow-period3",
-      pillOn:      "#7C3AED",
-      shadow:      "0 -4px 24px rgba(124,58,237,0.25)",
-      waveColor:   "#7C3AED",
-    },
-  } as const;
-  const { headerClass, checkColor, checkBg, checkGlow, pillOn, shadow, waveColor } =
-    themes[periodNum] ?? themes[1];
+  const { headerClass, accent, accentBg, checkGlow, footerShadow } =
+    periodThemes[periodNum] ?? periodThemes[1];
 
   /* Feedback de nota */
   const label       = pct >= 70 ? "Aprovado" : pct >= 50 ? "Regular" : pct > 0 ? "Insuficiente" : null;
@@ -159,15 +129,15 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                 onClick={() => toggle(criterion.id)}
                 className="w-full flex items-center gap-3.5 text-left py-3.5 px-3.5 rounded-xl mb-1
                            transition-colors duration-150"
-                style={{ backgroundColor: on ? checkBg : "transparent" }}
+                style={{ backgroundColor: on ? accentBg : "transparent" }}
               >
                 {/* Checkbox circular */}
                 <div
                   className={`flex-shrink-0 w-7 h-7 rounded-full border-2 flex items-center
                              justify-center transition-all duration-150 ${on ? checkGlow : ""}`}
                   style={{
-                    borderColor: on ? checkColor : "#D1D5DB",
-                    backgroundColor: on ? checkColor : "#FAFAFA",
+                    borderColor: on ? accent : "#D1D5DB",
+                    backgroundColor: on ? accent : "#FAFAFA",
                   }}
                 >
                   {on && (
@@ -190,7 +160,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                 {/* Pill de pontuação */}
                 <div className="flex-shrink-0 rounded-full px-2.5 py-1 transition-all duration-150"
                      style={{
-                       backgroundColor: on ? pillOn : "#F3F4F6",
+                       backgroundColor: on ? accent : "#F3F4F6",
                      }}>
                   <span className="text-xs font-bold transition-colors duration-150"
                         style={{ color: on ? "white" : "#9CA3AF" }}>
@@ -211,14 +181,14 @@ export default function AssessmentClient({ periodNum, station }: Props) {
         className={`fixed bottom-0 inset-x-0 z-50 ${headerClass}`}
         style={{
           paddingBottom: "env(safe-area-inset-bottom, 16px)",
-          boxShadow: shadow,
+          boxShadow: footerShadow,
         }}
       >
         {/* Wave topo */}
         <div className="absolute -top-7 left-0 right-0 pointer-events-none" style={{ height: "28px" }}>
           <svg viewBox="0 0 390 28" preserveAspectRatio="none" className="w-full h-full">
             <path d="M0 14 C65 28, 130 0, 195 14 C260 28, 325 0, 390 14 L390 28 L0 28 Z"
-                  fill={waveColor} fillOpacity="0.45"/>
+                  fill={accent} fillOpacity="0.45"/>
           </svg>
         </div>
 
