@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Station, Period } from "@/types";
 import { periodThemes } from "@/lib/themes";
 import { fmt, formatTime } from "@/lib/format";
+import SummaryScreen from "./SummaryScreen";
 
 function getDuration(count: number): number {
   if (count <= 10) return 180; // 3 min
@@ -21,6 +22,8 @@ export default function AssessmentClient({ periodNum, station }: Props) {
   const [timestamps, setTimestamps] = useState<Record<string, number>>({});
   const [timeLeft, setTimeLeft]     = useState(DURATION);
   const [resetCount, setResetCount] = useState(0);
+  const [showSummary, setShowSummary]     = useState(false);
+  const [concludedData, setConcludedData] = useState({ elapsed: 0, timedOut: false });
 
   // Ref lets toggle() read the latest timeLeft without re-creating the callback
   const timeLeftRef = useRef(DURATION);
@@ -72,12 +75,44 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     setResetCount((c) => c + 1);
   }, []);
 
+  const concludeStation = useCallback(() => {
+    const duration = station ? getDuration(station.criteria.length) : 300;
+    setConcludedData({
+      elapsed:  duration - timeLeftRef.current,
+      timedOut: timeLeftRef.current === 0,
+    });
+    setShowSummary(true);
+  }, [station]);
+
+  const handleNewAssessment = useCallback(() => {
+    setChecked(new Set());
+    setTimestamps({});
+    setResetCount((c) => c + 1);
+    setShowSummary(false);
+  }, []);
+
   if (!station) {
     return (
       <div className="flex flex-col items-center justify-center min-h-dvh gap-3 bg-white">
         <p className="text-[#9CA3AF]">Estação não encontrada.</p>
         <Link href="/" className="font-bold text-[#2EC9C4]">Voltar</Link>
       </div>
+    );
+  }
+
+  if (showSummary) {
+    return (
+      <SummaryScreen
+        periodNum={periodNum}
+        station={station}
+        score={score}
+        maxScore={maxScore}
+        pct={pct}
+        checkedIds={checked}
+        elapsed={concludedData.elapsed}
+        timedOut={concludedData.timedOut}
+        onNewAssessment={handleNewAssessment}
+      />
     );
   }
 
@@ -310,20 +345,29 @@ export default function AssessmentClient({ periodNum, station }: Props) {
               </p>
             </div>
 
-            {/* Botão Limpar */}
-            <button
-              onClick={clearAll}
-              disabled={checked.size === 0}
-              className="pressable flex-shrink-0 rounded-[16px] py-4 px-6 font-black text-sm
-                         text-white disabled:opacity-35 transition-all"
-              style={{
-                background:     "rgba(255,255,255,0.20)",
-                border:         "2px solid rgba(255,255,255,0.38)",
-                backdropFilter: "blur(8px)",
-              }}
-            >
-              Limpar
-            </button>
+            {/* Ações */}
+            <div className="flex flex-col gap-1.5 flex-shrink-0">
+              <button
+                onClick={concludeStation}
+                className="pressable rounded-[14px] py-3 px-5 font-black text-sm"
+                style={{ background: "rgba(255,255,255,0.95)", color: accent }}
+              >
+                Concluir
+              </button>
+              <button
+                onClick={clearAll}
+                disabled={checked.size === 0}
+                className="pressable rounded-[12px] py-2 px-5 font-bold text-xs
+                           text-white/65 disabled:opacity-35 transition-all"
+                style={{
+                  background:     "rgba(255,255,255,0.15)",
+                  border:         "1px solid rgba(255,255,255,0.25)",
+                  backdropFilter: "blur(8px)",
+                }}
+              >
+                Limpar
+              </button>
+            </div>
           </div>
         </div>
       </div>
