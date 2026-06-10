@@ -6,11 +6,17 @@ import { Station, Period } from "@/types";
 import { periodThemes } from "@/lib/themes";
 import { fmt, formatTime } from "@/lib/format";
 
-const DURATION = 300; // 5 minutes in seconds
+function getDuration(count: number): number {
+  if (count <= 10) return 180; // 3 min
+  if (count <= 15) return 240; // 4 min
+  return 300;                  // 5 min
+}
 
 type Props = { periodNum: Period; station: Station | null };
 
 export default function AssessmentClient({ periodNum, station }: Props) {
+  const DURATION = station ? getDuration(station.criteria.length) : 300;
+
   const [checked, setChecked]       = useState<Set<string>>(new Set());
   const [timestamps, setTimestamps] = useState<Record<string, number>>({});
   const [timeLeft, setTimeLeft]     = useState(DURATION);
@@ -78,8 +84,12 @@ export default function AssessmentClient({ periodNum, station }: Props) {
   const { headerClass, accent, accentBg, checkGlow, footerShadow } =
     periodThemes[periodNum] ?? periodThemes[1];
 
+  const durationMin      = DURATION / 60;
+  const warnThreshold    = Math.round(DURATION / 3);  // ~33% remaining
+  const dangerThreshold  = Math.round(DURATION / 10); // ~10% remaining
+
   // Timer visual state
-  const timerState  = timeLeft >= 120 ? "normal" : timeLeft >= 30 ? "warn" : "danger";
+  const timerState  = timeLeft >= warnThreshold ? "normal" : timeLeft >= dangerThreshold ? "warn" : "danger";
   const timerColor  = timerState === "normal" ? "rgba(255,255,255,0.92)"
                     : timerState === "warn"   ? "#FCD34D"
                     : "#F87171";
@@ -121,16 +131,20 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             {/* Timer display */}
             <div className="flex flex-col items-end" role="status" aria-live="polite" aria-atomic="true">
               <span className="text-white/50 text-[9px] font-bold tracking-[0.14em] uppercase leading-none mb-1">
-                ⏱ Tempo Restante
+                ⏱ Tempo da Estação
               </span>
               <span className={`font-black text-2xl tabular-nums leading-none ${timerPulse}`}
                     style={{ color: timerColor }}>
                 {formatTime(timeLeft)}
               </span>
-              {timeLeft === 0 && (
+              {timeLeft === 0 ? (
                 <span className="text-[9px] font-semibold leading-none mt-1"
                       style={{ color: "#F87171" }}>
                   Encerrado
+                </span>
+              ) : (
+                <span className="text-white/35 text-[9px] font-medium leading-none mt-1">
+                  {station.criteria.length} critérios · {durationMin}min
                 </span>
               )}
             </div>
