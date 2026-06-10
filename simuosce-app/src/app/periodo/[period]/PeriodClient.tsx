@@ -3,37 +3,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Station, Period } from "@/types";
+import { periodThemes } from "@/lib/themes";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 type Props = { periodNum: Period; stations: Station[] };
 
 export default function PeriodClient({ periodNum, stations }: Props) {
-  const themes = {
-    1: {
-      headerClass: "bg-teal-brand",
-      shadowBtn:   "rgba(46,201,196,0.35)",
-      accentColor: "#2EC9C4",
-      accentBg:    "rgba(46,201,196,0.10)",
-      numGradient: "linear-gradient(135deg,#2EC9C4 0%,#178785 100%)",
-    },
-    2: {
-      headerClass: "bg-osce",
-      shadowBtn:   "rgba(238,16,104,0.28)",
-      accentColor: "#EE1068",
-      accentBg:    "rgba(238,16,104,0.08)",
-      numGradient: "linear-gradient(135deg,#EE1068 0%,#F5956A 100%)",
-    },
-    3: {
-      headerClass: "bg-period3",
-      shadowBtn:   "rgba(124,58,237,0.32)",
-      accentColor: "#7C3AED",
-      accentBg:    "rgba(124,58,237,0.08)",
-      numGradient: "linear-gradient(135deg,#7C3AED 0%,#A78BFA 100%)",
-    },
-  } as const;
-  const { headerClass, shadowBtn, accentColor, accentBg, numGradient } =
-    themes[periodNum] ?? themes[1];
+  const { headerClass, accent, accentBg, numGradient, shadowBtn } =
+    periodThemes[periodNum] ?? periodThemes[1];
 
   return (
     <main className="flex flex-col min-h-dvh bg-[#F4FEFE] select-none">
@@ -111,7 +89,7 @@ export default function PeriodClient({ periodNum, stations }: Props) {
               </p>
               <div className="flex items-center gap-2 mt-1.5">
                 <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
-                      style={{ background: accentBg, color: accentColor }}>
+                      style={{ background: accentBg, color: accent }}>
                   {station.criteria.length} critérios
                 </span>
                 <span className="text-[#9CA3AF] text-[11px] font-semibold">
@@ -123,7 +101,7 @@ export default function PeriodClient({ periodNum, stations }: Props) {
             {/* Arrow */}
             <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
                  style={{ background: accentBg }}>
-              <svg viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2.5"
+              <svg viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2.5"
                    className="w-4 h-4" aria-hidden="true">
                 <path d="m9 18 6-6-6-6"/>
               </svg>
