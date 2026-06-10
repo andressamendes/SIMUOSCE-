@@ -89,6 +89,11 @@ export default function HomePage() {
               <div className="w-2 h-2 rounded-full" style={{ background: "#F5956A" }} />
               <span className="text-white/80 text-xs font-semibold">11 jun · 2º Período</span>
             </div>
+            <div className="flex items-center gap-2 rounded-full bg-black/20 backdrop-blur-sm
+                            border border-white/20 px-4 py-2">
+              <div className="w-2 h-2 rounded-full" style={{ background: "#A78BFA" }} />
+              <span className="text-white/80 text-xs font-semibold">3º Período</span>
+            </div>
           </div>
         </div>
 
@@ -141,6 +146,27 @@ export default function HomePage() {
             <div className="relative z-10 w-10 h-10 rounded-full bg-white/20 border border-white/30
                             flex items-center justify-center">
               <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" className="w-5 h-5">
+                <path d="m9 18 6-6-6-6"/>
+              </svg>
+            </div>
+          </div>
+        </Link>
+
+        {/* 3º Período */}
+        <Link href="/periodo/3"
+              className="pressable block rounded-[22px] overflow-hidden"
+              style={{ boxShadow: "0 8px 28px rgba(124,58,237,0.30), 0 2px 8px rgba(0,0,0,0.06)" }}>
+          <div className="bg-period3 relative overflow-hidden px-6 py-5 flex items-center justify-between">
+            <div className="pointer-events-none absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/10"/>
+            <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-white/10"/>
+            <div className="relative z-10">
+              <p className="text-white font-black text-[22px] leading-tight">3º Período</p>
+              <p className="text-white/65 text-sm mt-0.5 font-medium">4 estações</p>
+            </div>
+            <div className="relative z-10 w-10 h-10 rounded-full bg-white/20 border border-white/30
+                            flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" className="w-5 h-5"
+                   aria-hidden="true">
                 <path d="m9 18 6-6-6-6"/>
               </svg>
             </div>
