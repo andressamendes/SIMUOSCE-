@@ -24,7 +24,8 @@ export default function PeriodClient({ periodNum, stations }: Props) {
 
         <div className="relative z-10 max-w-lg mx-auto px-5">
           <Link href="/"
-                className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-5 transition-colors">
+                className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-5 transition-colors
+                           -mx-2 px-2 py-2.5 -my-2.5">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-4 h-4"
                  aria-hidden="true">
               <path d="m15 18-6-6 6-6"/>
@@ -35,7 +36,7 @@ export default function PeriodClient({ periodNum, stations }: Props) {
           <p className="text-white/55 text-[10px] font-bold tracking-[0.18em] uppercase mb-2">
             Selecione a estação
           </p>
-          <h1 className="text-white font-black text-3xl leading-none">{periodNum}º Período</h1>
+          <h1 className="text-white font-black text-3xl leading-none tracking-tight">{periodNum}º Período</h1>
           <p className="text-white/55 text-sm mt-1.5 font-medium">
             {stations.length} estações disponíveis
           </p>
@@ -56,11 +57,8 @@ export default function PeriodClient({ periodNum, stations }: Props) {
           <Link
             key={station.id}
             href={`/periodo/${periodNum}/estacao/${station.id}`}
-            className="pressable anim-fade-up flex items-center gap-4 bg-white rounded-[20px] px-5 py-4"
-            style={{
-              boxShadow: "0 2px 14px rgba(0,0,0,0.06), 0 0 0 1.5px rgba(0,0,0,0.04)",
-              animationDelay: `${i * 55}ms`,
-            }}
+            className="pressable anim-fade-up card-surface flex items-center gap-4 rounded-[20px] px-5 py-4"
+            style={{ animationDelay: `${i * 55}ms` }}
           >
             {/* Número */}
             <div className="flex-shrink-0 w-12 h-12 rounded-[14px] flex items-center justify-center"
@@ -76,23 +74,20 @@ export default function PeriodClient({ periodNum, stations }: Props) {
               <p className="font-bold text-[#1F2937] text-[15px] leading-snug">
                 {station.name}
               </p>
-              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
-                      style={{ background: accentBg, color: accent }}>
-                  {station.criteria.length} critérios
-                </span>
-                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5
-                                 rounded-full bg-[#F3F4F6] text-[#6B7280]">
+              <div className="flex items-center gap-1.5 mt-1.5 flex-wrap text-[12px] font-semibold
+                              text-[#9CA3AF] leading-none">
+                <span style={{ color: accent }}>{station.criteria.length} critérios</span>
+                <span aria-hidden="true" className="text-[#D1D5DB]">·</span>
+                <span className="inline-flex items-center gap-1">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
                        className="w-3 h-3" aria-hidden="true">
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                   </svg>
-                  {getDurationMin(station.criteria.length)}min
+                  {getDurationMin(station.criteria.length)} min
                 </span>
-                <span className="text-[#9CA3AF] text-[11px] font-semibold">
-                  {station.maxScore} pts
-                </span>
+                <span aria-hidden="true" className="text-[#D1D5DB]">·</span>
+                <span>{station.maxScore} pts</span>
               </div>
             </div>
 

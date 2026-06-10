@@ -215,7 +215,8 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             {/* Score card */}
             <div className="flex-shrink-0 bg-white/22 backdrop-blur-md rounded-[18px]
                             px-4 py-3 text-center min-w-[72px] border border-white/30">
-              <p key={score} className="text-white font-black text-3xl leading-none anim-score-pop"
+              <p key={score} className="text-white font-black text-3xl leading-none anim-score-pop
+                                        tracking-tight tabular-nums"
                  style={{ textShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
                 {fmt(score)}
               </p>
@@ -340,7 +341,8 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             {/* Nota + tempo utilizado */}
             <div className="flex-1">
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span key={score} className="text-white font-black leading-none anim-score-pop"
+                <span key={score} className="text-white font-black leading-none anim-score-pop
+                                             tracking-tight tabular-nums"
                       style={{ fontSize: "clamp(36px, 11vw, 50px)" }}>
                   {fmt(score)}
                 </span>
