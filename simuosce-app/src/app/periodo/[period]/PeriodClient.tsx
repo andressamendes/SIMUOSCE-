@@ -1,11 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Station, Period } from "@/types";
 import { periodThemes } from "@/lib/themes";
-
-const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 type Props = { periodNum: Period; stations: Station[] };
 
@@ -34,23 +31,13 @@ export default function PeriodClient({ periodNum, stations }: Props) {
             <span className="text-sm font-semibold">Início</span>
           </Link>
 
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="text-white/55 text-[10px] font-bold tracking-[0.18em] uppercase mb-2">
-                Selecione a estação
-              </p>
-              <h1 className="text-white font-black text-3xl leading-none">{periodNum}º Período</h1>
-              <p className="text-white/55 text-sm mt-1.5 font-medium">
-                {stations.length} estações disponíveis
-              </p>
-            </div>
-
-            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30
-                            overflow-hidden flex items-center justify-center p-0.5">
-              <Image src={`${BASE}/logo-casf.jpg`} alt="Chapa Sérgio Ferreira" width={44} height={44}
-                     unoptimized style={{ objectFit: "cover", objectPosition: "center 20%" }}/>
-            </div>
-          </div>
+          <p className="text-white/55 text-[10px] font-bold tracking-[0.18em] uppercase mb-2">
+            Selecione a estação
+          </p>
+          <h1 className="text-white font-black text-3xl leading-none">{periodNum}º Período</h1>
+          <p className="text-white/55 text-sm mt-1.5 font-medium">
+            {stations.length} estações disponíveis
+          </p>
         </div>
 
         {/* Wave */}
