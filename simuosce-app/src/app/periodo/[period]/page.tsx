@@ -3,7 +3,7 @@ import { Period } from "@/types";
 import PeriodClient from "./PeriodClient";
 
 export function generateStaticParams() {
-  return [{ period: "1" }, { period: "2" }];
+  return [{ period: "1" }, { period: "2" }, { period: "3" }];
 }
 
 type Props = { params: Promise<{ period: string }> };

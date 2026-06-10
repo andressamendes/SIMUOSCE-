@@ -12,4 +12,4 @@ export type Station = {
   maxScore: number;
 };
 
-export type Period = 1 | 2;
+export type Period = 1 | 2 | 3;

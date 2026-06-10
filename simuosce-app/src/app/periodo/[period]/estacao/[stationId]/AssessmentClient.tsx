@@ -37,15 +37,37 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     );
   }
 
-  const isTeal = periodNum === 1;
-  const headerClass = isTeal ? "bg-teal-brand" : "bg-osce";
-  const checkColor  = isTeal ? "#2EC9C4" : "#EE1068";
-  const checkBg     = isTeal ? "rgba(46,201,196,0.10)" : "rgba(238,16,104,0.08)";
-  const checkGlow   = isTeal ? "check-glow-teal" : "check-glow-osce";
-  const pillOn      = isTeal ? "#2EC9C4" : "#EE1068";
-  const shadow      = isTeal
-    ? "0 -4px 24px rgba(46,201,196,0.28)"
-    : "0 -4px 24px rgba(238,16,104,0.25)";
+  const themes = {
+    1: {
+      headerClass: "bg-teal-brand",
+      checkColor:  "#2EC9C4",
+      checkBg:     "rgba(46,201,196,0.10)",
+      checkGlow:   "check-glow-teal",
+      pillOn:      "#2EC9C4",
+      shadow:      "0 -4px 24px rgba(46,201,196,0.28)",
+      waveColor:   "#2EC9C4",
+    },
+    2: {
+      headerClass: "bg-osce",
+      checkColor:  "#EE1068",
+      checkBg:     "rgba(238,16,104,0.08)",
+      checkGlow:   "check-glow-osce",
+      pillOn:      "#EE1068",
+      shadow:      "0 -4px 24px rgba(238,16,104,0.25)",
+      waveColor:   "#EE1068",
+    },
+    3: {
+      headerClass: "bg-period3",
+      checkColor:  "#7C3AED",
+      checkBg:     "rgba(124,58,237,0.08)",
+      checkGlow:   "check-glow-period3",
+      pillOn:      "#7C3AED",
+      shadow:      "0 -4px 24px rgba(124,58,237,0.25)",
+      waveColor:   "#7C3AED",
+    },
+  } as const;
+  const { headerClass, checkColor, checkBg, checkGlow, pillOn, shadow, waveColor } =
+    themes[periodNum] ?? themes[1];
 
   /* Feedback de nota */
   const label       = pct >= 70 ? "Aprovado" : pct >= 50 ? "Regular" : pct > 0 ? "Insuficiente" : null;
@@ -196,7 +218,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
         <div className="absolute -top-7 left-0 right-0 pointer-events-none" style={{ height: "28px" }}>
           <svg viewBox="0 0 390 28" preserveAspectRatio="none" className="w-full h-full">
             <path d="M0 14 C65 28, 130 0, 195 14 C260 28, 325 0, 390 14 L390 28 L0 28 Z"
-                  fill={isTeal ? "#2EC9C4" : "#EE1068"} fillOpacity="0.45"/>
+                  fill={waveColor} fillOpacity="0.45"/>
           </svg>
         </div>
 

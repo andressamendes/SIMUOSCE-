@@ -9,15 +9,31 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 type Props = { periodNum: Period; stations: Station[] };
 
 export default function PeriodClient({ periodNum, stations }: Props) {
-  const isTeal = periodNum === 1;
-
-  const headerClass  = isTeal ? "bg-teal-brand" : "bg-osce";
-  const shadowBtn    = isTeal ? "rgba(46,201,196,0.35)" : "rgba(238,16,104,0.28)";
-  const accentColor  = isTeal ? "#2EC9C4" : "#EE1068";
-  const accentBg     = isTeal ? "rgba(46,201,196,0.10)" : "rgba(238,16,104,0.08)";
-  const numGradient  = isTeal
-    ? "linear-gradient(135deg,#2EC9C4 0%,#178785 100%)"
-    : "linear-gradient(135deg,#EE1068 0%,#F5956A 100%)";
+  const themes = {
+    1: {
+      headerClass: "bg-teal-brand",
+      shadowBtn:   "rgba(46,201,196,0.35)",
+      accentColor: "#2EC9C4",
+      accentBg:    "rgba(46,201,196,0.10)",
+      numGradient: "linear-gradient(135deg,#2EC9C4 0%,#178785 100%)",
+    },
+    2: {
+      headerClass: "bg-osce",
+      shadowBtn:   "rgba(238,16,104,0.28)",
+      accentColor: "#EE1068",
+      accentBg:    "rgba(238,16,104,0.08)",
+      numGradient: "linear-gradient(135deg,#EE1068 0%,#F5956A 100%)",
+    },
+    3: {
+      headerClass: "bg-period3",
+      shadowBtn:   "rgba(124,58,237,0.32)",
+      accentColor: "#7C3AED",
+      accentBg:    "rgba(124,58,237,0.08)",
+      numGradient: "linear-gradient(135deg,#7C3AED 0%,#A78BFA 100%)",
+    },
+  } as const;
+  const { headerClass, shadowBtn, accentColor, accentBg, numGradient } =
+    themes[periodNum] ?? themes[1];
 
   return (
     <main className="flex flex-col min-h-dvh bg-[#F4FEFE] select-none">
