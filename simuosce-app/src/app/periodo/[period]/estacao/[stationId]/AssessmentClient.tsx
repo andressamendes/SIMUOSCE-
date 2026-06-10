@@ -253,6 +253,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
               <button
                 key={criterion.id}
                 onClick={() => toggle(criterion.id)}
+                aria-pressed={on}
                 className="w-full flex items-center gap-3.5 text-left py-3.5 px-3.5 rounded-xl mb-1
                            transition-colors duration-150"
                 style={{ backgroundColor: on ? accentBg : "transparent" }}
@@ -350,13 +351,19 @@ export default function AssessmentClient({ periodNum, station }: Props) {
               <button
                 onClick={concludeStation}
                 className="pressable rounded-[14px] py-3 px-5 font-black text-sm"
-                style={{ background: "rgba(255,255,255,0.95)", color: accent }}
+                style={{
+                  background: "rgba(255,255,255,0.95)",
+                  color: accent,
+                  boxShadow: timeLeft === 0
+                    ? "0 0 0 2px rgba(255,255,255,0.7), 0 0 0 4px rgba(255,255,255,0.3)"
+                    : undefined,
+                }}
               >
                 Concluir
               </button>
               <button
                 onClick={clearAll}
-                disabled={checked.size === 0}
+                disabled={checked.size === 0 || timeLeft === 0}
                 className="pressable rounded-[12px] py-2 px-5 font-bold text-xs
                            text-white/65 disabled:opacity-35 transition-all"
                 style={{

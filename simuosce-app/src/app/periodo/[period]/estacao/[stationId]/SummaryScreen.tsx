@@ -148,15 +148,15 @@ export default function SummaryScreen({
               <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-3">
                 Critérios Pendentes · {pendingCriteria.length}
               </p>
-              <div className="flex flex-col gap-2.5">
+              <ul className="flex flex-col gap-2.5 list-none">
                 {pendingCriteria.map((c) => (
-                  <div key={c.id} className="flex items-start gap-2.5">
+                  <li key={c.id} className="flex items-start gap-2.5">
                     <div className="flex-shrink-0 w-1.5 h-1.5 rounded-full mt-[7px]"
                          style={{ backgroundColor: "#EF4444" }}/>
-                    <p className="text-[14px] text-[#4B5563] leading-snug">{c.description}</p>
-                  </div>
+                    <span className="text-[14px] text-[#4B5563] leading-snug">{c.description}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           )}
 
