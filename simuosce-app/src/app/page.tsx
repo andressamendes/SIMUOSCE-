@@ -7,10 +7,10 @@ import { periodThemes } from "@/lib/themes";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
-const periods: { num: Period; label: string; subtitle: string; chipLabel: string }[] = [
-  { num: 1, label: "1º Período", subtitle: "6 estações · 10 de junho", chipLabel: "10 jun · 1º Período" },
-  { num: 2, label: "2º Período", subtitle: "6 estações · 11 de junho", chipLabel: "11 jun · 2º Período" },
-  { num: 3, label: "3º Período", subtitle: "4 estações",               chipLabel: "3º Período"           },
+const periods: { num: Period; label: string; subtitle: string }[] = [
+  { num: 1, label: "1º Período", subtitle: "6 estações" },
+  { num: 2, label: "2º Período", subtitle: "6 estações" },
+  { num: 3, label: "3º Período", subtitle: "4 estações" },
 ];
 
 export default function HomePage() {
@@ -30,9 +30,9 @@ export default function HomePage() {
         </div>
 
         {/* ── Conteúdo centrado ── */}
-        <div className="relative z-10 flex flex-col items-center text-center px-6 pb-2">
+        <div className="relative z-10 flex flex-col items-center text-center px-6 pb-10">
 
-          {/* Logo — elemento visual principal */}
+          {/* Logo */}
           <div className="w-28 h-28 rounded-full bg-white/20 backdrop-blur-sm border border-white/30
                           overflow-hidden mb-5 p-0.5"
                style={{ boxShadow: "0 6px 32px rgba(0,0,0,0.22), 0 0 0 3px rgba(255,255,255,0.35)" }}>
@@ -79,22 +79,6 @@ export default function HomePage() {
           <p className="text-white/55 text-[11px] font-medium mt-1 leading-snug">
             Afya Faculdade de Ciências Médicas de Guanambi
           </p>
-
-          {/* Subtítulo */}
-          <p className="text-white/60 text-xs mt-2.5 leading-relaxed">
-            Ferramenta digital para avaliação prática do OSCE
-          </p>
-
-          {/* Chips de data */}
-          <div className="flex flex-wrap justify-center gap-2 mt-4 mb-10">
-            {periods.map(({ num, chipLabel }) => (
-              <div key={num} className="flex items-center gap-2 rounded-full bg-black/20 backdrop-blur-sm
-                              border border-white/20 px-4 py-2">
-                <div className="w-2 h-2 rounded-full" style={{ background: periodThemes[num].dotColor }} />
-                <span className="text-white/80 text-xs font-semibold">{chipLabel}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* Wave de transição */}
@@ -136,11 +120,6 @@ export default function HomePage() {
             </Link>
           );
         })}
-
-        <p className="text-center text-[#9CA3AF] text-[11px] mt-1 leading-relaxed">
-          Barema digital oficial · SIMUOSCE 2026<br/>
-          <span className="opacity-60">Centro Acadêmico Sérgio Ferreira</span>
-        </p>
       </div>
     </main>
   );
