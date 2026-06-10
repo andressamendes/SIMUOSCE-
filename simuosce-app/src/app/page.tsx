@@ -59,7 +59,7 @@ export default function HomePage() {
                  fontSize: "clamp(52px, 17vw, 76px)",
                  fontWeight: 700,
                  color: "#FFFFFF",
-                 textShadow: "2px 3px 0 rgba(0,0,0,0.28), 0 6px 18px rgba(0,0,0,0.14)",
+                 textShadow: "0 2px 10px rgba(0,0,0,0.30), 0 8px 24px rgba(0,0,0,0.12)",
                  letterSpacing: "1px",
                }}>
             Simu
@@ -70,7 +70,7 @@ export default function HomePage() {
                  fontSize: "clamp(68px, 24vw, 100px)",
                  fontWeight: 900,
                  letterSpacing: "-3px",
-                 filter: "drop-shadow(2px 4px 0px rgba(0,0,0,0.48)) drop-shadow(0 8px 22px rgba(238,16,104,0.32))",
+                 filter: "drop-shadow(0 3px 8px rgba(0,0,0,0.32)) drop-shadow(0 10px 28px rgba(238,16,104,0.28))",
                }}>
             OSCE
           </div>

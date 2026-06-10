@@ -85,14 +85,14 @@ export default function SummaryScreen({
         <div className="max-w-lg mx-auto px-4 pt-4 flex flex-col gap-3">
 
           {/* Resultado */}
-          <div className="anim-fade-up bg-white rounded-[20px] px-5 py-5"
-               style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.04)" }}>
+          <div className="anim-fade-up card-surface rounded-[20px] px-5 py-5">
             <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-3">
               Resultado Geral
             </p>
             <div className="flex items-center justify-between">
               <div className="flex items-baseline gap-2">
-                <span className="font-black text-[44px] leading-none" style={{ color: accent }}>
+                <span className="font-black text-[52px] leading-none tracking-tight tabular-nums"
+                      style={{ color: accent }}>
                   {fmt(score)}
                 </span>
                 <span className="text-[#9CA3AF] text-xl font-semibold">/ {maxScore}</span>
@@ -117,9 +117,8 @@ export default function SummaryScreen({
           </div>
 
           {/* Status de desempenho */}
-          <div className="anim-fade-up bg-white rounded-[20px] px-5 py-4 flex items-center justify-between gap-3"
-               style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.04)",
-                        animationDelay: "80ms" }}>
+          <div className="anim-fade-up card-surface rounded-[20px] px-5 py-4 flex items-center justify-between gap-3"
+               style={{ animationDelay: "80ms" }}>
             <div className="min-w-0">
               <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-1">
                 Status
@@ -137,19 +136,17 @@ export default function SummaryScreen({
 
           {/* Critérios + Tempo */}
           <div className="anim-fade-up grid grid-cols-2 gap-3" style={{ animationDelay: "150ms" }}>
-            <div className="bg-white rounded-[16px] px-4 py-4"
-                 style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.06), 0 0 0 1.5px rgba(0,0,0,0.04)" }}>
+            <div className="card-surface rounded-[16px] px-4 py-4">
               <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.12em] uppercase mb-1.5">
                 Critérios
               </p>
-              <p className="font-black text-[24px] leading-none text-[#1F2937]">{checkedCount}</p>
+              <p className="font-black text-[24px] leading-none text-[#1F2937] tabular-nums">{checkedCount}</p>
               <p className="text-[#9CA3AF] text-[11px] font-medium mt-1">
                 de {station.criteria.length} realizados
               </p>
             </div>
 
-            <div className="bg-white rounded-[16px] px-4 py-4"
-                 style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.06), 0 0 0 1.5px rgba(0,0,0,0.04)" }}>
+            <div className="card-surface rounded-[16px] px-4 py-4">
               <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.12em] uppercase mb-1.5">
                 Tempo
               </p>
@@ -170,9 +167,8 @@ export default function SummaryScreen({
 
           {/* Critérios pendentes */}
           {pendingCriteria.length > 0 && (
-            <div className="anim-fade-up bg-white rounded-[20px] px-5 py-4"
-                 style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.04)",
-                          animationDelay: "220ms" }}>
+            <div className="anim-fade-up card-surface rounded-[20px] px-5 py-4"
+                 style={{ animationDelay: "220ms" }}>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <svg viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2"

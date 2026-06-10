@@ -63,6 +63,12 @@ body {
   background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 55%, #A78BFA 100%);
 }
 
+/* ── Superfície padrão de card (token único do design system) ── */
+.card-surface {
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.07), 0 0 0 1.5px rgba(0, 0, 0, 0.04);
+}
+
 /* ── Press feedback ── */
 .pressable {
   transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),

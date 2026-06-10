@@ -479,6 +479,26 @@ Todos os botões e links interativos usam a classe `.pressable` (curva spring pa
 }
 ```
 
+### Classe `.card-surface`
+
+Token único para superfícies de card em fundo claro — **não** duplicar sombras inline:
+```css
+.card-surface {
+  background: #fff;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.07), 0 0 0 1.5px rgba(0, 0, 0, 0.04);
+}
+```
+
+### Numerais
+
+Notas, percentuais e tempos grandes usam `tabular-nums` + `tracking-tight`
+(largura estável durante atualizações, estilo Apple Health).
+
+### Metadados de card
+
+Linhas de metadados (lista de estações) usam texto simples separado por `·`,
+com no máximo um elemento em cor de destaque — não empilhar pills de estilos diferentes.
+
 ### Microinterações (globals.css)
 
 | Classe | Uso |
