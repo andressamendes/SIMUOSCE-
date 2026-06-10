@@ -5,13 +5,8 @@ import Link from "next/link";
 import { Station, Period } from "@/types";
 import { periodThemes } from "@/lib/themes";
 import { fmt, formatTime } from "@/lib/format";
+import { getDuration } from "@/lib/timer";
 import SummaryScreen from "./SummaryScreen";
-
-function getDuration(count: number): number {
-  if (count <= 10) return 180; // 3 min
-  if (count <= 15) return 240; // 4 min
-  return 300;                  // 5 min
-}
 
 type Props = { periodNum: Period; station: Station | null };
 
@@ -163,8 +158,10 @@ export default function AssessmentClient({ periodNum, station }: Props) {
               <span className="text-sm font-semibold">{periodNum}º Período</span>
             </Link>
 
-            {/* Timer display */}
-            <div className="flex flex-col items-end" role="status" aria-live="polite" aria-atomic="true">
+            {/* Timer — card glass com barra de progresso */}
+            <div className="flex flex-col items-end rounded-2xl bg-black/20 backdrop-blur-md
+                            border border-white/15 px-3.5 py-2"
+                 role="status" aria-live="polite" aria-atomic="true">
               <span className="text-white/50 text-[9px] font-bold tracking-[0.14em] uppercase leading-none mb-1">
                 ⏱ Tempo da Estação
               </span>
@@ -172,13 +169,22 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                     style={{ color: timerColor }}>
                 {formatTime(timeLeft)}
               </span>
+              <div className="w-full h-[3px] rounded-full bg-white/15 overflow-hidden mt-1.5"
+                   aria-hidden="true">
+                <div className="h-full rounded-full"
+                     style={{
+                       width: `${(timeLeft / DURATION) * 100}%`,
+                       backgroundColor: timerColor,
+                       transition: "width 0.3s linear, background-color 0.4s ease",
+                     }}/>
+              </div>
               {timeLeft === 0 ? (
-                <span className="text-[9px] font-semibold leading-none mt-1"
+                <span className="text-[9px] font-semibold leading-none mt-1.5"
                       style={{ color: "#F87171" }}>
                   Encerrado
                 </span>
               ) : (
-                <span className="text-white/35 text-[9px] font-medium leading-none mt-1">
+                <span className="text-white/35 text-[9px] font-medium leading-none mt-1.5">
                   {station.criteria.length} critérios · {durationMin}min
                 </span>
               )}
@@ -203,7 +209,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             {/* Score card */}
             <div className="flex-shrink-0 bg-white/22 backdrop-blur-md rounded-[18px]
                             px-4 py-3 text-center min-w-[72px] border border-white/30">
-              <p className="text-white font-black text-3xl leading-none"
+              <p key={score} className="text-white font-black text-3xl leading-none anim-score-pop"
                  style={{ textShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
                 {fmt(score)}
               </p>
@@ -235,11 +241,11 @@ export default function AssessmentClient({ periodNum, station }: Props) {
 
       {/* ── CRITÉRIOS ── */}
       <div className="flex-1 overflow-y-auto pb-44">
-        <div className="max-w-lg mx-auto px-4 pt-2">
+        <div className="anim-fade-in max-w-lg mx-auto px-4 pt-2">
 
           {/* Aviso de tempo encerrado */}
           {timeLeft === 0 && (
-            <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-2.5 mb-2 mt-1">
+            <div className="anim-fade-up rounded-xl bg-red-50 border border-red-100 px-4 py-2.5 mb-2 mt-1">
               <p className="text-red-500 text-sm font-bold text-center">
                 Tempo da estação encerrado
               </p>
@@ -261,7 +267,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                 {/* Checkbox */}
                 <div
                   className={`flex-shrink-0 w-7 h-7 rounded-full border-2 flex items-center
-                             justify-center transition-all duration-150 ${on ? checkGlow : ""}`}
+                             justify-center transition-all duration-150 ${on ? `${checkGlow} check-pop` : ""}`}
                   style={{
                     borderColor:     on ? accent : "#D1D5DB",
                     backgroundColor: on ? accent : "#FAFAFA",
@@ -328,7 +334,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             {/* Nota + tempo utilizado */}
             <div className="flex-1">
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span className="text-white font-black leading-none"
+                <span key={score} className="text-white font-black leading-none anim-score-pop"
                       style={{ fontSize: "clamp(36px, 11vw, 50px)" }}>
                   {fmt(score)}
                 </span>

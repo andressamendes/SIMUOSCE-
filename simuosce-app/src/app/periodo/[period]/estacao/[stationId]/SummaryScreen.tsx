@@ -82,7 +82,7 @@ export default function SummaryScreen({
         <div className="max-w-lg mx-auto px-4 pt-4 flex flex-col gap-3">
 
           {/* Resultado */}
-          <div className="bg-white rounded-[20px] px-5 py-5"
+          <div className="anim-fade-up bg-white rounded-[20px] px-5 py-5"
                style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.04)" }}>
             <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-3">
               Resultado Geral
@@ -94,22 +94,34 @@ export default function SummaryScreen({
                 </span>
                 <span className="text-[#9CA3AF] text-xl font-semibold">/ {maxScore}</span>
               </div>
-              <div className="rounded-full flex items-center justify-center w-16 h-16"
-                   style={{ background: accentBg, border: `2px solid ${accent}44` }}>
-                <span className="font-black text-xl" style={{ color: accent }}>{pct}%</span>
+
+              {/* Anel circular de percentual */}
+              <div className="relative w-[72px] h-[72px] flex items-center justify-center">
+                <svg viewBox="0 0 72 72" className="absolute inset-0 w-full h-full -rotate-90"
+                     aria-hidden="true">
+                  <circle cx="36" cy="36" r="30" fill="none"
+                          stroke={accentBg} strokeWidth="6"/>
+                  <circle cx="36" cy="36" r="30" fill="none"
+                          className="anim-ring"
+                          stroke={accent} strokeWidth="6" strokeLinecap="round"
+                          strokeDasharray={2 * Math.PI * 30}
+                          strokeDashoffset={(1 - pct / 100) * 2 * Math.PI * 30}
+                          style={{ ["--ring-circumference" as string]: `${2 * Math.PI * 30}` }}/>
+                </svg>
+                <span className="font-black text-lg" style={{ color: accent }}>{pct}%</span>
               </div>
             </div>
           </div>
 
           {/* Desempenho */}
-          <div className="rounded-[16px] px-4 py-3.5 flex items-center gap-3"
-               style={{ background: perfBg, border: `1.5px solid ${perfColor}44` }}>
+          <div className="anim-fade-up rounded-[16px] px-4 py-3.5 flex items-center gap-3"
+               style={{ background: perfBg, border: `1.5px solid ${perfColor}44`, animationDelay: "80ms" }}>
             <span className="text-xl leading-none" aria-hidden="true">{perfDot}</span>
             <span className="font-bold text-[15px]" style={{ color: perfColor }}>{perfLabel}</span>
           </div>
 
           {/* Critérios + Tempo */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="anim-fade-up grid grid-cols-2 gap-3" style={{ animationDelay: "150ms" }}>
             <div className="bg-white rounded-[16px] px-4 py-4"
                  style={{ boxShadow: "0 2px 10px rgba(0,0,0,0.06), 0 0 0 1.5px rgba(0,0,0,0.04)" }}>
               <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.12em] uppercase mb-1.5">
@@ -143,8 +155,9 @@ export default function SummaryScreen({
 
           {/* Critérios pendentes */}
           {pendingCriteria.length > 0 && (
-            <div className="bg-white rounded-[20px] px-5 py-4"
-                 style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.04)" }}>
+            <div className="anim-fade-up bg-white rounded-[20px] px-5 py-4"
+                 style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.04)",
+                          animationDelay: "220ms" }}>
               <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-3">
                 Critérios Pendentes · {pendingCriteria.length}
               </p>
@@ -165,10 +178,11 @@ export default function SummaryScreen({
       </div>
 
       {/* ── FOOTER AÇÕES ── */}
-      <div className="fixed bottom-0 inset-x-0 z-50 bg-white"
+      <div className="anim-fade-in fixed bottom-0 inset-x-0 z-50 bg-white"
            style={{
              paddingBottom: "env(safe-area-inset-bottom, 16px)",
              boxShadow: "0 -1px 0 rgba(0,0,0,0.06), 0 -6px 20px rgba(0,0,0,0.07)",
+             animationDelay: "200ms",
            }}>
         <div className="px-5 pt-4 pb-2 max-w-lg mx-auto flex flex-col gap-2.5">
           <button

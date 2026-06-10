@@ -64,7 +64,8 @@ simuosce-app/
 │   │   └── baremas.ts           # Dados de todos os períodos/estações
 │   ├── lib/
 │   │   ├── themes.ts            # Design system por período
-│   │   └── format.ts            # Formatadores: nota e tempo
+│   │   ├── format.ts            # Formatadores: nota e tempo
+│   │   └── timer.ts             # Regra de duração por nº de critérios
 │   └── types/
 │       └── index.ts             # Tipos: Period, Station, Criterion
 ```
@@ -163,14 +164,13 @@ O cronômetro é calculado automaticamente com base na **quantidade de critério
 ### Implementação
 
 ```typescript
-// AssessmentClient.tsx
-function getDuration(count: number): number {
-  if (count <= 10) return 180;
-  if (count <= 15) return 240;
+// src/lib/timer.ts — fonte única da regra, usada em
+// AssessmentClient (countdown) e PeriodClient (chip "⏱ Xmin")
+export const getDuration = (criteriaCount: number): number => {
+  if (criteriaCount <= 10) return 180;
+  if (criteriaCount <= 15) return 240;
   return 300;
-}
-
-const DURATION = station ? getDuration(station.criteria.length) : 300;
+};
 ```
 
 ### Estados Visuais (Proporcionais)
@@ -464,15 +464,30 @@ bg-[#F4FEFE], gap-3
 
 ### Classe `.pressable`
 
-Todos os botões e links interativos usam a classe `.pressable`:
+Todos os botões e links interativos usam a classe `.pressable` (curva spring para feedback nativo):
 ```css
 .pressable {
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.18s ease, opacity 0.18s ease;
 }
 .pressable:active {
   transform: scale(0.96);
 }
 ```
+
+### Microinterações (globals.css)
+
+| Classe | Uso |
+|--------|-----|
+| `.anim-fade-up` | Entrada de cards/elementos (combinar com `animationDelay` inline para stagger) |
+| `.anim-fade-in` | Entrada suave de containers |
+| `.check-pop` | Pop do checkbox ao marcar critério |
+| `.anim-score-pop` | Pulso da nota ao atualizar (usar com `key={score}` para re-disparar) |
+| `.anim-ring` | Preenchimento do anel de percentual no resumo |
+
+Todas respeitam `prefers-reduced-motion: reduce` (desativadas automaticamente).
+
+**Regra:** novas animações devem ser CSS puro (sem bibliotecas), durar ≤ 0,5s e nunca bloquear interação.
 
 ### Safe Areas (iOS/Android)
 
