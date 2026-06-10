@@ -1,4 +1,4 @@
-const CACHE = "simuosce-v5";
+const CACHE = "simuosce-v6";
 
 const PRECACHE = [
   "./",

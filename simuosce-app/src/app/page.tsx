@@ -33,7 +33,7 @@ export default function HomePage() {
         <div className="relative z-10 flex flex-col items-center text-center px-6 pb-10">
 
           {/* Logo */}
-          <div className="w-28 h-28 rounded-full bg-white/20 backdrop-blur-sm border border-white/30
+          <div className="anim-fade-up w-28 h-28 rounded-full bg-white/20 backdrop-blur-sm border border-white/30
                           overflow-hidden mb-5 p-0.5"
                style={{ boxShadow: "0 6px 32px rgba(0,0,0,0.22), 0 0 0 3px rgba(255,255,255,0.35)" }}>
             <Image src={`${BASE}/logo-casf.jpg`} alt="Chapa Sérgio Ferreira"
@@ -43,16 +43,18 @@ export default function HomePage() {
           </div>
 
           {/* Badge edição */}
-          <div className="inline-flex items-center gap-2 rounded-2xl bg-black/25 backdrop-blur-sm
-                          border border-white/15 px-4 py-1.5 mb-3">
+          <div className="anim-fade-up inline-flex items-center gap-2 rounded-2xl bg-black/25 backdrop-blur-sm
+                          border border-white/15 px-4 py-1.5 mb-3"
+               style={{ animationDelay: "70ms" }}>
             <span className="font-black text-base leading-none"
                   style={{ color: "#F5E060", fontStyle: "italic" }}>2ª</span>
             <span className="text-white/70 text-[11px] font-bold tracking-widest">EDIÇÃO · 2026</span>
           </div>
 
           {/* Simu + OSCE */}
-          <div className="leading-none mb-[-6px]"
+          <div className="anim-fade-up leading-none mb-[-6px]"
                style={{
+                 animationDelay: "130ms",
                  fontFamily: "var(--font-script), 'Georgia', cursive",
                  fontSize: "clamp(52px, 17vw, 76px)",
                  fontWeight: 700,
@@ -62,8 +64,9 @@ export default function HomePage() {
                }}>
             Simu
           </div>
-          <div className="leading-none text-osce"
+          <div className="anim-fade-up leading-none text-osce"
                style={{
+                 animationDelay: "190ms",
                  fontSize: "clamp(68px, 24vw, 100px)",
                  fontWeight: 900,
                  letterSpacing: "-3px",
@@ -73,10 +76,12 @@ export default function HomePage() {
           </div>
 
           {/* Instituição */}
-          <p className="text-white font-bold text-[15px] mt-4 leading-snug">
+          <p className="anim-fade-up text-white font-bold text-[15px] mt-4 leading-snug"
+             style={{ animationDelay: "250ms" }}>
             Centro Acadêmico Sérgio Ferreira
           </p>
-          <p className="text-white/55 text-[11px] font-medium mt-1 leading-snug">
+          <p className="anim-fade-up text-white/55 text-[11px] font-medium mt-1 leading-snug"
+             style={{ animationDelay: "290ms" }}>
             Afya Faculdade de Ciências Médicas de Guanambi
           </p>
         </div>
@@ -96,12 +101,12 @@ export default function HomePage() {
           Selecione o período
         </p>
 
-        {periods.map(({ num, label, subtitle }) => {
+        {periods.map(({ num, label, subtitle }, i) => {
           const { headerClass, cardShadow } = periodThemes[num];
           return (
             <Link key={num} href={`/periodo/${num}`}
-                  className="pressable block rounded-[22px] overflow-hidden"
-                  style={{ boxShadow: cardShadow }}>
+                  className="pressable anim-fade-up block rounded-[22px] overflow-hidden"
+                  style={{ boxShadow: cardShadow, animationDelay: `${320 + i * 75}ms` }}>
               <div className={`${headerClass} relative overflow-hidden px-6 py-5 flex items-center justify-between`}>
                 <div className="pointer-events-none absolute -right-6 -top-6 w-32 h-32 rounded-full bg-white/10"/>
                 <div className="pointer-events-none absolute right-10 top-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-white/10"/>

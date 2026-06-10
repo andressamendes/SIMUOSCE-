@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Station, Period } from "@/types";
 import { periodThemes } from "@/lib/themes";
+import { getDurationMin } from "@/lib/timer";
 
 type Props = { periodNum: Period; stations: Station[] };
 
@@ -51,13 +52,14 @@ export default function PeriodClient({ periodNum, stations }: Props) {
 
       {/* ── Cards ── */}
       <div className="flex flex-col gap-3 px-4 pt-2 pb-10 max-w-lg mx-auto w-full">
-        {stations.map((station) => (
+        {stations.map((station, i) => (
           <Link
             key={station.id}
             href={`/periodo/${periodNum}/estacao/${station.id}`}
-            className="pressable flex items-center gap-4 bg-white rounded-[20px] px-5 py-4"
+            className="pressable anim-fade-up flex items-center gap-4 bg-white rounded-[20px] px-5 py-4"
             style={{
               boxShadow: "0 2px 14px rgba(0,0,0,0.06), 0 0 0 1.5px rgba(0,0,0,0.04)",
+              animationDelay: `${i * 55}ms`,
             }}
           >
             {/* Número */}
@@ -74,13 +76,16 @@ export default function PeriodClient({ periodNum, stations }: Props) {
               <p className="font-bold text-[#1F2937] text-[15px] leading-snug">
                 {station.name}
               </p>
-              <div className="flex items-center gap-2 mt-1.5">
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                 <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full"
                       style={{ background: accentBg, color: accent }}>
                   {station.criteria.length} critérios
                 </span>
+                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#F3F4F6] text-[#6B7280]">
+                  ⏱ {getDurationMin(station.criteria.length)}min
+                </span>
                 <span className="text-[#9CA3AF] text-[11px] font-semibold">
-                  {station.maxScore} pts máx.
+                  {station.maxScore} pts
                 </span>
               </div>
             </div>
