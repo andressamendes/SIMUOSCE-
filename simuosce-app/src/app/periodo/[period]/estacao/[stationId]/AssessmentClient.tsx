@@ -14,6 +14,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
   const [checked, setChecked]       = useState<Set<string>>(new Set());
   const [timestamps, setTimestamps] = useState<Record<string, number>>({});
   const [timeLeft, setTimeLeft]     = useState(DURATION);
+  const [resetCount, setResetCount] = useState(0);
 
   // Ref lets toggle() read the latest timeLeft without re-creating the callback
   const timeLeftRef = useRef(DURATION);
@@ -23,6 +24,9 @@ export default function AssessmentClient({ periodNum, station }: Props) {
   const startRef   = useRef(Date.now());
   const timerIdRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => {
+    clearTimeout(timerIdRef.current);
+    startRef.current = Date.now();
+    setTimeLeft(DURATION);
     const tick = () => {
       const elapsed    = Date.now() - startRef.current;
       const remaining  = Math.max(0, DURATION - Math.floor(elapsed / 1000));
@@ -31,7 +35,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     };
     timerIdRef.current = setTimeout(tick, 250);
     return () => clearTimeout(timerIdRef.current);
-  }, []);
+  }, [resetCount]);
 
   const score    = station
     ? station.criteria.filter((c) => checked.has(c.id)).reduce((s, c) => s + c.score, 0)
@@ -59,6 +63,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
   const clearAll = useCallback(() => {
     setChecked(new Set());
     setTimestamps({});
+    setResetCount((c) => c + 1);
   }, []);
 
   if (!station) {
@@ -74,7 +79,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     periodThemes[periodNum] ?? periodThemes[1];
 
   // Timer visual state
-  const timerState  = timeLeft > 120 ? "normal" : timeLeft > 30 ? "warn" : "danger";
+  const timerState  = timeLeft >= 120 ? "normal" : timeLeft >= 30 ? "warn" : "danger";
   const timerColor  = timerState === "normal" ? "rgba(255,255,255,0.92)"
                     : timerState === "warn"   ? "#FCD34D"
                     : "#F87171";
@@ -114,7 +119,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             </Link>
 
             {/* Timer display */}
-            <div className="flex flex-col items-end" aria-live="polite" aria-atomic="true">
+            <div className="flex flex-col items-end" role="status" aria-live="polite" aria-atomic="true">
               <span className="text-white/50 text-[9px] font-bold tracking-[0.14em] uppercase leading-none mb-1">
                 ⏱ Tempo Restante
               </span>
@@ -180,7 +185,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
       </div>
 
       {/* ── CRITÉRIOS ── */}
-      <div className="flex-1 overflow-y-auto pb-36">
+      <div className="flex-1 overflow-y-auto pb-44">
         <div className="max-w-lg mx-auto px-4 pt-2">
 
           {/* Aviso de tempo encerrado */}
