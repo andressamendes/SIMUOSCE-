@@ -162,8 +162,14 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             <div className="flex flex-col items-end rounded-2xl bg-black/20 backdrop-blur-md
                             border border-white/15 px-3.5 py-2"
                  role="status" aria-live="polite" aria-atomic="true">
-              <span className="text-white/50 text-[9px] font-bold tracking-[0.14em] uppercase leading-none mb-1">
-                ⏱ Tempo da Estação
+              <span className="inline-flex items-center gap-1 text-white/50 text-[9px] font-bold
+                               tracking-[0.14em] uppercase leading-none mb-1">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                     className="w-2.5 h-2.5" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                Tempo da Estação
               </span>
               <span className={`font-black text-2xl tabular-nums leading-none ${timerPulse}`}
                     style={{ color: timerColor }}>

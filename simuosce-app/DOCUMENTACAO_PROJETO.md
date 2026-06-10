@@ -165,7 +165,7 @@ O cronômetro é calculado automaticamente com base na **quantidade de critério
 
 ```typescript
 // src/lib/timer.ts — fonte única da regra, usada em
-// AssessmentClient (countdown) e PeriodClient (chip "⏱ Xmin")
+// AssessmentClient (countdown) e PeriodClient (chip de tempo previsto)
 export const getDuration = (criteriaCount: number): number => {
   if (criteriaCount <= 10) return 180;
   if (criteriaCount <= 15) return 240;
@@ -215,9 +215,13 @@ Ao desmarcar um critério, o timestamp é removido. Se remarcar, um novo timesta
 
 | Faixa | Indicador |
 |-------|-----------|
-| ≥ 90% | 🟢 Excelente desempenho |
-| 70–89% | 🟡 Bom desempenho |
-| < 70% | 🔴 Atenção aos critérios não realizados |
+| ≥ 90% | Badge verde "Excelente" — Desempenho excelente na estação |
+| 70–89% | Badge âmbar "Bom" — Bom desempenho na estação |
+| < 70% | Badge vermelho "Atenção" — Revise os critérios não realizados |
+
+> **Regra de design:** nunca usar emojis na interface. Status são comunicados por
+> badges com dot colorido (CSS), tipografia e cor institucional. Ícones são
+> exclusivamente SVG inline monocromáticos (estilo Lucide/Heroicons).
 
 ### Indicadores de Desempenho (Avaliação em Tempo Real)
 
@@ -457,7 +461,7 @@ Fixed bottom-0, gradiente do período, z-50
 ```
 bg-[#F4FEFE], gap-3
 ├── Card Resultado Geral (nota + %)
-├── Badge Desempenho (🟢🟡🔴 + texto)
+├── Card Status (badge com dot colorido + descrição)
 ├── Grid 2 colunas: Critérios | Tempo
 └── Card Critérios Pendentes (condicional)
 ```

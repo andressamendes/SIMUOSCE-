@@ -26,10 +26,10 @@ export default function SummaryScreen({
   const pendingCriteria = station.criteria.filter((c) => !checkedIds.has(c.id));
   const checkedCount    = station.criteria.length - pendingCriteria.length;
 
-  const perfLabel = pct >= 90 ? "Excelente desempenho"
-                  : pct >= 70 ? "Bom desempenho"
-                  : "Atenção aos critérios não realizados";
-  const perfDot   = pct >= 90 ? "🟢" : pct >= 70 ? "🟡" : "🔴";
+  const perfWord  = pct >= 90 ? "Excelente" : pct >= 70 ? "Bom" : "Atenção";
+  const perfDesc  = pct >= 90 ? "Desempenho excelente na estação"
+                  : pct >= 70 ? "Bom desempenho na estação"
+                  : "Revise os critérios não realizados";
   const perfColor = pct >= 90 ? "#10B981" : pct >= 70 ? "#F59E0B" : "#EF4444";
   const perfBg    = pct >= 90 ? "rgba(16,185,129,0.10)"
                   : pct >= 70 ? "rgba(245,158,11,0.10)"
@@ -58,11 +58,14 @@ export default function SummaryScreen({
 
             <div className="inline-block bg-black/20 backdrop-blur-sm rounded-lg px-2.5 py-1 border border-white/20">
               <span className="text-white/75 text-[10px] font-bold tracking-[0.16em] uppercase">
-                Resumo · Est. {station.number}
+                Estação {station.number}
               </span>
             </div>
           </div>
 
+          <p className="text-white/55 text-[10px] font-bold tracking-[0.18em] uppercase mb-1.5">
+            Resumo da Avaliação
+          </p>
           <h1 className="text-white font-black text-[19px] leading-snug"
               style={{ textShadow: "0 1px 4px rgba(0,0,0,0.20)" }}>
             {station.name}
@@ -113,11 +116,23 @@ export default function SummaryScreen({
             </div>
           </div>
 
-          {/* Desempenho */}
-          <div className="anim-fade-up rounded-[16px] px-4 py-3.5 flex items-center gap-3"
-               style={{ background: perfBg, border: `1.5px solid ${perfColor}44`, animationDelay: "80ms" }}>
-            <span className="text-xl leading-none" aria-hidden="true">{perfDot}</span>
-            <span className="font-bold text-[15px]" style={{ color: perfColor }}>{perfLabel}</span>
+          {/* Status de desempenho */}
+          <div className="anim-fade-up bg-white rounded-[20px] px-5 py-4 flex items-center justify-between gap-3"
+               style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.04)",
+                        animationDelay: "80ms" }}>
+            <div className="min-w-0">
+              <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-1">
+                Status
+              </p>
+              <p className="text-[#4B5563] text-[13px] font-medium leading-snug">{perfDesc}</p>
+            </div>
+            <span className="flex-shrink-0 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5
+                             font-bold text-[13px]"
+                  style={{ background: perfBg, color: perfColor, border: `1px solid ${perfColor}33` }}>
+              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: perfColor }}
+                    aria-hidden="true"/>
+              {perfWord}
+            </span>
           </div>
 
           {/* Critérios + Tempo */}
@@ -158,9 +173,23 @@ export default function SummaryScreen({
             <div className="anim-fade-up bg-white rounded-[20px] px-5 py-4"
                  style={{ boxShadow: "0 2px 14px rgba(0,0,0,0.07), 0 0 0 1.5px rgba(0,0,0,0.04)",
                           animationDelay: "220ms" }}>
-              <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-3">
-                Critérios Pendentes · {pendingCriteria.length}
-              </p>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2"
+                       className="w-3.5 h-3.5" aria-hidden="true">
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                    <rect x="8" y="2" width="8" height="4" rx="1"/>
+                    <path d="M9 12h6M9 16h6"/>
+                  </svg>
+                  <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase">
+                    Critérios Não Realizados
+                  </p>
+                </div>
+                <span className="rounded-full px-2 py-0.5 text-[11px] font-bold"
+                      style={{ background: "rgba(239,68,68,0.10)", color: "#EF4444" }}>
+                  {pendingCriteria.length}
+                </span>
+              </div>
               <ul className="flex flex-col gap-2.5 list-none">
                 {pendingCriteria.map((c) => (
                   <li key={c.id} className="flex items-start gap-2.5">

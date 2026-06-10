@@ -81,8 +81,14 @@ export default function PeriodClient({ periodNum, stations }: Props) {
                       style={{ background: accentBg, color: accent }}>
                   {station.criteria.length} critérios
                 </span>
-                <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#F3F4F6] text-[#6B7280]">
-                  ⏱ {getDurationMin(station.criteria.length)}min
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5
+                                 rounded-full bg-[#F3F4F6] text-[#6B7280]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                       className="w-3 h-3" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  {getDurationMin(station.criteria.length)}min
                 </span>
                 <span className="text-[#9CA3AF] text-[11px] font-semibold">
                   {station.maxScore} pts
