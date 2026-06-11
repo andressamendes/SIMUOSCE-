@@ -53,6 +53,16 @@ export default function PeriodClient({ periodNum, stations }: Props) {
 
       {/* ── Cards ── */}
       <div className="flex flex-col gap-3 px-4 pt-2 pb-10 max-w-lg mx-auto w-full">
+        {stations.length === 0 && (
+          <div className="anim-fade-up card-surface rounded-[20px] px-5 py-8 text-center">
+            <p className="text-[#4B5563] font-semibold text-[15px]">
+              Nenhuma estação disponível neste período.
+            </p>
+            <p className="text-[#9CA3AF] text-[13px] mt-1.5">
+              As estações serão exibidas assim que o barema for cadastrado.
+            </p>
+          </div>
+        )}
         {stations.map((station, i) => (
           <Link
             key={station.id}

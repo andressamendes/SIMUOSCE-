@@ -131,6 +131,9 @@ export default function HomePage() {
         <p className="text-[11px] font-semibold text-[#9CA3AF] leading-snug">
           Centro Acadêmico Sérgio Ferreira · © 2026
         </p>
+        <p className="text-[10px] font-medium text-[#C4C9D0] mt-1 leading-snug">
+          Desenvolvido por Andressa Souza · Afya Guanambi
+        </p>
       </footer>
     </main>
   );

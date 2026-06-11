@@ -1,3 +1,4 @@
+import { validateBaremas } from "@/lib/validate";
 import { Station } from "@/types";
 
 export const baremas: Record<1 | 2 | 3, Station[]> = {
@@ -324,3 +325,9 @@ export const baremas: Record<1 | 2 | 3, Station[]> = {
     },
   ],
 };
+
+// Validação estrutural no build (SSG roda em Node; nunca executa no navegador).
+// Dados inconsistentes interrompem o build — ver src/lib/validate.ts.
+if (typeof window === "undefined") {
+  validateBaremas(baremas);
+}
