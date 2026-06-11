@@ -7,6 +7,7 @@ import { periodThemes } from "@/lib/themes";
 import { fmt, formatTime } from "@/lib/format";
 import { getDuration } from "@/lib/timer";
 import SummaryScreen from "./SummaryScreen";
+import FocusMode from "./FocusMode";
 
 type Props = { periodNum: Period; station: Station | null };
 
@@ -18,6 +19,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
   const [timeLeft, setTimeLeft]     = useState(DURATION);
   const [resetCount, setResetCount] = useState(0);
   const [showSummary, setShowSummary]     = useState(false);
+  const [focusMode,   setFocusMode]       = useState(false);
   const [concludedData, setConcludedData] = useState({ elapsed: 0, timedOut: false });
 
   // Ref lets toggle() read the latest timeLeft without re-creating the callback
@@ -84,6 +86,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     setTimestamps({});
     setResetCount((c) => c + 1);
     setShowSummary(false);
+    setFocusMode(false);
   }, []);
 
   if (!station) {
@@ -118,21 +121,39 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     );
   }
 
+  if (focusMode) {
+    return (
+      <FocusMode
+        periodNum={periodNum}
+        station={station}
+        checked={checked}
+        timestamps={timestamps}
+        timeLeft={timeLeft}
+        duration={DURATION}
+        score={score}
+        maxScore={maxScore}
+        pct={pct}
+        onToggle={toggle}
+        onClear={clearAll}
+        onConclude={concludeStation}
+        onExit={() => setFocusMode(false)}
+      />
+    );
+  }
+
   const { headerClass, accent, accentBg, checkGlow, footerShadow } =
     periodThemes[periodNum] ?? periodThemes[1];
 
   const durationMin      = DURATION / 60;
-  const warnThreshold    = Math.round(DURATION / 3);  // ~33% remaining
-  const dangerThreshold  = Math.round(DURATION / 10); // ~10% remaining
+  const warnThreshold    = Math.round(DURATION / 3);
+  const dangerThreshold  = Math.round(DURATION / 10);
 
-  // Timer visual state
   const timerState  = timeLeft >= warnThreshold ? "normal" : timeLeft >= dangerThreshold ? "warn" : "danger";
   const timerColor  = timerState === "normal" ? "rgba(255,255,255,0.92)"
                     : timerState === "warn"   ? "#FCD34D"
                     : "#F87171";
   const timerPulse  = timerState === "danger" ? "animate-pulse" : "";
 
-  // Score feedback
   const label      = pct >= 70 ? "Aprovado" : pct >= 50 ? "Regular" : pct > 0 ? "Insuficiente" : null;
   const labelBg    = pct >= 70 ? "rgba(16,185,129,0.22)" : pct >= 50 ? "rgba(245,158,11,0.22)" : "rgba(239,68,68,0.22)";
   const labelColor = pct >= 70 ? "#10B981" : pct >= 50 ? "#F59E0B" : "#EF4444";
@@ -141,7 +162,6 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     <main className="flex flex-col min-h-dvh bg-white select-none">
 
       {/* ── HEADER ── */}
-      {/* Header sits outside the scroll container — always visible */}
       <div className={`relative overflow-hidden ${headerClass}`}
            style={{
              paddingTop: "calc(env(safe-area-inset-top,0px) + 36px)",
@@ -153,7 +173,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
 
         <div className="relative z-10 max-w-lg mx-auto px-5">
 
-          {/* Back + Timer */}
+          {/* Back + Foco + Timer */}
           <div className="flex items-center justify-between mb-4">
             <Link href={`/periodo/${periodNum}`}
                   className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors
@@ -165,42 +185,60 @@ export default function AssessmentClient({ periodNum, station }: Props) {
               <span className="text-sm font-semibold">{periodNum}º Período</span>
             </Link>
 
-            {/* Timer — card glass com barra de progresso */}
-            <div className="flex flex-col items-end rounded-2xl bg-black/20 backdrop-blur-md
-                            border border-white/15 px-3.5 py-2"
-                 role="status" aria-live="polite" aria-atomic="true">
-              <span className="inline-flex items-center gap-1 text-white/50 text-[9px] font-bold
-                               tracking-[0.14em] uppercase leading-none mb-1">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-                     className="w-2.5 h-2.5" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
+            <div className="flex items-center gap-2">
+              {/* Botão Modo Foco */}
+              <button
+                onClick={() => setFocusMode(true)}
+                className="pressable inline-flex items-center gap-1.5 rounded-xl bg-black/18
+                           backdrop-blur-sm border border-white/15 px-2.5 py-1.5
+                           text-white/70 hover:text-white transition-colors"
+                aria-label="Ativar Modo Foco"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                     className="w-3.5 h-3.5" aria-hidden="true">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3
+                           M8 21H5a2 2 0 0 0-2-2v-3M21 16v3a2 2 0 0 0-2 2h-3"/>
                 </svg>
-                Tempo da Estação
-              </span>
-              <span className={`font-black text-2xl tabular-nums leading-none ${timerPulse}`}
-                    style={{ color: timerColor }}>
-                {formatTime(timeLeft)}
-              </span>
-              <div className="w-full h-[3px] rounded-full bg-white/15 overflow-hidden mt-1.5"
-                   aria-hidden="true">
-                <div className="h-full rounded-full"
-                     style={{
-                       width: `${(timeLeft / DURATION) * 100}%`,
-                       backgroundColor: timerColor,
-                       transition: "width 0.3s linear, background-color 0.4s ease",
-                     }}/>
+                <span className="text-[11px] font-bold tracking-wide">Foco</span>
+              </button>
+
+              {/* Timer — card glass com barra de progresso */}
+              <div className="flex flex-col items-end rounded-2xl bg-black/20 backdrop-blur-md
+                              border border-white/15 px-3.5 py-2"
+                   role="status" aria-live="polite" aria-atomic="true">
+                <span className="inline-flex items-center gap-1 text-white/50 text-[9px] font-bold
+                                 tracking-[0.14em] uppercase leading-none mb-1">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                       className="w-2.5 h-2.5" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                  Tempo da Estação
+                </span>
+                <span className={`font-black text-2xl tabular-nums leading-none ${timerPulse}`}
+                      style={{ color: timerColor }}>
+                  {formatTime(timeLeft)}
+                </span>
+                <div className="w-full h-[3px] rounded-full bg-white/15 overflow-hidden mt-1.5"
+                     aria-hidden="true">
+                  <div className="h-full rounded-full"
+                       style={{
+                         width: `${(timeLeft / DURATION) * 100}%`,
+                         backgroundColor: timerColor,
+                         transition: "width 0.3s linear, background-color 0.4s ease",
+                       }}/>
+                </div>
+                {timeLeft === 0 ? (
+                  <span className="text-[9px] font-semibold leading-none mt-1.5"
+                        style={{ color: "#F87171" }}>
+                    Encerrado
+                  </span>
+                ) : (
+                  <span className="text-white/35 text-[9px] font-medium leading-none mt-1.5">
+                    {station.criteria.length} critérios · {durationMin}min
+                  </span>
+                )}
               </div>
-              {timeLeft === 0 ? (
-                <span className="text-[9px] font-semibold leading-none mt-1.5"
-                      style={{ color: "#F87171" }}>
-                  Encerrado
-                </span>
-              ) : (
-                <span className="text-white/35 text-[9px] font-medium leading-none mt-1.5">
-                  {station.criteria.length} critérios · {durationMin}min
-                </span>
-              )}
             </div>
           </div>
 
@@ -257,7 +295,6 @@ export default function AssessmentClient({ periodNum, station }: Props) {
       <div className="flex-1 overflow-y-auto pb-44">
         <div className="anim-fade-in max-w-lg mx-auto px-4 pt-2">
 
-          {/* Aviso de tempo encerrado */}
           {timeLeft === 0 && (
             <div className="anim-fade-up rounded-xl bg-red-50 border border-red-100 px-4 py-2.5 mb-2 mt-1">
               <p className="text-red-500 text-sm font-bold text-center">
@@ -278,7 +315,6 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                            transition-colors duration-150"
                 style={{ backgroundColor: on ? accentBg : "transparent" }}
               >
-                {/* Checkbox */}
                 <div
                   className={`flex-shrink-0 w-7 h-7 rounded-full border-2 flex items-center
                              justify-center transition-all duration-150 ${on ? `${checkGlow} check-pop` : ""}`}
@@ -295,7 +331,6 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                   )}
                 </div>
 
-                {/* Texto + timestamp */}
                 <div className="flex-1 min-w-0">
                   <p className="text-[15px] leading-snug transition-all duration-150"
                      style={{
@@ -311,7 +346,6 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                   )}
                 </div>
 
-                {/* Pill de pontuação */}
                 <div className="flex-shrink-0 rounded-full px-2.5 py-1 transition-all duration-150"
                      style={{ backgroundColor: on ? accent : "#F3F4F6" }}>
                   <span className="text-xs font-bold transition-colors duration-150"
@@ -345,7 +379,6 @@ export default function AssessmentClient({ periodNum, station }: Props) {
 
         <div className="px-5 pt-4 pb-2 max-w-lg mx-auto">
           <div className="flex items-center gap-4">
-            {/* Nota + tempo utilizado */}
             <div className="flex-1">
               <div className="flex items-baseline gap-2 flex-wrap">
                 <span key={score} className="text-white font-black leading-none anim-score-pop
@@ -367,7 +400,6 @@ export default function AssessmentClient({ periodNum, station }: Props) {
               </p>
             </div>
 
-            {/* Ações */}
             <div className="flex flex-col gap-1.5 flex-shrink-0">
               <button
                 onClick={concludeStation}
