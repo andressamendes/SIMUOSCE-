@@ -3,6 +3,7 @@
 import { Station, Period } from "@/types";
 import { periodThemes } from "@/lib/themes";
 import { fmt, formatTime } from "@/lib/format";
+import StationProgress from "./StationProgress";
 
 type Props = {
   periodNum:  Period;
@@ -42,8 +43,7 @@ export default function FocusMode({
                    : "rgba(239,68,68,0.12)";
   const labelColor = pct >= 70 ? "#10B981" : pct >= 50 ? "#F59E0B" : "#EF4444";
 
-  const criteriaRatio = checked.size / (station.criteria.length || 1);
-  const elapsed       = duration - timeLeft;
+  const elapsed = duration - timeLeft;
 
   return (
     <main className="anim-fade-in flex flex-col min-h-dvh bg-white select-none">
@@ -99,10 +99,10 @@ export default function FocusMode({
             </div>
           </div>
 
-          {/* Barra de progresso de critérios */}
-          <div className="h-[2px] bg-[#F3F4F6] overflow-hidden">
-            <div className="h-full transition-all duration-300"
-                 style={{ width: `${criteriaRatio * 100}%`, backgroundColor: accent }}/>
+          {/* Progresso de conclusão da estação — destaque no Modo Foco */}
+          <div className="pb-3">
+            <StationProgress checked={checked.size} total={station.criteria.length}
+                             variant="light" accent={accent}/>
           </div>
         </div>
       </div>
@@ -175,15 +175,7 @@ export default function FocusMode({
             );
           })}
 
-          {/* Linha de resumo de critérios */}
-          <div className="px-5 py-4 flex items-center justify-between">
-            <span className="text-[13px] text-[#9CA3AF] font-medium">
-              {checked.size} de {station.criteria.length} critérios realizados
-            </span>
-            <span className="text-[13px] font-bold" style={{ color: accent }}>
-              {pct}%
-            </span>
-          </div>
+          <div className="h-4"/>
         </div>
       </div>
 

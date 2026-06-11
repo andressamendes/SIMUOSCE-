@@ -8,6 +8,7 @@ import { fmt, formatTime } from "@/lib/format";
 import { getDuration } from "@/lib/timer";
 import SummaryScreen from "./SummaryScreen";
 import FocusMode from "./FocusMode";
+import StationProgress from "./StationProgress";
 
 type Props = { periodNum: Period; station: Station | null };
 
@@ -269,16 +270,10 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             </div>
           </div>
 
-          {/* Progress */}
-          <div className="mt-4 h-[6px] bg-white/20 rounded-full overflow-hidden">
-            <div className="h-full bg-white rounded-full transition-all duration-300"
-                 style={{ width: `${pct}%` }}/>
-          </div>
-          <div className="flex items-center justify-between mt-1.5">
-            <span className="text-white/50 text-xs font-medium">
-              {checked.size} / {station.criteria.length} critérios
-            </span>
-            <span className="text-white/80 text-xs font-bold">{pct}%</span>
+          {/* Progresso de conclusão da estação (critérios realizados) */}
+          <div className="mt-4">
+            <StationProgress checked={checked.size} total={station.criteria.length}
+                             variant="dark"/>
           </div>
         </div>
 
