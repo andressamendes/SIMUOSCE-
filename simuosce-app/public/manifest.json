@@ -1,7 +1,7 @@
 {
   "name": "SIMUOSCE",
   "short_name": "SIMUOSCE",
-  "description": "Barema digital oficial do OSCE – Centro Acadêmico Sérgio Ferreira",
+  "description": "SimuOSCE",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
