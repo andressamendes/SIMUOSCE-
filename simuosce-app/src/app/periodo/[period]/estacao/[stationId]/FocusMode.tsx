@@ -33,7 +33,7 @@ export default function FocusMode({
   const dangerThreshold = Math.round(duration / 10);
   const timerState  = timeLeft >= warnThreshold ? "normal"
                     : timeLeft >= dangerThreshold ? "warn" : "danger";
-  const timerColor  = timerState === "normal" ? accent
+  const timerColor  = timerState === "normal" ? "#374151"
                     : timerState === "warn"   ? "#F59E0B" : "#EF4444";
   const timerPulse  = timerState === "danger" ? "animate-pulse" : "";
 
@@ -108,7 +108,7 @@ export default function FocusMode({
       </div>
 
       {/* ── CRITÉRIOS ── */}
-      <div className="flex-1 overflow-y-auto pb-36">
+      <div className="flex-1 overflow-y-auto pb-40">
 
         {timeLeft === 0 && (
           <div className="bg-red-50 border-b border-red-100 px-5 py-2.5">
