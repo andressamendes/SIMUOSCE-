@@ -12,7 +12,7 @@ export default function PeriodClient({ periodNum, stations }: Props) {
     periodThemes[periodNum] ?? periodThemes[1];
 
   return (
-    <main className="flex flex-col min-h-dvh bg-[#F4FEFE] select-none">
+    <main className="flex flex-col min-h-dvh bg-surface-dim select-none">
 
       {/* ── Header ── */}
       <div className={`relative overflow-hidden ${headerClass}`}
@@ -33,7 +33,7 @@ export default function PeriodClient({ periodNum, stations }: Props) {
             <span className="text-sm font-semibold">Início</span>
           </Link>
 
-          <p className="text-white/55 text-[10px] font-bold tracking-[0.18em] uppercase mb-2">
+          <p className="overline text-white/55 mb-2">
             Selecione a estação
           </p>
           <h1 className="text-white font-black text-3xl leading-none tracking-tight">{periodNum}º Período</h1>
