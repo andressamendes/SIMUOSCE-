@@ -1,6 +1,6 @@
 # SIMUOSCE — Documentação Técnica Oficial
 
-**Versão:** 2.0 · **Data:** Junho 2026  
+**Versão:** 2.1 · **Data:** Junho 2026  
 **Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi**
 
 > Documento canônico do projeto. Para a especificação detalhada de design (tokens, componentes, estados e regras de consistência), consultar também o **`DESIGN_SYSTEM.md`** — este documento traz o resumo e as regras de negócio; o DESIGN_SYSTEM.md é a referência visual completa.
@@ -13,6 +13,8 @@ O **SIMUOSCE** é um Progressive Web App (PWA) mobile-first desenvolvido para su
 
 - Marcação ágil de critérios em tempo real
 - Cronômetro proporcional à complexidade de cada estação
+- **Modo Foco** — interface imersiva de baixa carga cognitiva para a execução da avaliação
+- **Barra de progresso da estação** — conclusão por critérios em tempo real, nos dois modos
 - Resumo automático de desempenho ao final de cada avaliação
 - Funcionamento offline após a primeira visita
 
@@ -60,16 +62,19 @@ simuosce-app/
 │   │           └── estacao/
 │   │               └── [stationId]/
 │   │                   ├── page.tsx             # SSG: tela de avaliação
-│   │                   ├── AssessmentClient.tsx # UI de avaliação + timer
-│   │                   └── SummaryScreen.tsx    # Tela de resumo
+│   │                   ├── AssessmentClient.tsx # Estado da avaliação + timer + modo normal
+│   │                   ├── FocusMode.tsx        # Modo Foco — UI imersiva (sem estado próprio)
+│   │                   ├── StationProgress.tsx  # Barra de progresso da estação (2 variantes)
+│   │                   └── SummaryScreen.tsx    # Resumo final premium
 │   ├── components/
 │   │   └── PWARegister.tsx      # Registro do service worker
 │   ├── data/
-│   │   └── baremas.ts           # Dados de todos os períodos/estações
+│   │   └── baremas.ts           # Dados de todos os períodos/estações (validados no build)
 │   ├── lib/
 │   │   ├── themes.ts            # Design system por período
 │   │   ├── format.ts            # Formatadores: nota e tempo
-│   │   └── timer.ts             # Regra de duração por nº de critérios
+│   │   ├── timer.ts             # Regra de duração por nº de critérios
+│   │   └── validate.ts          # Validação estrutural dos baremas (interrompe build)
 │   └── types/
 │       └── index.ts             # Tipos: Period, Station, Criterion
 ```
@@ -82,7 +87,9 @@ Página Inicial (/)
 Período (/periodo/[1|2|3])
    ↓ seleção de estação
 Estação → Avaliação (/periodo/[P]/estacao/[ID])
-   ↓ botão "Concluir"
+   ↓ (opcional) botão "Foco"
+Modo Foco (estado local — mesma rota, mesmo estado de avaliação)
+   ↓ botão "Concluir" (em qualquer um dos modos)
 Resumo Final (estado local — SummaryScreen, mesma rota)
    ↓
 "Nova Avaliação" (reinicia checklist + cronômetro na mesma estação)
@@ -91,8 +98,10 @@ Resumo Final (estado local — SummaryScreen, mesma rota)
 ```
 
 Observações:
-- O Resumo Final **não é uma rota** — é um estado do `AssessmentClient` (`showSummary`), preservando a nota e os critérios marcados no momento da conclusão.
-- "Nova Avaliação" zera critérios, timestamps e cronômetro (via `resetCount`), permitindo avaliar o próximo aluno na mesma estação sem navegar.
+- O Resumo Final e o Modo Foco **não são rotas** — são estados do `AssessmentClient`
+  (`showSummary` / `focusMode`). Entrar ou sair do Modo Foco **nunca** reseta cronômetro,
+  nota, critérios marcados ou timestamps — apenas troca a camada de interface.
+- "Nova Avaliação" zera critérios, timestamps, cronômetro (via `resetCount`) e o Modo Foco, permitindo avaliar o próximo aluno na mesma estação sem navegar.
 
 ### Geração de Páginas (SSG)
 
@@ -246,6 +255,128 @@ Ao desmarcar um critério, o timestamp é removido. Se remarcar, um novo timesta
 | 50–69% | Regular |
 | 1–49% | Insuficiente |
 | 0% | (sem label) |
+
+---
+
+## Modo Foco
+
+### Objetivo
+
+Reduzir a carga cognitiva do avaliador durante a execução da estação — experiência
+de ferramenta profissional de execução, não de navegação em sistema. Projetado para
+uso com uma mão, em pé, em ambiente clínico.
+
+### Ativação e saída
+
+- **Entrar:** botão glass "Foco" (ícone expand) no header da avaliação normal.
+- **Sair:** botão circular (ícone compress, `aria-label="Sair do Modo Foco"`) no header compacto.
+- Entrar/sair **preserva integralmente** cronômetro, nota, critérios e timestamps.
+
+### Comportamento (`FocusMode.tsx`)
+
+| Removido/oculto | Mantido/ampliado |
+|---|---|
+| Gradiente de header, waves, blob radial | Header compacto branco sticky: sair + nome da estação + cronômetro |
+| Link "← Período" e badge de estação | Cronômetro 26px (cinza `#374151`; amarelo/vermelho só sob pressão) |
+| Score card flutuante do header | Barra de progresso da estação no header sticky |
+| Footer com gradiente e wave | Critérios full-width com divisórias, `py-4` (alvo de toque maior) |
+| | Footer branco fixo: nota no acento + % + Concluir/Limpar |
+
+Regra: o cronômetro do Modo Foco usa cor **calma** (`#374151`) no estado normal —
+nunca a cor do acento, que dominaria o fundo branco sem necessidade.
+
+---
+
+## Barra de Progresso da Estação
+
+Componente `StationProgress.tsx`, compartilhado entre modo normal e Modo Foco.
+
+### Informações exibidas (tempo real, a cada toggle)
+
+```
+[████████████░░░░░░░░░░]
+8 de 12 critérios realizados        67% concluído
+```
+
+### Regras
+
+- O percentual é de **conclusão por critérios** (realizados/total) — **não** o percentual
+  da nota. A nota tem indicadores próprios (score card, footer). Não misturar as duas métricas.
+- Variantes: `dark` (header com gradiente — barra 6px branca) e `light` (Modo Foco —
+  barra 4px na cor do período).
+- Acessibilidade: `role="progressbar"` + `aria-valuemin/max/now` + label descritivo.
+- Cores calmas do Design System — sem estados de alerta ou erro.
+
+---
+
+## Resumo Final (SummaryScreen)
+
+Tela premium de encerramento da estação — a mais refinada do aplicativo.
+
+### Hierarquia visual obrigatória
+
+1. **Nota Final** — protagonista absoluta: `clamp(56px, 18vw, 72px)`, cor do acento.
+2. **Percentual** — anel SVG de 88px (r34, stroke 7) animado, integrado ao card da nota.
+3. **Tempo** — utilizado, previsto ("de X:XX previstos") e **média por critério**
+   (`elapsed ÷ critérios realizados`, exibida quando aplicável).
+4. **Critérios** — realizados/total com mini barra de 4px; lista de não realizados
+   em card próprio.
+
+### Composição
+
+- **Card hero**: nota + anel + badge de desempenho integrado como strip full-width
+  (não usar card separado de "Status" — quebraria a hierarquia).
+- **Grid 2 colunas**: Tempo | Critérios.
+- **Card "Não Realizados"** (condicional): dots **neutros** (`#D1D5DB`) — o badge do
+  hero já comunica o sinal de desempenho; a lista é informacional, não alarme.
+- **Footer fixo**: "Nova Avaliação" (gradiente do acento, primário) e
+  "Voltar às Estações" (accentBg, secundário) — ambos `py-4`, área de toque ampla.
+
+---
+
+## Componentes Críticos
+
+Os componentes abaixo são estratégicos. **Não alterá-los sem atualizar esta documentação**
+(e o `DESIGN_SYSTEM.md` quando a mudança for visual):
+
+| Componente | Fonte | Regra protegida |
+|---|---|---|
+| Sistema de pontuação | `AssessmentClient.tsx` | Soma dos scores marcados; % = score/maxScore |
+| Cronômetro inteligente | `src/lib/timer.ts` | 3/4/5 min por faixa de critérios; fonte única |
+| Registro temporal | `AssessmentClient.tsx` | Timestamp ao marcar; remove ao desmarcar |
+| Barra de progresso | `StationProgress.tsx` | Conclusão por critérios, nunca por nota |
+| Modo Foco | `FocusMode.tsx` | Sem estado próprio; nunca reseta a avaliação |
+| Resumo Final | `SummaryScreen.tsx` | Hierarquia: nota → % → tempo → critérios |
+| Estrutura dos baremas | `src/data/baremas.ts` + `lib/validate.ts` | Validação obrigatória no build |
+
+---
+
+## Padrões Oficiais de UX
+
+Regras permanentes para qualquer tela nova ou alteração:
+
+1. **Simplicidade operacional primeiro** — cada tela tem uma única tarefa principal.
+2. **Minimizar distrações** — decoração nunca compete com conteúdo de avaliação.
+3. **Uso com uma mão** — ações primárias ao alcance do polegar (footer fixo).
+4. **Leitura rápida** — hierarquia tipográfica clara; numerais `tabular-nums`.
+5. **Reduzir carga cognitiva** — no máximo uma métrica nova por componente.
+6. **Otimizar para avaliação em tempo real** — toque em qualquer parte da linha do
+   critério; feedback imediato (< 300ms); nada bloqueia a marcação.
+
+---
+
+## Checklist de Qualidade (obrigatório antes de cada release)
+
+- [ ] **Design System preservado** — tokens (`.card-surface`, `.overline`, `.pressable`, `bg-surface-dim`) e regras do `DESIGN_SYSTEM.md` respeitados
+- [ ] **Responsividade validada** — 320 / 360 / 390 / 430px sem overflow ou quebra
+- [ ] **Modo Foco funcional** — entrar/sair preserva estado; Concluir funciona nos dois modos
+- [ ] **Barra de progresso funcional** — atualiza a cada toggle nos dois modos
+- [ ] **Resumo Final consistente** — hierarquia nota → % → tempo → critérios intacta
+- [ ] **Cronômetro validado** — duração correta por faixa; estados visuais proporcionais; resiste a background
+- [ ] **Navegação validada** — fluxo oficial completo sem perda de estado indevida
+- [ ] **Performance validada** — build SSG, sem dependências novas injustificadas, bundle estável
+- [ ] **Baremas validados** — `npm run build` passa (validação automática)
+- [ ] **sw.js** — versão do cache incrementada
 
 ---
 
@@ -439,8 +570,10 @@ O sistema de roteamento dinâmico (`[stationId]`) detecta a nova estação autom
 | Logo "Simu" | Dancing Script 700, `clamp(52px, 17vw, 76px)` |
 | "OSCE" | System UI, 900, `clamp(68px, 24vw, 100px)` |
 | Títulos de tela (h1) | System UI, 900, 19–30px |
-| Nota no resumo | System UI, 900, 52px, `tracking-tight tabular-nums` |
-| Nota no footer | System UI, 900, `clamp(36px, 11vw, 50px)` |
+| Nota no resumo | System UI, 900, `clamp(56px, 18vw, 72px)`, `tracking-tight tabular-nums` |
+| Nota no footer (modo normal) | System UI, 900, `clamp(36px, 11vw, 50px)` |
+| Nota no footer (Modo Foco) | System UI, 900, `clamp(32px, 10vw, 44px)`, cor do acento |
+| Cronômetro (Modo Foco) | System UI, 900, 26px, `tabular-nums` |
 | Corpo (critérios) | System UI, 400/600, 15px |
 | Labels de seção | classe **`.overline`** — 10px, 700, `letter-spacing: 0.14em`, uppercase |
 | Metadados e badges | System UI, 500–700, 11–12px |
@@ -479,10 +612,32 @@ Fixed bottom-0, gradiente do período, z-50
 #### Cards do Resumo
 ```
 bg-surface-dim, gap-3, todos com .card-surface
-├── Card Resultado Geral (nota 52px + anel SVG de percentual animado)
-├── Card Status (badge com dot colorido + descrição)
-├── Grid 2 colunas: Critérios | Tempo
-└── Card Critérios Não Realizados (condicional, ul/li semânticos)
+├── Card Hero (rounded-[24px]):
+│     nota clamp(56-72px) + anel SVG 88px animado
+│     + strip de desempenho integrado (badge com dot, fundo semântico a 9%)
+├── Grid 2 colunas:
+│     Tempo (utilizado + "de X:XX previstos" + Média/critério)
+│     Critérios (realizados/total + mini barra 4px)
+└── Card Não Realizados (condicional, ul/li, dots neutros #D1D5DB)
+```
+
+**Regra:** o badge de desempenho vive **dentro** do card hero — nunca como card
+separado (dois cards de nível 1 quebram a hierarquia).
+
+#### Barra de Progresso da Estação (StationProgress)
+```
+role="progressbar" + labels
+├── variant="dark"  — header gradiente: barra 6px branca / bg-white/20
+└── variant="light" — Modo Foco: barra 4px no acento / bg-#F3F4F6
+Texto: "{X} de {Y} critérios realizados" + "{Z}% concluído"
+```
+
+#### Modo Foco (FocusMode)
+```
+Tela branca, sem decoração
+├── Header sticky: sair (36px) + estação + cronômetro 26px + StationProgress
+├── Critérios full-width, py-4, divisórias border-#F3F4F6
+└── Footer fixo branco: nota no acento + % + [Concluir sólido] [Limpar ghost]
 ```
 
 **Fundo de telas internas:** sempre `bg-surface-dim` (token) — nunca hex inline.
@@ -564,7 +719,7 @@ O arquivo `public/sw.js` implementa uma estratégia **cache-first**:
 
 **Regra:** Sempre que houver mudança de conteúdo (novo build), incrementar o número da versão:
 ```javascript
-const CACHE = "simuosce-v11"; // versão atual — incrementar a cada deploy com mudanças
+const CACHE = "simuosce-v14"; // versão atual — incrementar a cada deploy com mudanças
 ```
 
 Isso garante que usuários com o PWA instalado recebam o conteúdo atualizado na próxima visita com rede.
@@ -738,3 +893,6 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #20 | Auditoria master de design: token `.overline` (labels de seção unificados), `:focus-visible` global, `overscroll-behavior`, `animate-pulse` no reduced-motion, `bg-surface-dim` como token, rodapé da home sem duplicação, estado vazio redesenhado, criação do `DESIGN_SYSTEM.md`; sw.js v10 |
 | #21 | Documentação v2.0: fluxo oficial completo, correções de desatualizações, decisões registradas |
 | #22 | Auditoria de segurança e resiliência: remoção de 7 dependências não usadas (elimina vulnerabilidade high do xlsx), validação de baremas no build (`lib/validate.ts`), estado vazio em períodos sem estações, LICENSE (CC BY-NC-SA 4.0), README com créditos e autoria, seção de segurança nesta documentação; sw.js v11 |
+| #23 | Modo Foco: `FocusMode.tsx` — interface imersiva de avaliação (header compacto sticky, critérios full-width, footer minimalista), ativação pelo botão "Foco", estado da avaliação integralmente preservado; sw.js v12 |
+| #24 | Barra de progresso inteligente: `StationProgress.tsx` compartilhado (modo normal + foco), conclusão por critérios em tempo real, correção da inconsistência barra-nota vs label-critérios no header normal; sw.js v13 |
+| #25 | Auditoria visual final: Resumo Final premium — card hero com nota `clamp(56-72px)` + anel 88px + badge integrado, card de tempo com previsto e média/critério, mini barra nos critérios, dots neutros nos pendentes; Modo Foco com cronômetro calmo (`#374151`); sw.js v14 |
