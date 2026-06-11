@@ -352,7 +352,7 @@ const periods: { num: Period; label: string; subtitle: string }[] = [
 Em `public/sw.js`, adicionar o novo período ao precache e incrementar a versão:
 
 ```javascript
-const CACHE = "simuosce-v11"; // incrementar a partir da versão atual (v10)
+const CACHE = "simuosce-vN"; // incrementar a partir da versão atual em public/sw.js
 
 const PRECACHE = [
   "./",
@@ -564,7 +564,7 @@ O arquivo `public/sw.js` implementa uma estratégia **cache-first**:
 
 **Regra:** Sempre que houver mudança de conteúdo (novo build), incrementar o número da versão:
 ```javascript
-const CACHE = "simuosce-v10"; // versão atual — incrementar a cada deploy com mudanças
+const CACHE = "simuosce-v11"; // versão atual — incrementar a cada deploy com mudanças
 ```
 
 Isso garante que usuários com o PWA instalado recebam o conteúdo atualizado na próxima visita com rede.
@@ -640,6 +640,55 @@ Título: `SIMUOSCE`. Não reintroduzir textos como "barema oficial" nesses campo
 
 ---
 
+## Segurança, Robustez e Resiliência
+
+### Modelo de ameaça e limitações do GitHub Pages
+
+O SIMUOSCE é um site **100% estático** servido pelo GitHub Pages. Isso define o modelo de segurança:
+
+- **Não há servidor, API, banco de dados nem autenticação** — não existem segredos para vazar nem superfície de ataque server-side.
+- **Todo o código JavaScript é distribuído ao navegador** e pode ser inspecionado. Nenhuma técnica impede totalmente a cópia de uma aplicação web pública — a proteção da propriedade intelectual é jurídica (LICENSE) e de atribuição, não técnica.
+- **Não armazenamos dados pessoais**: o estado da avaliação vive apenas em memória (React state) e é descartado ao sair da página. Não há `localStorage`, cookies nem telemetria.
+- GitHub Pages não permite configurar headers HTTP customizados (CSP, HSTS) — limitação aceita e documentada; o HTTPS é provido pela plataforma.
+
+### Decisões de segurança adotadas
+
+| Decisão | Detalhe |
+|---|---|
+| Dependências mínimas | Removidas 7 dependências não utilizadas (`xlsx`, `jspdf`, `jspdf-autotable`, `recharts`, `@types/recharts`, `zustand`, `@next/font`) — incluindo `xlsx` com vulnerabilidade *high* sem correção disponível. Runtime atual: apenas `next`, `react`, `react-dom`. |
+| Sem segredos no código | Varredura confirmou ausência de tokens, chaves e credenciais em todo o repositório. A única variável de ambiente é `NEXT_PUBLIC_BASE_PATH` (pública por natureza). |
+| Workflow com permissões mínimas | `deploy.yml` usa `permissions: contents: read, pages: write, id-token: write` e actions oficiais pinadas por versão major. |
+| Validação de baremas no build | `src/lib/validate.ts` roda durante o SSG e **interrompe o build** se houver: IDs duplicados ou fora do padrão, somas de scores divergentes do `maxScore`, critérios vazios, descrições vazias, scores ≤ 0 ou períodos sem estações. Dados corrompidos nunca chegam à produção. |
+| Sem dados pessoais | Nenhum dado de aluno/avaliador é coletado ou persistido. |
+
+### Riscos residuais aceitos (registrar a cada auditoria)
+
+- **Advisories do Next 14.x** (`npm audit`): referem-se ao runtime de **servidor** (Image Optimizer, middleware, RSC server, WebSocket, caches do `next/image`). Com `output: 'export'` nenhum desses subsistemas existe em produção — o risco real em runtime é nulo. A correção definitiva exige migração breaking para Next 16, a avaliar em manutenção futura.
+- **Advisory moderate do PostCSS** embutido no Next: ferramenta de **build**, não roda no navegador.
+
+### Resiliência implementada
+
+- Rota de estação inexistente → estado vazio com CTA "Voltar ao Início" (`AssessmentClient`).
+- Período sem estações → card informativo "Nenhuma estação disponível" (`PeriodClient`).
+- Acessos a `baremas[periodNum]` e `find(...)` sempre com fallback (`?? []` / `?? null`).
+- Falha de rede → service worker cache-first responde com conteúdo offline.
+- Timer baseado em `Date.now()` — resiste a abas em segundo plano.
+
+### Procedimento para futuras atualizações
+
+1. `npm audit` antes de cada release; novas dependências exigem justificativa (a ausência de bibliotecas externas é intencional).
+2. Alterações em baremas: o build valida automaticamente — **nunca** desabilitar a chamada `validateBaremas` em `src/data/baremas.ts`.
+3. Incrementar a versão do cache em `public/sw.js` a cada deploy com mudança de conteúdo.
+4. Não introduzir `localStorage`/cookies sem revisar a seção de dados pessoais desta documentação.
+
+### Propriedade intelectual
+
+- **Autoria:** Andressa Souza — Aluna do Curso de Medicina, Afya Faculdade de Ciências Médicas de Guanambi.
+- **Créditos institucionais:** Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi.
+- **Licença:** [CC BY-NC-SA 4.0](../LICENSE) (arquivo `LICENSE` na raiz do repositório). Escolhida por: preservar a autoria (atribuição obrigatória), permitir e incentivar uso acadêmico, proibir uso comercial e exigir que derivados mantenham a mesma licença. Crédito de autoria visível no rodapé da aplicação e no README.
+
+---
+
 ## Roadmap Futuro
 
 Funcionalidades planejadas para versões futuras. **Não implementadas.**
@@ -687,3 +736,5 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #18 | Auditoria estratégica de design: sombras difusas na tipografia de marca, token `.card-surface`, linha de metadados unificada nos cards de estação, `tabular-nums` + `tracking-tight` nos numerais, nota do resumo 44→52px |
 | #19 | SEO: descrições de `layout.tsx` e `manifest.json` simplificadas para "SimuOSCE"; sw.js v9 |
 | #20 | Auditoria master de design: token `.overline` (labels de seção unificados), `:focus-visible` global, `overscroll-behavior`, `animate-pulse` no reduced-motion, `bg-surface-dim` como token, rodapé da home sem duplicação, estado vazio redesenhado, criação do `DESIGN_SYSTEM.md`; sw.js v10 |
+| #21 | Documentação v2.0: fluxo oficial completo, correções de desatualizações, decisões registradas |
+| #22 | Auditoria de segurança e resiliência: remoção de 7 dependências não usadas (elimina vulnerabilidade high do xlsx), validação de baremas no build (`lib/validate.ts`), estado vazio em períodos sem estações, LICENSE (CC BY-NC-SA 4.0), README com créditos e autoria, seção de segurança nesta documentação; sw.js v11 |
