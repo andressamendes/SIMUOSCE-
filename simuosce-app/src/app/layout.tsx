@@ -15,7 +15,7 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
   title: "SIMUOSCE",
-  description: "Barema digital oficial do OSCE – Centro Acadêmico Sérgio Ferreira · Afya Guanambi",
+  description: "SimuOSCE",
   manifest: `${BASE}/manifest.json`,
   appleWebApp: {
     capable: true,
