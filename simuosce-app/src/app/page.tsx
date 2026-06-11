@@ -36,7 +36,7 @@ export default function HomePage() {
           <div className="anim-fade-up w-28 h-28 rounded-full bg-white/20 backdrop-blur-sm border border-white/30
                           overflow-hidden mb-5 p-0.5"
                style={{ boxShadow: "0 6px 32px rgba(0,0,0,0.22), 0 0 0 3px rgba(255,255,255,0.35)" }}>
-            <Image src={`${BASE}/logo-casf.jpg`} alt="Chapa Sérgio Ferreira"
+            <Image src={`${BASE}/logo-casf.jpg`} alt="Logo do Centro Acadêmico Sérgio Ferreira"
                    width={112} height={112} unoptimized priority
                    className="w-full h-full rounded-full"
                    style={{ objectFit: "cover", objectPosition: "center 20%" }}/>
@@ -97,7 +97,7 @@ export default function HomePage() {
 
       {/* ── BOTÕES DE PERÍODO ── */}
       <div className="flex flex-col gap-4 px-5 pt-4 pb-4 bg-white max-w-sm mx-auto w-full">
-        <p className="text-center text-[11px] font-bold text-[#9CA3AF] tracking-[0.18em] uppercase mb-1">
+        <p className="overline text-center text-[#9CA3AF] mb-1">
           Selecione o período
         </p>
 
@@ -129,12 +129,8 @@ export default function HomePage() {
 
       <footer className="bg-white text-center px-5 pt-4 pb-10">
         <p className="text-[11px] font-semibold text-[#9CA3AF] leading-snug">
-          Centro Acadêmico Sérgio Ferreira
+          Centro Acadêmico Sérgio Ferreira · © 2026
         </p>
-        <p className="text-[10px] font-medium text-[#9CA3AF] leading-snug mt-0.5">
-          Afya Faculdade de Ciências Médicas de Guanambi
-        </p>
-        <p className="text-[10px] font-medium text-[#C4C9D0] mt-2">© 2026</p>
       </footer>
     </main>
   );

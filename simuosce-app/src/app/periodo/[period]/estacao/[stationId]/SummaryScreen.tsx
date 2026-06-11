@@ -36,7 +36,7 @@ export default function SummaryScreen({
                   : "rgba(239,68,68,0.10)";
 
   return (
-    <main className="flex flex-col min-h-dvh bg-[#F4FEFE] select-none">
+    <main className="flex flex-col min-h-dvh bg-surface-dim select-none">
 
       {/* ── HEADER ── */}
       <div className={`relative overflow-hidden ${headerClass}`}
@@ -57,13 +57,13 @@ export default function SummaryScreen({
             </Link>
 
             <div className="inline-block bg-black/20 backdrop-blur-sm rounded-lg px-2.5 py-1 border border-white/20">
-              <span className="text-white/75 text-[10px] font-bold tracking-[0.16em] uppercase">
+              <span className="overline text-white/75">
                 Estação {station.number}
               </span>
             </div>
           </div>
 
-          <p className="text-white/55 text-[10px] font-bold tracking-[0.18em] uppercase mb-1.5">
+          <p className="overline text-white/55 mb-1.5">
             Resumo da Avaliação
           </p>
           <h1 className="text-white font-black text-[19px] leading-snug"
@@ -86,7 +86,7 @@ export default function SummaryScreen({
 
           {/* Resultado */}
           <div className="anim-fade-up card-surface rounded-[20px] px-5 py-5">
-            <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-3">
+            <p className="overline text-[#9CA3AF] mb-3">
               Resultado Geral
             </p>
             <div className="flex items-center justify-between">
@@ -120,7 +120,7 @@ export default function SummaryScreen({
           <div className="anim-fade-up card-surface rounded-[20px] px-5 py-4 flex items-center justify-between gap-3"
                style={{ animationDelay: "80ms" }}>
             <div className="min-w-0">
-              <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase mb-1">
+              <p className="overline text-[#9CA3AF] mb-1">
                 Status
               </p>
               <p className="text-[#4B5563] text-[13px] font-medium leading-snug">{perfDesc}</p>
@@ -137,7 +137,7 @@ export default function SummaryScreen({
           {/* Critérios + Tempo */}
           <div className="anim-fade-up grid grid-cols-2 gap-3" style={{ animationDelay: "150ms" }}>
             <div className="card-surface rounded-[16px] px-4 py-4">
-              <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.12em] uppercase mb-1.5">
+              <p className="overline text-[#9CA3AF] mb-1.5">
                 Critérios
               </p>
               <p className="font-black text-[24px] leading-none text-[#1F2937] tabular-nums">{checkedCount}</p>
@@ -147,7 +147,7 @@ export default function SummaryScreen({
             </div>
 
             <div className="card-surface rounded-[16px] px-4 py-4">
-              <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.12em] uppercase mb-1.5">
+              <p className="overline text-[#9CA3AF] mb-1.5">
                 Tempo
               </p>
               {timedOut ? (
@@ -177,7 +177,7 @@ export default function SummaryScreen({
                     <rect x="8" y="2" width="8" height="4" rx="1"/>
                     <path d="M9 12h6M9 16h6"/>
                   </svg>
-                  <p className="text-[#9CA3AF] text-[10px] font-bold tracking-[0.14em] uppercase">
+                  <p className="overline text-[#9CA3AF]">
                     Critérios Não Realizados
                   </p>
                 </div>

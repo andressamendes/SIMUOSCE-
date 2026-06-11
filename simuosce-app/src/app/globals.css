@@ -39,6 +39,21 @@ body {
                "Segoe UI", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: none;
+}
+
+/* ── Foco visível apenas para navegação por teclado ── */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* ── Overline: label de seção em caixa alta (token único de tipografia) ── */
+.overline {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 /* ── Gradiente teal do cartaz ── */
@@ -127,7 +142,8 @@ body {
 
 /* ── Acessibilidade: respeitar preferência de movimento reduzido ── */
 @media (prefers-reduced-motion: reduce) {
-  .anim-fade-up, .anim-fade-in, .check-pop, .anim-score-pop, .anim-ring {
+  .anim-fade-up, .anim-fade-in, .check-pop, .anim-score-pop, .anim-ring,
+  .animate-pulse {
     animation: none;
   }
   .pressable {

@@ -88,9 +88,16 @@ export default function AssessmentClient({ periodNum, station }: Props) {
 
   if (!station) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-dvh gap-3 bg-white">
-        <p className="text-[#9CA3AF]">Estação não encontrada.</p>
-        <Link href="/" className="font-bold text-[#2EC9C4]">Voltar</Link>
+      <div className="flex flex-col items-center justify-center min-h-dvh gap-5 bg-surface-dim px-6">
+        <p className="text-[#4B5563] font-semibold text-[15px]">Estação não encontrada.</p>
+        <Link href="/"
+              className="pressable rounded-full px-7 py-3 font-bold text-sm text-white"
+              style={{
+                background: "linear-gradient(135deg,#2EC9C4 0%,#178785 100%)",
+                boxShadow: "0 4px 14px rgba(46,201,196,0.35)",
+              }}>
+          Voltar ao Início
+        </Link>
       </div>
     );
   }
@@ -202,7 +209,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
             <div className="flex-1 min-w-0">
               <div className="inline-block bg-black/20 backdrop-blur-sm rounded-lg px-2.5 py-1 mb-2
                               border border-white/20">
-                <span className="text-white/75 text-[10px] font-bold tracking-[0.16em] uppercase">
+                <span className="overline text-white/75">
                   Estação {station.number}
                 </span>
               </div>
