@@ -1,7 +1,9 @@
 # SIMUOSCE — Documentação Técnica Oficial
 
-**Versão:** 1.0 · **Data:** Junho 2026  
+**Versão:** 2.0 · **Data:** Junho 2026  
 **Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi**
+
+> Documento canônico do projeto. Para a especificação detalhada de design (tokens, componentes, estados e regras de consistência), consultar também o **`DESIGN_SYSTEM.md`** — este documento traz o resumo e as regras de negócio; o DESIGN_SYSTEM.md é a referência visual completa.
 
 ---
 
@@ -35,6 +37,8 @@ O **SIMUOSCE** é um Progressive Web App (PWA) mobile-first desenvolvido para su
 
 ```
 simuosce-app/
+├── DOCUMENTACAO_PROJETO.md      # Este documento (arquitetura + regras de negócio)
+├── DESIGN_SYSTEM.md             # Especificação completa de design
 ├── public/
 │   ├── sw.js                    # Service worker (cache-first, offline)
 │   ├── manifest.json            # PWA manifest
@@ -70,14 +74,25 @@ simuosce-app/
 │       └── index.ts             # Tipos: Period, Station, Criterion
 ```
 
-### Fluxo de Navegação
+### Fluxo Oficial da Aplicação
 
 ```
-/ (Home)
-└── /periodo/[1|2|3] (Lista de estações)
-    └── /periodo/[P]/estacao/[ID] (Avaliação)
-        └── Resumo (estado local — mesmo componente)
+Página Inicial (/)
+   ↓ seleção de período
+Período (/periodo/[1|2|3])
+   ↓ seleção de estação
+Estação → Avaliação (/periodo/[P]/estacao/[ID])
+   ↓ botão "Concluir"
+Resumo Final (estado local — SummaryScreen, mesma rota)
+   ↓
+"Nova Avaliação" (reinicia checklist + cronômetro na mesma estação)
+   ou
+"Voltar às Estações" (retorna à lista do período)
 ```
+
+Observações:
+- O Resumo Final **não é uma rota** — é um estado do `AssessmentClient` (`showSummary`), preservando a nota e os critérios marcados no momento da conclusão.
+- "Nova Avaliação" zera critérios, timestamps e cronômetro (via `resetCount`), permitindo avaliar o próximo aluno na mesma estação sem navegar.
 
 ### Geração de Páginas (SSG)
 
@@ -337,7 +352,7 @@ const periods: { num: Period; label: string; subtitle: string }[] = [
 Em `public/sw.js`, adicionar o novo período ao precache e incrementar a versão:
 
 ```javascript
-const CACHE = "simuosce-v6"; // incrementar sempre que mudar conteúdo
+const CACHE = "simuosce-v11"; // incrementar a partir da versão atual (v10)
 
 const PRECACHE = [
   "./",
@@ -411,7 +426,7 @@ O sistema de roteamento dinâmico (`[stationId]`) detecta a nova estação autom
 --color-osce-hot:    #EE1068;   /* Cor primária P2 */
 --color-violet:      #7C3AED;   /* Cor primária P3 */
 --color-surface:     #FFFFFF;   /* Fundo branco */
---color-surface-dim: #F4FEFE;   /* Fundo levemente teal (lista de estações) */
+--color-surface-dim: #F4FEFE;   /* Fundo das telas internas (classe bg-surface-dim) */
 --color-ink:         #1F2937;   /* Texto primário */
 --color-ink-mid:     #4B5563;   /* Texto secundário */
 --color-ink-soft:    #9CA3AF;   /* Texto terciário / labels */
@@ -424,10 +439,14 @@ O sistema de roteamento dinâmico (`[stationId]`) detecta a nova estação autom
 | Logo "Simu" | Dancing Script 700, `clamp(52px, 17vw, 76px)` |
 | "OSCE" | System UI, 900, `clamp(68px, 24vw, 100px)` |
 | Títulos de tela (h1) | System UI, 900, 19–30px |
-| Nota no resumo | System UI, 900, 44px |
+| Nota no resumo | System UI, 900, 52px, `tracking-tight tabular-nums` |
 | Nota no footer | System UI, 900, `clamp(36px, 11vw, 50px)` |
 | Corpo (critérios) | System UI, 400/600, 15px |
-| Labels e badges | System UI, 700, 10–12px |
+| Labels de seção | classe **`.overline`** — 10px, 700, `letter-spacing: 0.14em`, uppercase |
+| Metadados e badges | System UI, 500–700, 11–12px |
+
+**Regra:** todo label de seção em caixa alta usa a classe `.overline` (token único de
+`globals.css`) — nunca recriar com utilitários avulsos de tracking/tamanho.
 
 ### Componentes
 
@@ -459,12 +478,14 @@ Fixed bottom-0, gradiente do período, z-50
 
 #### Cards do Resumo
 ```
-bg-[#F4FEFE], gap-3
-├── Card Resultado Geral (nota + %)
+bg-surface-dim, gap-3, todos com .card-surface
+├── Card Resultado Geral (nota 52px + anel SVG de percentual animado)
 ├── Card Status (badge com dot colorido + descrição)
 ├── Grid 2 colunas: Critérios | Tempo
-└── Card Critérios Pendentes (condicional)
+└── Card Critérios Não Realizados (condicional, ul/li semânticos)
 ```
+
+**Fundo de telas internas:** sempre `bg-surface-dim` (token) — nunca hex inline.
 
 ### Classe `.pressable`
 
@@ -509,9 +530,19 @@ com no máximo um elemento em cor de destaque — não empilhar pills de estilos
 | `.anim-score-pop` | Pulso da nota ao atualizar (usar com `key={score}` para re-disparar) |
 | `.anim-ring` | Preenchimento do anel de percentual no resumo |
 
-Todas respeitam `prefers-reduced-motion: reduce` (desativadas automaticamente).
+Todas respeitam `prefers-reduced-motion: reduce` (desativadas automaticamente),
+**incluindo o `animate-pulse`** do cronômetro em estado crítico.
 
 **Regra:** novas animações devem ser CSS puro (sem bibliotecas), durar ≤ 0,5s e nunca bloquear interação.
+
+### Acessibilidade e comportamento global (globals.css)
+
+- `:focus-visible` global: outline 2px `currentColor` com offset 2px — foco visível
+  por teclado em qualquer fundo (claro ou gradiente) sem afetar o toque.
+- `overscroll-behavior-y: none` no body: elimina o rubber-band com flash branco
+  atrás dos headers coloridos no PWA (iOS/Android).
+- Estado vazio ("Estação não encontrada"): mensagem centralizada em `bg-surface-dim`
+  + botão pill com gradiente teal, no padrão dos CTAs do sistema.
 
 ### Safe Areas (iOS/Android)
 
@@ -533,10 +564,16 @@ O arquivo `public/sw.js` implementa uma estratégia **cache-first**:
 
 **Regra:** Sempre que houver mudança de conteúdo (novo build), incrementar o número da versão:
 ```javascript
-const CACHE = "simuosce-v6"; // incrementar a cada deploy com mudanças
+const CACHE = "simuosce-v10"; // versão atual — incrementar a cada deploy com mudanças
 ```
 
 Isso garante que usuários com o PWA instalado recebam o conteúdo atualizado na próxima visita com rede.
+
+### Metadados (SEO)
+
+`layout.tsx` (`Metadata` API) e `manifest.json` usam descrição mínima **"SimuOSCE"** —
+decisão deliberada (PR #19): nenhuma descrição institucional longa em metadados públicos.
+Título: `SIMUOSCE`. Não reintroduzir textos como "barema oficial" nesses campos.
 
 ---
 
@@ -570,6 +607,13 @@ Isso garante que usuários com o PWA instalado recebam o conteúdo atualizado na
 - Regiões dinâmicas devem ter `aria-live` + `aria-atomic`
 - Listas de itens devem usar `<ul>/<li>` semânticos
 - Elementos decorativos devem ter `aria-hidden="true"`
+- Nunca usar emoji na interface (status = badge com dot CSS; ícones = SVG inline)
+- Animações novas devem entrar no bloco `prefers-reduced-motion` de `globals.css`
+
+### Design (regra geral)
+- Antes de criar qualquer componente ou estilo, consultar o **`DESIGN_SYSTEM.md`** —
+  tokens (`.card-surface`, `.overline`, `.pressable`, `bg-surface-dim`), escala
+  tipográfica, estados e as 10 regras de consistência são obrigatórios.
 
 ---
 
@@ -624,6 +668,8 @@ Funcionalidades planejadas para versões futuras. **Não implementadas.**
 
 ## Histórico de Versões
 
+Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
+
 | PR | Descrição |
 |----|-----------|
 | #6 | Auditoria inicial: z-50, aria-hidden, sw.js cleanup → simuosce-v3 |
@@ -636,3 +682,8 @@ Funcionalidades planejadas para versões futuras. **Não implementadas.**
 | #13 | Timer dinâmico: duração por contagem de critérios (3/4/5min) |
 | #14 | Resumo inteligente: SummaryScreen, botão Concluir, Nova Avaliação |
 | #15 | Auditoria final v2: sw.js v5, aria-pressed, glow Concluir, semântica ul/li |
+| #16 | Modernização premium: sistema de animações CSS, card glass do cronômetro com barra de progresso, entradas com stagger, anel SVG animado no resumo, `lib/timer.ts` como fonte única |
+| #17 | Refinamento profissional: remoção de todos os emojis, badge de status com dot CSS, "Critérios Não Realizados", ícones SVG de relógio |
+| #18 | Auditoria estratégica de design: sombras difusas na tipografia de marca, token `.card-surface`, linha de metadados unificada nos cards de estação, `tabular-nums` + `tracking-tight` nos numerais, nota do resumo 44→52px |
+| #19 | SEO: descrições de `layout.tsx` e `manifest.json` simplificadas para "SimuOSCE"; sw.js v9 |
+| #20 | Auditoria master de design: token `.overline` (labels de seção unificados), `:focus-visible` global, `overscroll-behavior`, `animate-pulse` no reduced-motion, `bg-surface-dim` como token, rodapé da home sem duplicação, estado vazio redesenhado, criação do `DESIGN_SYSTEM.md`; sw.js v10 |
