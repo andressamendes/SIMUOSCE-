@@ -16,6 +16,7 @@ Next.js 14 (App Router, `output: 'export'`) · TypeScript · Tailwind CSS v4 · 
 |---|---|
 | [`simuosce-app/DOCUMENTACAO_PROJETO.md`](simuosce-app/DOCUMENTACAO_PROJETO.md) | Arquitetura, regras de negócio, baremas, guias de manutenção |
 | [`simuosce-app/DESIGN_SYSTEM.md`](simuosce-app/DESIGN_SYSTEM.md) | Tokens, tipografia, componentes e regras de consistência visual |
+| [`simuosce-app/CHANGELOG.md`](simuosce-app/CHANGELOG.md) | Histórico de versões (v1.0.0 — primeira versão institucional estável) |
 
 ## Desenvolvimento
 
