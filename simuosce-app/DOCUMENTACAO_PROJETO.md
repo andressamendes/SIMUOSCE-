@@ -193,6 +193,43 @@ distribuídos pela relevância clínica de cada etapa e com soma exata de **10,0
 Distribuição resultante: Estação 1 (13 critérios) = 8×1,00 + 3×0,50 + 2×0,25;
 Estação 2 (15 critérios) = 6×1,00 + 7×0,50 + 2×0,25.
 
+### Auditoria Linguística dos Baremas — Padrão Oficial de Redação (12/06/2026)
+
+Auditoria completa de ortografia, gramática e consistência aplicada a **todos os
+critérios de todos os períodos** (16 estações, 194 critérios). O padrão abaixo é
+**obrigatório para todo barema novo ou alterado**:
+
+1. **Tempo verbal oficial: pretérito perfeito do indicativo** — o critério descreve
+   uma ação **observada/executada** pelo aluno (checklist observacional).
+   - ✓ "Apresentou-se ao paciente" · "Higienizou as mãos" · "Verbalizou o procedimento"
+     · "Realizou a técnica corretamente"
+   - ✗ Infinitivo ("Apresentar-se…"), presente ("Apresenta-se…"), substantivo
+     ("Apresentação ao paciente"), futuro ou mistura de tempos na mesma frase.
+2. **Iniciar com verbo.** Critérios negativos observáveis são a única exceção e
+   iniciam com "Não" + pretérito perfeito (ex.: "Não realizou varredura digital cega").
+3. **Linguagem observacional, objetiva e mensurável** — descrever o comportamento
+   verificável, sem termos vagos ou informais.
+4. **Gramática completa**: artigos definidos ("Realizou **a** palpação…"), concordância
+   verbal/nominal e regência revisadas; orações subordinadas a verbo no pretérito usam
+   o imperfeito do subjuntivo ("Solicitou que o paciente **retirasse**/**expusesse**…").
+5. **Maiúsculas**: apenas em início de frase, siglas (PAS, PAD, EIC, FTV, DEA, SAMU,
+   RCP, MRC) e nomes próprios (Babinski, Ambu); achados clínicos após dois-pontos em
+   minúsculas (ex.: "…o achado: hipertimpanismo").
+6. **Citações literais esperadas do aluno** permanecem entre aspas e não são
+   reescritas (ex.: o feedback "Bulhas rítmicas, normofonéticas, 2 tempos, sem sopros
+   cardíacos").
+7. **Consistência entre estações**: ações idênticas usam redação idêntica
+   ("Apresentou-se ao paciente", "Verbalizou a higienização das mãos", "Despediu-se e
+   verbalizou a higienização final", "Posicionou corretamente o paciente"). Distinções
+   pedagógicas reais são preservadas — *verbalizar* a higienização (1º/2º períodos) ≠
+   *higienizar* de fato (3º período, "Higienizou as mãos").
+
+Correções notáveis da auditoria: "juxtaesternal" → **"justaesternal"** (3 ocorrências);
+"retirasse a camisa/exponha o tórax" → "retirasse a camisa/**expusesse** o tórax"
+(concordância no subjuntivo); "à base do processo xifoide" → "**na** base…" (regência);
+conversão integral do 3º período (infinitivos e substantivos → pretérito perfeito) e
+das Estações 1–2 do 2º período (presente → pretérito perfeito).
+
 ---
 
 ## Sistema de Temporizador
@@ -800,16 +837,16 @@ Título: `SIMUOSCE`. Não reintroduzir textos como "barema oficial" nesses campo
 |---------|---------|-----------|-------|
 | 1 | p1-e1 Aferição da Pressão Arterial | 10 | 3min |
 | 1 | p1-e2 Ausculta Cardíaca | 11 | 4min |
-| 1 | p1-e3 Exame Físico do Abdome | 11 | 4min |
-| 1 | p1-e4 Lavagem das Mãos | 10 | 3min |
-| 1 | p1-e5 Exame Neurológico Básico | 10 | 3min |
-| 1 | p1-e6 Glicemia Capilar | 10 | 3min |
+| 1 | p1-e3 Ausculta Respiratória | 11 | 4min |
+| 1 | p1-e4 Antropometria do Bebê | 10 | 3min |
+| 1 | p1-e5 Exame Abdominal | 10 | 3min |
+| 1 | p1-e6 Técnica de Lavagem das Mãos | 10 | 3min |
 | 2 | p2-e1 RCP Adulto | 13 | 4min |
 | 2 | p2-e2 Manobra de Heimlich em Criança | 15 | 4min |
-| 2 | p2-e3 Sondagem Nasogástrica | 12 | 4min |
-| 2 | p2-e4 Exame Preventivo – Papanicolau | 17 | 5min |
-| 2 | p2-e5 Exame Físico do Tórax | 12 | 4min |
-| 2 | p2-e6 Sutura Simples | 12 | 4min |
+| 2 | p2-e3 Escala de Coma de Glasgow | 12 | 4min |
+| 2 | p2-e4 Exame Preventivo (Papanicolau) | 17 | 5min |
+| 2 | p2-e5 Escala MRC + Lesão NMS/NMI | 12 | 4min |
+| 2 | p2-e6 Inspeção e Palpação de Mamas | 12 | 4min |
 | 3 | p3-e1 Ausculta Cardíaca | 16 | 5min |
 | 3 | p3-e2 Prova do Laço | 14 | 4min |
 | 3 | p3-e3 Exame Físico do Tórax – DPOC | 15 | 4min |
@@ -920,3 +957,4 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #25 | Auditoria visual final: Resumo Final premium — card hero com nota `clamp(56-72px)` + anel 88px + badge integrado, card de tempo com previsto e média/critério, mini barra nos critérios, dots neutros nos pendentes; Modo Foco com cronômetro calmo (`#374151`); sw.js v14 |
 | #26 | Baremas 2º Período (BAREMAS_2_PERIODO.pdf, jun/2026): Estação 1 (RCP Adulto) 10→13 critérios e timer 3→4min; Estação 2 (Heimlich em Criança) 12→15 critérios (timer mantém 4min); novos critérios "Apresentou-se ao paciente", "Verbalizou higienização das mãos" e "Finalizou adequadamente" nas duas estações; pesos impressos (soma 12,25) reescalonados ×10/12,25 para manter nota máxima 10 (decisão registrada na seção de baremas); sw.js v15 |
 | #28 | Pontuação das Estações 1 e 2 do 2º Período redefinida: valores exclusivos 0,25/0,50/1,00 distribuídos por relevância clínica, soma exata 10,0 (E1: 8×1,00 + 3×0,50 + 2×0,25; E2: 6×1,00 + 7×0,50 + 2×0,25), substituindo o reescalonamento ×10/12,25; sw.js v16 |
+| #29 | Auditoria linguística completa dos baremas (16 estações, 194 critérios): padrão oficial pretérito perfeito/início com verbo, conversão integral do 3º período e das Estações 1–2 do 2º período, correções ortográficas ("justaesternal"), gramaticais (subjuntivo, regência, artigos, maiúsculas) e de consistência; tabela de distribuição corrigida; regra oficial de redação registrada; sw.js v17 |
