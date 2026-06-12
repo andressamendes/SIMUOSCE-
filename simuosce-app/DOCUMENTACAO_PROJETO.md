@@ -1,6 +1,6 @@
 # SIMUOSCE — Documentação Técnica Oficial
 
-**Versão:** 2.1 · **Data:** Junho 2026  
+**Versão do aplicativo:** 1.0.0 (primeira versão institucional estável) · **Documento:** 2.2 · **Data:** Junho 2026  
 **Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi**
 
 > Documento canônico do projeto. Para a especificação detalhada de design (tokens, componentes, estados e regras de consistência), consultar também o **`DESIGN_SYSTEM.md`** — este documento traz o resumo e as regras de negócio; o DESIGN_SYSTEM.md é a referência visual completa.
@@ -41,6 +41,7 @@ O **SIMUOSCE** é um Progressive Web App (PWA) mobile-first desenvolvido para su
 simuosce-app/
 ├── DOCUMENTACAO_PROJETO.md      # Este documento (arquitetura + regras de negócio)
 ├── DESIGN_SYSTEM.md             # Especificação completa de design
+├── CHANGELOG.md                 # Histórico de versões (SemVer)
 ├── public/
 │   ├── sw.js                    # Service worker (cache-first, offline)
 │   ├── manifest.json            # PWA manifest
@@ -958,3 +959,4 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #26 | Baremas 2º Período (BAREMAS_2_PERIODO.pdf, jun/2026): Estação 1 (RCP Adulto) 10→13 critérios e timer 3→4min; Estação 2 (Heimlich em Criança) 12→15 critérios (timer mantém 4min); novos critérios "Apresentou-se ao paciente", "Verbalizou higienização das mãos" e "Finalizou adequadamente" nas duas estações; pesos impressos (soma 12,25) reescalonados ×10/12,25 para manter nota máxima 10 (decisão registrada na seção de baremas); sw.js v15 |
 | #28 | Pontuação das Estações 1 e 2 do 2º Período redefinida: valores exclusivos 0,25/0,50/1,00 distribuídos por relevância clínica, soma exata 10,0 (E1: 8×1,00 + 3×0,50 + 2×0,25; E2: 6×1,00 + 7×0,50 + 2×0,25), substituindo o reescalonamento ×10/12,25; sw.js v16 |
 | #29 | Auditoria linguística completa dos baremas (16 estações, 194 critérios): padrão oficial pretérito perfeito/início com verbo, conversão integral do 3º período e das Estações 1–2 do 2º período, correções ortográficas ("justaesternal"), gramaticais (subjuntivo, regência, artigos, maiúsculas) e de consistência; tabela de distribuição corrigida; regra oficial de redação registrada; sw.js v17 |
+| #30 | **Release v1.0.0** — primeira versão institucional estável: criação do CHANGELOG.md, versão 1.0.0 no package.json, limpeza de 12 arquivos sem referência (boilerplate do create-next-app e imagens soltas), README da aplicação reescrito (era boilerplate), auditoria operacional final registrada; sw.js v18 |
