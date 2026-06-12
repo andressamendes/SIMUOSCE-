@@ -178,21 +178,20 @@ inconsistência interna: as pontuações impressas dos critérios somam **12,25*
 estação, mas ambas as tabelas fixam o total em **10 pontos**. Além disso, na Estação 1
 o critério "Finalizou adequadamente" aparece com a célula de pontuação em branco.
 
-Decisão da coordenação (registrada nesta data):
+Decisão da coordenação (registrada nesta data): as pontuações dessas duas estações
+foram **redefinidas** usando exclusivamente os valores **0,25 / 0,50 / 1,00**,
+distribuídos pela relevância clínica de cada etapa e com soma exata de **10,0**:
 
-1. **A nota máxima de 10 pontos prevalece.** Os pesos impressos são mantidos e
-   reescalonados proporcionalmente (fator `10 / 12,25`) no `baremas.ts`, de modo que a
-   soma dos critérios feche exatamente em 10. Por isso esses critérios exibem valores
-   como `+0,82` (peso impresso 1,0) e `+1,22` (peso impresso 1,5).
-2. **"Finalizou adequadamente" da Estação 1 vale 0,25** (peso impresso), espelhando o
-   mesmo critério da Estação 2.
+- **1,00** — etapas críticas: segurança do paciente/cena, raciocínio clínico
+  (reconhecimento, avaliação, decisão de iniciar) e execução correta do procedimento
+  (compressões, ventilações, golpes interescapulares, compressões abdominais).
+- **0,50** — etapas de suporte técnico e comunicação essencial: qualidade complementar
+  da técnica, biossegurança verbalizada, explicação de conduta, orientação ao
+  acompanhante, condutas de contingência.
+- **0,25** — etapas formais: apresentação ao paciente e finalização.
 
-| Peso impresso no PDF | Score no sistema (×10/12,25) | Exibição |
-|---|---|---|
-| 1,5 | 1,224489… | +1,22 |
-| 1,0 | 0,816326… | +0,82 |
-| 0,5 | 0,408163… | +0,41 |
-| 0,25 | 0,204081… | +0,2 |
+Distribuição resultante: Estação 1 (13 critérios) = 8×1,00 + 3×0,50 + 2×0,25;
+Estação 2 (15 critérios) = 6×1,00 + 7×0,50 + 2×0,25.
 
 ---
 
@@ -920,3 +919,4 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #24 | Barra de progresso inteligente: `StationProgress.tsx` compartilhado (modo normal + foco), conclusão por critérios em tempo real, correção da inconsistência barra-nota vs label-critérios no header normal; sw.js v13 |
 | #25 | Auditoria visual final: Resumo Final premium — card hero com nota `clamp(56-72px)` + anel 88px + badge integrado, card de tempo com previsto e média/critério, mini barra nos critérios, dots neutros nos pendentes; Modo Foco com cronômetro calmo (`#374151`); sw.js v14 |
 | #26 | Baremas 2º Período (BAREMAS_2_PERIODO.pdf, jun/2026): Estação 1 (RCP Adulto) 10→13 critérios e timer 3→4min; Estação 2 (Heimlich em Criança) 12→15 critérios (timer mantém 4min); novos critérios "Apresentou-se ao paciente", "Verbalizou higienização das mãos" e "Finalizou adequadamente" nas duas estações; pesos impressos (soma 12,25) reescalonados ×10/12,25 para manter nota máxima 10 (decisão registrada na seção de baremas); sw.js v15 |
+| #28 | Pontuação das Estações 1 e 2 do 2º Período redefinida: valores exclusivos 0,25/0,50/1,00 distribuídos por relevância clínica, soma exata 10,0 (E1: 8×1,00 + 3×0,50 + 2×0,25; E2: 6×1,00 + 7×0,50 + 2×0,25), substituindo o reescalonamento ×10/12,25; sw.js v16 |
