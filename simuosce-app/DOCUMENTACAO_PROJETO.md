@@ -171,6 +171,29 @@ export const baremas: Record<1 | 2 | 3, Station[]> = {
 - `maxScore` padrão é 10 (pode variar se o barema oficial indicar outro valor)
 - `score` pode ser decimal (ex: 0,5 / 1,0 / 2,5)
 
+### Decisão registrada — Baremas do 2º Período, Estações 1 e 2 (12/06/2026)
+
+O documento oficial `BAREMAS_2_PERIODO.pdf` (atualização de junho/2026) apresenta uma
+inconsistência interna: as pontuações impressas dos critérios somam **12,25** em cada
+estação, mas ambas as tabelas fixam o total em **10 pontos**. Além disso, na Estação 1
+o critério "Finalizou adequadamente" aparece com a célula de pontuação em branco.
+
+Decisão da coordenação (registrada nesta data):
+
+1. **A nota máxima de 10 pontos prevalece.** Os pesos impressos são mantidos e
+   reescalonados proporcionalmente (fator `10 / 12,25`) no `baremas.ts`, de modo que a
+   soma dos critérios feche exatamente em 10. Por isso esses critérios exibem valores
+   como `+0,82` (peso impresso 1,0) e `+1,22` (peso impresso 1,5).
+2. **"Finalizou adequadamente" da Estação 1 vale 0,25** (peso impresso), espelhando o
+   mesmo critério da Estação 2.
+
+| Peso impresso no PDF | Score no sistema (×10/12,25) | Exibição |
+|---|---|---|
+| 1,5 | 1,224489… | +1,22 |
+| 1,0 | 0,816326… | +0,82 |
+| 0,5 | 0,408163… | +0,41 |
+| 0,25 | 0,204081… | +0,2 |
+
 ---
 
 ## Sistema de Temporizador
@@ -782,8 +805,8 @@ Título: `SIMUOSCE`. Não reintroduzir textos como "barema oficial" nesses campo
 | 1 | p1-e4 Lavagem das Mãos | 10 | 3min |
 | 1 | p1-e5 Exame Neurológico Básico | 10 | 3min |
 | 1 | p1-e6 Glicemia Capilar | 10 | 3min |
-| 2 | p2-e1 Sondagem Vesical de Demora | 10 | 3min |
-| 2 | p2-e2 Coleta de Sangue Venoso | 12 | 4min |
+| 2 | p2-e1 RCP Adulto | 13 | 4min |
+| 2 | p2-e2 Manobra de Heimlich em Criança | 15 | 4min |
 | 2 | p2-e3 Sondagem Nasogástrica | 12 | 4min |
 | 2 | p2-e4 Exame Preventivo – Papanicolau | 17 | 5min |
 | 2 | p2-e5 Exame Físico do Tórax | 12 | 4min |
@@ -896,3 +919,4 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #23 | Modo Foco: `FocusMode.tsx` — interface imersiva de avaliação (header compacto sticky, critérios full-width, footer minimalista), ativação pelo botão "Foco", estado da avaliação integralmente preservado; sw.js v12 |
 | #24 | Barra de progresso inteligente: `StationProgress.tsx` compartilhado (modo normal + foco), conclusão por critérios em tempo real, correção da inconsistência barra-nota vs label-critérios no header normal; sw.js v13 |
 | #25 | Auditoria visual final: Resumo Final premium — card hero com nota `clamp(56-72px)` + anel 88px + badge integrado, card de tempo com previsto e média/critério, mini barra nos critérios, dots neutros nos pendentes; Modo Foco com cronômetro calmo (`#374151`); sw.js v14 |
+| #26 | Baremas 2º Período (BAREMAS_2_PERIODO.pdf, jun/2026): Estação 1 (RCP Adulto) 10→13 critérios e timer 3→4min; Estação 2 (Heimlich em Criança) 12→15 critérios (timer mantém 4min); novos critérios "Apresentou-se ao paciente", "Verbalizou higienização das mãos" e "Finalizou adequadamente" nas duas estações; pesos impressos (soma 12,25) reescalonados ×10/12,25 para manter nota máxima 10 (decisão registrada na seção de baremas); sw.js v15 |

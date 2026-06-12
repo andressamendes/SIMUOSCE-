@@ -1,6 +1,13 @@
 import { validateBaremas } from "@/lib/validate";
 import { Station } from "@/types";
 
+// Barema oficial das estações 1 e 2 do 2º período (BAREMAS_2_PERIODO.pdf): as
+// pontuações impressas somam 12,25 por estação, mas o documento fixa o total em
+// 10 pontos. Decisão da coordenação (12/06/2026): manter os pesos impressos,
+// reescalonados proporcionalmente para que a soma feche exatamente em 10.
+const P2_SCALE = 10 / 12.25;
+const p2pts = (printed: number): number => printed * P2_SCALE;
+
 export const baremas: Record<1 | 2 | 3, Station[]> = {
   1: [
     {
@@ -121,16 +128,21 @@ export const baremas: Record<1 | 2 | 3, Station[]> = {
       name: "RCP Adulto",
       maxScore: 10,
       criteria: [
-        { id: "p2-e1-c1", description: "Verifica segurança da cena", score: 1.0 },
-        { id: "p2-e1-c2", description: "Checa responsividade da vítima", score: 1.0 },
-        { id: "p2-e1-c3", description: "Solicita ajuda e DEA/SAMU", score: 1.0 },
-        { id: "p2-e1-c4", description: "Avalia pulso e respiração por até 10 segundos", score: 1.0 },
-        { id: "p2-e1-c5", description: "Posiciona corretamente as mãos", score: 1.0 },
-        { id: "p2-e1-c6", description: "Inicia compressões no momento adequado", score: 1.0 },
-        { id: "p2-e1-c7", description: "Realiza compressões na frequência/profundidade corretas", score: 1.5 },
-        { id: "p2-e1-c8", description: "Permite retorno completo do tórax", score: 0.5 },
-        { id: "p2-e1-c9", description: "Realiza ventilações eficazes com Ambu", score: 1.0 },
-        { id: "p2-e1-c10", description: "Mantém relação 30:2 e verbaliza continuidade", score: 1.0 },
+        { id: "p2-e1-c1", description: "Apresentou-se ao paciente", score: p2pts(1.0) },
+        { id: "p2-e1-c2", description: "Verbalizou higienização das mãos", score: p2pts(1.0) },
+        { id: "p2-e1-c3", description: "Verifica segurança da cena", score: p2pts(1.0) },
+        { id: "p2-e1-c4", description: "Checa responsividade da vítima", score: p2pts(1.0) },
+        { id: "p2-e1-c5", description: "Solicita ajuda e DEA/SAMU", score: p2pts(1.0) },
+        { id: "p2-e1-c6", description: "Avalia pulso e respiração por até 10 segundos", score: p2pts(1.0) },
+        { id: "p2-e1-c7", description: "Posiciona corretamente as mãos", score: p2pts(1.0) },
+        { id: "p2-e1-c8", description: "Inicia compressões no momento adequado", score: p2pts(1.0) },
+        { id: "p2-e1-c9", description: "Realiza compressões na frequência/profundidade corretas", score: p2pts(1.5) },
+        { id: "p2-e1-c10", description: "Permite retorno completo do tórax", score: p2pts(0.5) },
+        { id: "p2-e1-c11", description: "Realiza ventilações eficazes com Ambu", score: p2pts(1.0) },
+        { id: "p2-e1-c12", description: "Mantém relação 30:2 e verbaliza continuidade", score: p2pts(1.0) },
+        // Peso 0,25 definido pela coordenação (12/06/2026): o PDF deixa a célula em
+        // branco; espelha o mesmo critério da Estação 2.
+        { id: "p2-e1-c13", description: "Finalizou adequadamente", score: p2pts(0.25) },
       ],
     },
     {
@@ -139,18 +151,21 @@ export const baremas: Record<1 | 2 | 3, Station[]> = {
       name: "Manobra de Heimlich em Criança",
       maxScore: 10,
       criteria: [
-        { id: "p2-e2-c1", description: "Verifica segurança da cena", score: 0.5 },
-        { id: "p2-e2-c2", description: "Reconhece sinais de obstrução grave", score: 1.0 },
-        { id: "p2-e2-c3", description: "Apresenta-se e explica a conduta", score: 0.5 },
-        { id: "p2-e2-c4", description: "Solicita ajuda e aciona emergência", score: 1.0 },
-        { id: "p2-e2-c5", description: "Posiciona corretamente a criança", score: 1.0 },
-        { id: "p2-e2-c6", description: "Realiza golpes interescapulares", score: 1.5 },
-        { id: "p2-e2-c7", description: "Posiciona corretamente as mãos", score: 0.5 },
-        { id: "p2-e2-c8", description: "Executa compressões abdominais eficazes", score: 1.5 },
-        { id: "p2-e2-c9", description: "Alterna ciclos até desobstrução", score: 1.0 },
-        { id: "p2-e2-c10", description: "Não realiza varredura digital cega", score: 0.5 },
-        { id: "p2-e2-c11", description: "Indica RCP se perda de consciência", score: 0.5 },
-        { id: "p2-e2-c12", description: "Orienta acompanhante", score: 0.5 },
+        { id: "p2-e2-c1", description: "Apresentou-se ao paciente", score: p2pts(1.0) },
+        { id: "p2-e2-c2", description: "Verbalizou higienização das mãos", score: p2pts(1.0) },
+        { id: "p2-e2-c3", description: "Verifica segurança da cena", score: p2pts(0.5) },
+        { id: "p2-e2-c4", description: "Reconhece sinais de obstrução grave", score: p2pts(1.0) },
+        { id: "p2-e2-c5", description: "Apresenta-se e explica a conduta", score: p2pts(0.5) },
+        { id: "p2-e2-c6", description: "Solicita ajuda e aciona emergência", score: p2pts(1.0) },
+        { id: "p2-e2-c7", description: "Posiciona corretamente a criança", score: p2pts(1.0) },
+        { id: "p2-e2-c8", description: "Realiza golpes interescapulares", score: p2pts(1.5) },
+        { id: "p2-e2-c9", description: "Posiciona corretamente as mãos", score: p2pts(0.5) },
+        { id: "p2-e2-c10", description: "Executa compressões abdominais eficazes", score: p2pts(1.5) },
+        { id: "p2-e2-c11", description: "Alterna ciclos até desobstrução", score: p2pts(1.0) },
+        { id: "p2-e2-c12", description: "Não realiza varredura digital cega", score: p2pts(0.5) },
+        { id: "p2-e2-c13", description: "Indica RCP se perda de consciência", score: p2pts(0.5) },
+        { id: "p2-e2-c14", description: "Orienta acompanhante", score: p2pts(0.5) },
+        { id: "p2-e2-c15", description: "Finalizou adequadamente", score: p2pts(0.25) },
       ],
     },
     {
