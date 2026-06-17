@@ -1,5 +1,3 @@
-import { Period } from "@/types";
-
 export type PeriodTheme = {
   headerClass:  string;
   accent:       string;
@@ -12,7 +10,9 @@ export type PeriodTheme = {
   cardShadow:   string;
 };
 
-export const periodThemes: Record<Period, PeriodTheme> = {
+// Add a new entry here when implementing a new period.
+// Also add the CSS classes (bg-periodN, check-glow-periodN) in globals.css.
+export const periodThemes: Partial<Record<number, PeriodTheme>> = {
   1: {
     headerClass:  "bg-teal-brand",
     accent:       "#2EC9C4",
@@ -58,3 +58,8 @@ export const periodThemes: Record<Period, PeriodTheme> = {
     cardShadow:   "0 8px 28px rgba(245,158,11,0.38), 0 2px 8px rgba(0,0,0,0.06)",
   },
 };
+
+// Fallback to period 1 (teal) when a period has no dedicated theme yet.
+export function getTheme(period: number): PeriodTheme {
+  return periodThemes[period] ?? periodThemes[1]!;
+}

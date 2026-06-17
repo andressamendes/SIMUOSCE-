@@ -1,13 +1,11 @@
 import { Station } from "@/types";
 
-/**
- * Validação estrutural dos baremas — executada no build (SSG).
- * Qualquer inconsistência interrompe o build com erro descritivo,
- * impedindo que dados corrompidos cheguem à produção.
- */
-export function validateBaremas(baremas: Record<number, Station[]>): void {
+// Runs at build time (SSG). Any inconsistency throws and stops the build,
+// preventing corrupt data from reaching production.
+export function validateBaremas(baremas: Partial<Record<number, Station[]>>): void {
   const errors: string[] = [];
   const seenIds = new Set<string>();
+  let periodCount = 0;
 
   const registerId = (id: string, context: string) => {
     if (seenIds.has(id)) errors.push(`${context}: id duplicado "${id}"`);
@@ -24,6 +22,8 @@ export function validateBaremas(baremas: Record<number, Station[]>): void {
       errors.push(`Período ${p}: sem estações`);
       continue;
     }
+
+    periodCount++;
 
     stations.forEach((st, i) => {
       const ctx = `Período ${p}, estação ${i + 1} (${st?.id ?? "sem id"})`;
@@ -52,21 +52,29 @@ export function validateBaremas(baremas: Record<number, Station[]>): void {
         if (!c.description?.trim()) errors.push(`${cctx}: descrição vazia`);
         if (typeof c.score !== "number" || !Number.isFinite(c.score) || c.score <= 0)
           errors.push(`${cctx}: score inválido (${c.score})`);
-        else sum += c.score;
+        else {
+          // A single criterion should not exceed the station's total score
+          if (typeof st.maxScore === "number" && c.score > st.maxScore)
+            errors.push(`${cctx}: score (${c.score}) excede o maxScore da estação (${st.maxScore})`);
+          sum += c.score;
+        }
       });
 
       // Tolerância para aritmética de ponto flutuante (ex.: 10× 0.5 + 5× 1.0)
       if (Math.abs(sum - st.maxScore) > 0.001)
         errors.push(
-          `${ctx}: soma dos scores (${sum.toFixed(2)}) difere do maxScore (${st.maxScore})`
+          `${ctx}: soma dos scores (${sum.toFixed(3)}) difere do maxScore (${st.maxScore}) — ` +
+          `diferença: ${(sum - st.maxScore).toFixed(3)}`
         );
     });
   }
 
   if (errors.length > 0) {
     throw new Error(
-      `Baremas inválidos — corrija src/data/baremas.ts antes de publicar:\n` +
-        errors.map((e) => `  • ${e}`).join("\n")
+      `[SIMUOSCE] Validação de baremas falhou — ${errors.length} erro(s) em ${periodCount} período(s).\n` +
+      `Corrija src/data/baremas.ts antes de publicar:\n` +
+      errors.map((e) => `  • ${e}`).join("\n") +
+      `\n\nNenhum dado inválido deve chegar à produção.`
     );
   }
 }

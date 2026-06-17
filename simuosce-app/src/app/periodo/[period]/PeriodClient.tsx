@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { Station, Period } from "@/types";
-import { periodThemes } from "@/lib/themes";
+import { getTheme } from "@/lib/themes";
 import { getDurationMin } from "@/lib/timer";
 
 type Props = { periodNum: Period; stations: Station[] };
 
 export default function PeriodClient({ periodNum, stations }: Props) {
-  const { headerClass, accent, accentBg, numGradient, shadowBtn } =
-    periodThemes[periodNum] ?? periodThemes[1];
+  const { headerClass, accent, accentBg, numGradient, shadowBtn } = getTheme(periodNum);
 
   return (
     <main className="flex flex-col min-h-dvh bg-surface-dim select-none">

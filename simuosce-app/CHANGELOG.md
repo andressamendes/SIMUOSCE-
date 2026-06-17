@@ -4,6 +4,52 @@ Todas as mudanças relevantes do projeto são registradas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.3.0] — 2026-06-17
+
+**Consolidação da arquitetura escalável — preparação para períodos 6º ao 12º.**
+
+### Arquitetura
+
+- **`Period = number`**: tipo `Period` em `src/types/index.ts` alterado de união fechada
+  (`1 | 2 | 3 | 5`) para `number`. Novos períodos não exigem alteração de tipos.
+- **`generateStaticParams` automático**: a rota de estações
+  (`[period]/estacao/[stationId]/page.tsx`) agora deriva as páginas estáticas
+  diretamente de `Object.keys(baremas)`, igual à rota de período já fazia —
+  nenhuma atualização manual ao adicionar período.
+- **`getTheme(period)`**: função utilitária exportada de `src/lib/themes.ts` que
+  retorna o tema do período com fallback ao teal (período 1). Todos os componentes
+  migrados de `periodThemes[p] ?? periodThemes[1]` para `getTheme(p)`.
+- **`Partial<Record<number, PeriodTheme>>`**: tipo de `periodThemes` corrigido para
+  refletir que nem todos os períodos têm tema — TypeScript agora detecta acessos não
+  seguros em vez de assumir que todos os números têm entrada.
+- **`Partial<Record<number, Station[]>>`**: tipo de `baremas` atualizado da mesma forma.
+
+### Utilitários centralizados
+
+- **`src/lib/scoring.ts`** (novo): centraliza lógica de pontuação duplicada entre
+  `AssessmentClient` e `FocusMode`:
+  - `getStatusLabel(pct, bgAlpha)` — label Aprovado/Regular/Insuficiente com cores
+  - `getPerfBadge(pct)` — badge Excelente/Bom/Atenção usado no Resumo Final
+  - `calculateScore`, `calculatePct`, `getPendingCriteria` — utilitários reutilizáveis
+
+### Validação aprimorada
+
+- **`src/lib/validate.ts`**: mensagens de erro aprimoradas — exibe contagem de erros e
+  períodos afetados no cabeçalho; nova verificação de score por critério (não pode
+  exceder o `maxScore` da estação); diferença aritmética exibida com 3 casas decimais.
+
+### Documentação
+
+- **`DOCUMENTACAO_PROJETO.md`** (v3.0): atualizado para refletir a nova arquitetura —
+  seção "Como Adicionar um Novo Período" revisada (remoção do passo "atualizar tipo
+  Period"; `generateStaticParams` marcado como automático); nova seção "Escalabilidade
+  do Projeto" com tabela de princípios, checklist de arquivos e referência de utilitários.
+- **`CHECKLIST_NOVO_PERIODO.md`** (novo): checklist completo para implementação de novos
+  períodos — dados, linguagem, código, build, cronômetro, responsividade, Resumo Final,
+  Modo Foco, visual e publicação.
+
+---
+
 ## [1.2.0] — 2026-06-17
 
 **Adição do 5º Período — barema oficial implementado.**
@@ -116,5 +162,6 @@ Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Gu
 A evolução PR a PR (#6–#34) está registrada na seção "Histórico de Versões"
 do [`DOCUMENTACAO_PROJETO.md`](DOCUMENTACAO_PROJETO.md).
 
+[1.3.0]: https://github.com/andressamendes/SIMUOSCE-/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/andressamendes/SIMUOSCE-/compare/v1.1.0...v1.2.0
 [1.0.0]: https://github.com/andressamendes/SIMUOSCE-/releases/tag/v1.0.0

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Period } from "@/types";
-import { periodThemes } from "@/lib/themes";
+import { getTheme } from "@/lib/themes";
 
 const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
@@ -103,7 +103,7 @@ export default function HomePage() {
         </p>
 
         {periods.map(({ num, label, subtitle }, i) => {
-          const { headerClass, cardShadow } = periodThemes[num];
+          const { headerClass, cardShadow } = getTheme(num);
           return (
             <Link key={num} href={`/periodo/${num}`}
                   className="pressable anim-fade-up block rounded-[22px] overflow-hidden"

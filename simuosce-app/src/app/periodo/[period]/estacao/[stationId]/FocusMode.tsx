@@ -1,8 +1,9 @@
 "use client";
 
 import { Station, Period } from "@/types";
-import { periodThemes } from "@/lib/themes";
+import { getTheme } from "@/lib/themes";
 import { fmt, formatTime } from "@/lib/format";
+import { getStatusLabel } from "@/lib/scoring";
 import StationProgress from "./StationProgress";
 
 type Props = {
@@ -26,8 +27,7 @@ export default function FocusMode({
   timeLeft, duration, score, maxScore, pct,
   onToggle, onClear, onConclude, onExit,
 }: Props) {
-  const { accent, accentBg, checkGlow } =
-    periodThemes[periodNum] ?? periodThemes[1];
+  const { accent, accentBg, checkGlow } = getTheme(periodNum);
 
   const warnThreshold   = Math.round(duration / 3);
   const dangerThreshold = Math.round(duration / 10);
@@ -37,11 +37,7 @@ export default function FocusMode({
                     : timerState === "warn"   ? "#F59E0B" : "#EF4444";
   const timerPulse  = timerState === "danger" ? "animate-pulse" : "";
 
-  const label      = pct >= 70 ? "Aprovado" : pct >= 50 ? "Regular" : pct > 0 ? "Insuficiente" : null;
-  const labelBg    = pct >= 70 ? "rgba(16,185,129,0.12)"
-                   : pct >= 50 ? "rgba(245,158,11,0.12)"
-                   : "rgba(239,68,68,0.12)";
-  const labelColor = pct >= 70 ? "#10B981" : pct >= 50 ? "#F59E0B" : "#EF4444";
+  const status = getStatusLabel(pct);
 
   const elapsed = duration - timeLeft;
 
@@ -201,10 +197,10 @@ export default function FocusMode({
               </span>
             </div>
 
-            {label ? (
+            {status ? (
               <span className="inline-block mt-1 text-xs font-bold px-3 py-1 rounded-full"
-                    style={{ background: labelBg, color: labelColor }}>
-                {label}
+                    style={{ background: status.bg, color: status.color }}>
+                {status.label}
               </span>
             ) : (
               <p className="text-[#9CA3AF] text-[11px] font-medium mt-1">

@@ -2,9 +2,10 @@ import { baremas } from "@/data/baremas";
 import { Period } from "@/types";
 import AssessmentClient from "./AssessmentClient";
 
+// Derived automatically from baremas — no manual update needed when adding periods.
 export function generateStaticParams() {
-  return ([1, 2, 3, 5] as const).flatMap((p) =>
-    baremas[p].map((s) => ({ period: String(p), stationId: s.id }))
+  return (Object.keys(baremas) as string[]).flatMap((pk) =>
+    (baremas[Number(pk)] ?? []).map((s) => ({ period: pk, stationId: s.id }))
   );
 }
 
