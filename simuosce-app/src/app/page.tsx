@@ -9,7 +9,7 @@ const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const periods: { num: Period; label: string; subtitle: string }[] = [
   { num: 1, label: "1º Período", subtitle: "6 estações" },
-  { num: 2, label: "2º Período", subtitle: "6 estações" },
+  { num: 2, label: "2º Período", subtitle: "5 estações" },
   { num: 3, label: "3º Período", subtitle: "4 estações" },
 ];
 

@@ -4,6 +4,27 @@ Todas as mudanças relevantes do projeto são registradas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.1.0] — 2026-06-17
+
+**Atualização do 2º Período — novo barema oficial.**
+
+### Conteúdo
+
+- **2º Período** substituído integralmente conforme `BAREMAS_2_PERIODO_FINAL2P.md`:
+  - Estação 1 (RCP Adulto): reduzida de 13→**10 critérios** (apenas etapas clínicas;
+    compressões com 1,5 pts; relação 30:2 com 1,0 pt); timer 4 min → **3 min**.
+  - Estação 2 substituída: "Manobra de Heimlich em Criança" →
+    **"Desengasgo em Lactente"** (técnica de lactente: golpes dorsais +
+    compressões torácicas; 13 critérios).
+  - Estação "Escala de Coma de Glasgow" **removida**.
+  - Papanicolau, Escala MRC e Mamas renumeradas (posições 4/5/6 → **3/4/5**).
+  - Total: 6 → **5 estações** no 2º Período.
+- Home page atualizada: "6 estações" → "5 estações" para o 2º Período.
+- Auditoria linguística reaplicada às novas estações.
+- sw.js v19.
+
+---
+
 ## [1.0.0] — 2026-06-12
 
 **Primeira versão institucional estável.**
