@@ -13,8 +13,11 @@ import { Station } from "@/types";
 //       10 e 11 (petequia) = 0,5 pt cada; critério 9 (5 min) elevado de 1,0 → 1,25.
 //   E3: barema declara total 10,0 mas critérios somam 9,75 (remoção estetoscópio –0,25).
 //       Resolução: inspeção do tórax elevada de 0,75 → 1,0.
+// 5º Período: adicionado em 17/06/2026 conforme barema oficial — 4 estações
+//   (Paramentação, Luva estéril e punção venosa periférica, Sutura e nó,
+//   Intubação orotraqueal). Somas validadas: todas iguais a 10,0.
 
-export const baremas: Record<1 | 2 | 3, Station[]> = {
+export const baremas: Record<1 | 2 | 3 | 5, Station[]> = {
   1: [
     {
       id: "p1-e1",
@@ -315,6 +318,85 @@ export const baremas: Record<1 | 2 | 3, Station[]> = {
         { id: "p3-e4-c4", description: "Citou os 3 achados clínicos", score: 3.0 },
         { id: "p3-e4-c5", description: "Indicou o que levou ao diagnóstico", score: 2.5 },
         { id: "p3-e4-c6", description: "Higienizou as mãos ao final", score: 0.5 },
+      ],
+    },
+  ],
+  5: [
+    {
+      id: "p5-e1",
+      number: 1,
+      name: "Paramentação",
+      maxScore: 10,
+      criteria: [
+        { id: "p5-e1-c1",  description: "Conferiu ambiente, materiais e integridade dos itens antes de iniciar", score: 0.5 },
+        { id: "p5-e1-c2",  description: "Retirou adornos, prendeu o cabelo e manteve unhas adequadas", score: 0.5 },
+        { id: "p5-e1-c3",  description: "Realizou higiene das mãos no momento correto", score: 1.0 },
+        { id: "p5-e1-c4",  description: "Executou técnica completa de higiene das mãos conforme protocolo institucional", score: 1.5 },
+        { id: "p5-e1-c5",  description: "Colocou touca cobrindo completamente o cabelo e as laterais", score: 0.8 },
+        { id: "p5-e1-c6",  description: "Colocou máscara cobrindo nariz e boca, ajustando adequadamente", score: 1.0 },
+        { id: "p5-e1-c7",  description: "Abriu e organizou materiais sem contaminar áreas limpas e estéreis", score: 0.8 },
+        { id: "p5-e1-c8",  description: "Vestiu avental estéril sem tocar a face externa estéril com mãos contaminadas", score: 1.5 },
+        { id: "p5-e1-c9",  description: "Manteve mãos e antebraços em posição compatível com técnica asséptica, sem cruzar sobre áreas não estéreis", score: 1.0 },
+        { id: "p5-e1-c10", description: "Solicitou auxílio ou executou a amarração sem contaminar o avental", score: 0.7 },
+        { id: "p5-e1-c11", description: "Reconheceu contaminação e verbalizou conduta corretiva imediata", score: 0.7 },
+      ],
+    },
+    {
+      id: "p5-e2",
+      number: 2,
+      name: "Luva Estéril e Punção Venosa Periférica",
+      maxScore: 10,
+      criteria: [
+        { id: "p5-e2-c1",  description: "Apresentou-se, identificou o paciente/simulador e explicou o procedimento", score: 0.5 },
+        { id: "p5-e2-c2",  description: "Higienizou as mãos e utilizou EPI adequado", score: 0.7 },
+        { id: "p5-e2-c3",  description: "Conferiu indicação, alergias relevantes, lateralidade e condições do membro", score: 0.5 },
+        { id: "p5-e2-c4",  description: "Organizou materiais corretos para punção venosa periférica", score: 0.8 },
+        { id: "p5-e2-c5",  description: "Calçou luvas estéreis pela técnica aberta sem contaminar a face externa", score: 1.5 },
+        { id: "p5-e2-c6",  description: "Selecionou veia adequada por inspeção e palpação, priorizando membro superior distal e evitando áreas contraindicadas", score: 0.8 },
+        { id: "p5-e2-c7",  description: "Aplicou garrote de forma correta e avaliou enchimento venoso", score: 0.8 },
+        { id: "p5-e2-c8",  description: "Realizou antissepsia do sítio e aguardou secagem", score: 1.2 },
+        { id: "p5-e2-c9",  description: "Executou a punção com bisel para cima, em ângulo aproximado de 10 a 30 graus, observando refluxo sanguíneo", score: 1.4 },
+        { id: "p5-e2-c10", description: "Avançou o cateter, retirou o mandril com segurança e estabilizou o dispositivo", score: 0.8 },
+        { id: "p5-e2-c11", description: "Testou permeabilidade, fixou o acesso e deixou o membro seguro", score: 0.7 },
+        { id: "p5-e2-c12", description: "Descartou perfurocortante imediatamente, sem reencapar, e concluiu com higiene das mãos e orientação ao paciente", score: 0.3 },
+      ],
+    },
+    {
+      id: "p5-e3",
+      number: 3,
+      name: "Sutura e Nó",
+      maxScore: 10,
+      criteria: [
+        { id: "p5-e3-c1",  description: "Explicou o procedimento no simulador, posicionou o campo e organizou os materiais de sutura", score: 0.5 },
+        { id: "p5-e3-c2",  description: "Realizou higiene das mãos, usou EPI e preservou o campo limpo/estéril", score: 0.8 },
+        { id: "p5-e3-c3",  description: "Reconheceu e utilizou corretamente os instrumentais cirúrgicos", score: 1.0 },
+        { id: "p5-e3-c4",  description: "Prendeu a agulha no porta-agulha na porção adequada, com controle firme", score: 1.2 },
+        { id: "p5-e3-c5",  description: "Manipulou as bordas com delicadeza, evitando trauma excessivo", score: 0.8 },
+        { id: "p5-e3-c6",  description: "Introduziu a agulha em ângulo e profundidade compatíveis, com distância regular da borda", score: 1.5 },
+        { id: "p5-e3-c7",  description: "Garantiu saída simétrica e aproximação/everção adequadas das bordas", score: 1.0 },
+        { id: "p5-e3-c8",  description: "Executou ponto simples interrompido com trajetória adequada e sem cruzamentos desnecessários", score: 0.8 },
+        { id: "p5-e3-c9",  description: "Realizou nó quadrado com laçadas alternadas, plano e tecnicamente seguro", score: 1.2 },
+        { id: "p5-e3-c10", description: "Ajustou a tensão sem estrangular o tecido", score: 0.6 },
+        { id: "p5-e3-c11", description: "Cortou as pontas em tamanho adequado e manteve o campo organizado", score: 0.4 },
+        { id: "p5-e3-c12", description: "Descartou agulha e materiais perfurocortantes de modo seguro", score: 0.2 },
+      ],
+    },
+    {
+      id: "p5-e4",
+      number: 4,
+      name: "Intubação Orotraqueal",
+      maxScore: 10,
+      criteria: [
+        { id: "p5-e4-c1",  description: "Reconheceu a indicação em cenário simulado, chamou ajuda quando necessário e organizou a equipe", score: 0.8 },
+        { id: "p5-e4-c2",  description: "Avaliou a via aérea e o risco de dificuldade, verbalizando plano alternativo em caso de falha", score: 1.0 },
+        { id: "p5-e4-c3",  description: "Realizou pré-oxigenação e posicionou adequadamente o paciente", score: 1.2 },
+        { id: "p5-e4-c4",  description: "Conferiu laringoscópio, lâminas, tubo, cuff, seringa, fio-guia, aspirador, bolsa-válvula-máscara, oxigênio e capnografia", score: 1.5 },
+        { id: "p5-e4-c5",  description: "Verbalizou etapas gerais de preparo para sequência rápida apenas no contexto simulado e sob supervisão", score: 0.8 },
+        { id: "p5-e4-c6",  description: "Segurou o laringoscópio com a mão esquerda, abriu a boca, protegeu dentes e lábios e introduziu a lâmina corretamente", score: 0.8 },
+        { id: "p5-e4-c7",  description: "Deslocou a língua e identificou epiglote e glote para otimizar a visualização", score: 1.0 },
+        { id: "p5-e4-c8",  description: "Passou o tubo sob visão direta entre as cordas vocais e posicionou em profundidade adequada", score: 1.0 },
+        { id: "p5-e4-c9",  description: "Removeu o guia com segurança, insuflou o cuff, conectou a ventilação e fixou o tubo", score: 0.7 },
+        { id: "p5-e4-c10", description: "Confirmou o posicionamento com capnografia contínua e complementou com ausculta pulmonar bilateral, ausculta epigástrica e expansão torácica", score: 1.2 },
       ],
     },
   ],

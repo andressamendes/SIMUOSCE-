@@ -46,4 +46,15 @@ export const periodThemes: Record<Period, PeriodTheme> = {
     dotColor:     "#A78BFA",
     cardShadow:   "0 8px 28px rgba(124,58,237,0.30), 0 2px 8px rgba(0,0,0,0.06)",
   },
+  5: {
+    headerClass:  "bg-period5",
+    accent:       "#F59E0B",
+    accentBg:     "rgba(245,158,11,0.09)",
+    checkGlow:    "check-glow-period5",
+    numGradient:  "linear-gradient(135deg,#F59E0B 0%,#B45309 100%)",
+    shadowBtn:    "rgba(245,158,11,0.35)",
+    footerShadow: "0 -4px 24px rgba(245,158,11,0.28)",
+    dotColor:     "#FCD34D",
+    cardShadow:   "0 8px 28px rgba(245,158,11,0.38), 0 2px 8px rgba(0,0,0,0.06)",
+  },
 };

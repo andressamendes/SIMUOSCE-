@@ -1,6 +1,6 @@
 # SIMUOSCE — Documentação Técnica Oficial
 
-**Versão do aplicativo:** 1.0.0 (primeira versão institucional estável) · **Documento:** 2.4 · **Data:** Junho 2026  
+**Versão do aplicativo:** 1.1.0 · **Documento:** 2.5 · **Data:** Junho 2026  
 **Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi**
 
 > Documento canônico do projeto. Para a especificação detalhada de design (tokens, componentes, estados e regras de consistência), consultar também o **`DESIGN_SYSTEM.md`** — este documento traz o resumo e as regras de negócio; o DESIGN_SYSTEM.md é a referência visual completa.
@@ -85,7 +85,7 @@ simuosce-app/
 ```
 Página Inicial (/)
    ↓ seleção de período
-Período (/periodo/[1|2|3])
+Período (/periodo/[1|2|3|5])
    ↓ seleção de estação
 Estação → Avaliação (/periodo/[P]/estacao/[ID])
    ↓ (opcional) botão "Foco"
@@ -115,7 +115,7 @@ Todas as páginas são geradas estaticamente no build via `generateStaticParams`
 ```typescript
 // src/types/index.ts
 
-export type Period = 1 | 2 | 3;
+export type Period = 1 | 2 | 3 | 5;
 
 export type Criterion = {
   id: string;        // Formato: "p{periodo}-e{estacao}-c{criterio}" ex: "p1-e1-c1"
@@ -143,7 +143,7 @@ O arquivo `src/data/baremas.ts` contém todos os dados de avaliação.
 ```typescript
 import { Station } from "@/types";
 
-export const baremas: Record<1 | 2 | 3, Station[]> = {
+export const baremas: Record<1 | 2 | 3 | 5, Station[]> = {
   1: [
     {
       id: "p1-e1",
@@ -691,6 +691,7 @@ O sistema de roteamento dinâmico (`[stationId]`) detecta a nova estação autom
 | 1 | Teal `#2EC9C4` | `bg-teal-brand` |
 | 2 | OSCE Pink `#EE1068` | `bg-osce` |
 | 3 | Violet `#7C3AED` | `bg-period3` |
+| 5 | Amber `#F59E0B` | `bg-period5` |
 
 ### Tokens de Cor (`globals.css`)
 
@@ -698,6 +699,7 @@ O sistema de roteamento dinâmico (`[stationId]`) detecta a nova estação autom
 --color-teal:        #2EC9C4;   /* Cor primária P1 */
 --color-osce-hot:    #EE1068;   /* Cor primária P2 */
 --color-violet:      #7C3AED;   /* Cor primária P3 */
+--color-amber:       #F59E0B;   /* Cor primária P5 */
 --color-surface:     #FFFFFF;   /* Fundo branco */
 --color-surface-dim: #F4FEFE;   /* Fundo das telas internas (classe bg-surface-dim) */
 --color-ink:         #1F2937;   /* Texto primário */
@@ -933,6 +935,10 @@ Título: `SIMUOSCE`. Não reintroduzir textos como "barema oficial" nesses campo
 | 3 | p3-e2 Prova do Laço | 14 | 4min |
 | 3 | p3-e3 Exame Físico do Tórax – DPOC | 14 | 4min |
 | 3 | p3-e4 Raciocínio Clínico – Anemia Perniciosa | 6 | 3min |
+| 5 | p5-e1 Paramentação | 11 | 4min |
+| 5 | p5-e2 Luva Estéril e Punção Venosa Periférica | 12 | 4min |
+| 5 | p5-e3 Sutura e Nó | 12 | 4min |
+| 5 | p5-e4 Intubação Orotraqueal | 10 | 3min |
 
 ---
 
@@ -991,7 +997,6 @@ Funcionalidades planejadas para versões futuras. **Não implementadas.**
 
 ### Expansão de Conteúdo
 - **4º Período** — Adicionar barema oficial quando disponível
-- **5º Período** — Adicionar barema oficial quando disponível
 - **Novas estações** — Incorporar estações de períodos existentes conforme evolução do currículo
 
 ### Funcionalidades de Avaliação
@@ -1044,3 +1049,4 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #31 | **Barema 1º Período atualizado** (barema oficial revisado, 17/06/2026): Estação 1 (Aferição da Pressão Arterial) 10→11 critérios — critério 6 dividido em "Palpou a artéria radial para estimativa palpatória da PAS" (0,5pt) e "Posicionou o diafragma do estetoscópio sobre a artéria braquial" (0,5pt) com renumeração sequencial c6–c11; timer 3→4min; discrepância identificada (soma das pontuações individuais = 9,0 mas total declarado = 10,0): critérios c10 e c11 mantidos em 1,0pt cada para preservar o total declarado de 10,0 (decisão registrada). Estação 4 (Antropometria do Bebê): critérios c8, c9 e c10 redistribuídos (c8: 1,0→0,5pt; c9 e c10: 0,25→0,5pt cada). Todas as 6 estações com descrições ampliadas (detalhamento clínico completo) e auditoria linguística aplicada; sw.js v19 |
 | #32 | **Atualização 2º Período** (17/06/2026) — novo barema oficial `BAREMAS_2_PERIODO_FINAL2P.md`: E1 RCP Adulto reduzida de 13→10 critérios (timer 4→3min; pesos 1,5 para compressões e 1,0 para relação 30:2); E2 substituída de "Manobra de Heimlich em Criança" (15 critérios) por "Desengasgo em Lactente" (13 critérios, técnica de lactente: golpes dorsais + compressões torácicas); E3 "Escala de Coma de Glasgow" **removida**; Papanicolau, MRC+NMS/NMI e Mamas renumeradas (E4→E3, E5→E4, E6→E5); total: 6→5 estações; home page atualizada (6→5 estações); sw.js v20 |
 | #33 | **Barema 3º Período atualizado** (barema oficial revisado, 17/06/2026): E1 — descrições simplificadas (detalhes anatômicos dos focos removidos), "Higienizou as mãos" → "Verbalizou a higienização das mãos", c7 reescrito para "para a ausculta"; E2 — "Prova do Laço (Teste de Fragilidade Capilar)" → "Prova do Laço", "Higienizou o estetoscópio" removido, c10 "Verbalizou o tempo..." → "Manteve o manguito insuflado por 5 minutos", critério combinado de petéquias dividido em dois (Delimitou + Contou), feedback literal removido; E3 — "Exame Físico do Tórax – DPOC/Enfisema Pulmonar" → "Exame Físico do Tórax – DPOC", "Higienizou o estetoscópio" removido, critérios de percussão/palpação/ausculta simplificados, FTV "aumentado" **→ "reduzido"** (correção clínica), p3-e3: 15 → 14 critérios; E4 — "com cordialidade" removido, critérios 3–5 convertidos para pretérito perfeito. Duas inconsistências aritméticas detectadas e resolvidas (E2: 10,75→10,0; E3: 9,75→10,0) — decisões registradas na seção de baremas; sw.js v21 |
+| #34 | **5º Período adicionado** (barema oficial, 17/06/2026): 4 estações — E1 Paramentação (11 critérios, 4min), E2 Luva Estéril e Punção Venosa Periférica (12 critérios, 4min), E3 Sutura e Nó (12 critérios, 4min), E4 Intubação Orotraqueal (10 critérios, 3min); tema visual âmbar (`#F59E0B`, `bg-period5`); `Period` type estendido para `1 \| 2 \| 3 \| 5`; home page atualizada com botão "5º Período · 4 estações"; `generateStaticParams` atualizado; auditoria linguística aplicada (pretérito perfeito, início com verbo, linguagem observacional); pontuações validadas (todas as 4 estações somam exatamente 10,0); sw.js v22 |

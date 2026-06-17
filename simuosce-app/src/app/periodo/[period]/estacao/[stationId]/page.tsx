@@ -3,7 +3,7 @@ import { Period } from "@/types";
 import AssessmentClient from "./AssessmentClient";
 
 export function generateStaticParams() {
-  return ([1, 2, 3] as const).flatMap((p) =>
+  return ([1, 2, 3, 5] as const).flatMap((p) =>
     baremas[p].map((s) => ({ period: String(p), stationId: s.id }))
   );
 }

@@ -4,6 +4,43 @@ Todas as mudanças relevantes do projeto são registradas neste arquivo.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.2.0] — 2026-06-17
+
+**Adição do 5º Período — barema oficial implementado.**
+
+### Conteúdo
+
+- **5º Período** adicionado com 4 estações e 45 critérios:
+  - Estação 1 — **Paramentação**: 11 critérios, máximo 10,0 pts, cronômetro 4 min.
+    Abrange conferência do ambiente, higiene das mãos (momento e técnica), touca,
+    máscara, organização de materiais, paramentação do avental estéril, postura
+    asséptica e reconhecimento de contaminação.
+  - Estação 2 — **Luva Estéril e Punção Venosa Periférica**: 12 critérios, máximo
+    10,0 pts, cronômetro 4 min. Abrange identificação do paciente, EPI, seleção
+    de materiais, calçamento de luvas (técnica aberta), seleção venosa, garrote,
+    antissepsia, punção, avanço do cateter e descarte seguro.
+  - Estação 3 — **Sutura e Nó**: 12 critérios, máximo 10,0 pts, cronômetro 4 min.
+    Abrange organização do campo, higiene e EPI, uso correto dos instrumentais,
+    preensão da agulha, manipulação de bordas, introdução da agulha, ponto simples
+    interrompido, nó quadrado, ajuste de tensão e descarte seguro.
+  - Estação 4 — **Intubação Orotraqueal**: 10 critérios, máximo 10,0 pts,
+    cronômetro 3 min. Abrange reconhecimento da indicação, avaliação da via aérea,
+    pré-oxigenação, checagem de materiais, laringoscopia, visualização das cordas
+    vocais, passagem do tubo e confirmação com capnografia.
+- Tema visual **âmbar** (`#F59E0B` → `#D97706` → `#B45309`) criado para o 5º
+  Período: `bg-period5`, `check-glow-period5`, tokens CSS `--color-amber*`.
+- Tipo `Period` estendido: `1 | 2 | 3 | 5`.
+- Home page atualizada: botão "5º Período · 4 estações" adicionado.
+- `generateStaticParams` atualizado: 4 novas rotas de período + 4 novas rotas de
+  estação geradas estaticamente no build.
+- Auditoria linguística aplicada: todos os 45 critérios no pretérito perfeito,
+  com verbo no início e linguagem observacional.
+- Validação de pontuações: todas as 4 estações somam exatamente 10,0 pt
+  (verificado critério a critério e confirmado pelo build).
+- sw.js v22 (adição de `./periodo/5/` ao precache).
+
+---
+
 ## [1.1.0] — 2026-06-17
 
 **Atualização do 2º Período — novo barema oficial.**
@@ -76,7 +113,8 @@ Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Gu
 
 ### Histórico detalhado
 
-A evolução PR a PR (#6–#29) está registrada na seção "Histórico de Versões"
+A evolução PR a PR (#6–#34) está registrada na seção "Histórico de Versões"
 do [`DOCUMENTACAO_PROJETO.md`](DOCUMENTACAO_PROJETO.md).
 
+[1.2.0]: https://github.com/andressamendes/SIMUOSCE-/compare/v1.1.0...v1.2.0
 [1.0.0]: https://github.com/andressamendes/SIMUOSCE-/releases/tag/v1.0.0
