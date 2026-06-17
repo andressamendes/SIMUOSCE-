@@ -1,6 +1,6 @@
 # SIMUOSCE — Documentação Técnica Oficial
 
-**Versão do aplicativo:** 1.0.0 (primeira versão institucional estável) · **Documento:** 2.2 · **Data:** Junho 2026  
+**Versão do aplicativo:** 1.0.0 (primeira versão institucional estável) · **Documento:** 2.3 · **Data:** Junho 2026  
 **Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi**
 
 > Documento canônico do projeto. Para a especificação detalhada de design (tokens, componentes, estados e regras de consistência), consultar também o **`DESIGN_SYSTEM.md`** — este documento traz o resumo e as regras de negócio; o DESIGN_SYSTEM.md é a referência visual completa.
@@ -193,6 +193,19 @@ distribuídos pela relevância clínica de cada etapa e com soma exata de **10,0
 
 Distribuição resultante: Estação 1 (13 critérios) = 8×1,00 + 3×0,50 + 2×0,25;
 Estação 2 (15 critérios) = 6×1,00 + 7×0,50 + 2×0,25.
+
+### Decisão registrada — Estação 1 do 1º Período, critérios c10 e c11 (17/06/2026)
+
+O barema revisado (17/06/2026) declara **Total: 10,0** para a Estação 1, mas as pontuações
+individuais impressos somam **9,0** (critérios 9 e 10 do documento = 0,5 pt cada,
+resultando em déficit de 1,0 pt).
+
+Decisão: os critérios **c10** ("Comunicou o resultado ao paciente") e **c11**
+("Despediu-se do paciente e verbalizou a higienização final das mãos") foram mantidos
+em **1,0 pt cada** para que a soma total da estação permaneça **10,0 pt**, conforme
+declarado no documento oficial. Os valores 0,5 impressos no documento são tratados
+como erro de digitação. Todos os demais critérios e pontuações seguem fielmente o
+barema revisado.
 
 ### Auditoria Linguística dos Baremas — Padrão Oficial de Redação (12/06/2026)
 
@@ -836,7 +849,7 @@ Título: `SIMUOSCE`. Não reintroduzir textos como "barema oficial" nesses campo
 
 | Período | Estação | Critérios | Timer |
 |---------|---------|-----------|-------|
-| 1 | p1-e1 Aferição da Pressão Arterial | 10 | 3min |
+| 1 | p1-e1 Aferição da Pressão Arterial | 11 | 4min |
 | 1 | p1-e2 Ausculta Cardíaca | 11 | 4min |
 | 1 | p1-e3 Ausculta Respiratória | 11 | 4min |
 | 1 | p1-e4 Antropometria do Bebê | 10 | 3min |
@@ -960,3 +973,4 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #28 | Pontuação das Estações 1 e 2 do 2º Período redefinida: valores exclusivos 0,25/0,50/1,00 distribuídos por relevância clínica, soma exata 10,0 (E1: 8×1,00 + 3×0,50 + 2×0,25; E2: 6×1,00 + 7×0,50 + 2×0,25), substituindo o reescalonamento ×10/12,25; sw.js v16 |
 | #29 | Auditoria linguística completa dos baremas (16 estações, 194 critérios): padrão oficial pretérito perfeito/início com verbo, conversão integral do 3º período e das Estações 1–2 do 2º período, correções ortográficas ("justaesternal"), gramaticais (subjuntivo, regência, artigos, maiúsculas) e de consistência; tabela de distribuição corrigida; regra oficial de redação registrada; sw.js v17 |
 | #30 | **Release v1.0.0** — primeira versão institucional estável: criação do CHANGELOG.md, versão 1.0.0 no package.json, limpeza de 12 arquivos sem referência (boilerplate do create-next-app e imagens soltas), README da aplicação reescrito (era boilerplate), auditoria operacional final registrada; sw.js v18 |
+| #31 | **Barema 1º Período atualizado** (barema oficial revisado, 17/06/2026): Estação 1 (Aferição da Pressão Arterial) 10→11 critérios — critério 6 dividido em "Palpou a artéria radial para estimativa palpatória da PAS" (0,5pt) e "Posicionou o diafragma do estetoscópio sobre a artéria braquial" (0,5pt) com renumeração sequencial c6–c11; timer 3→4min; discrepância identificada (soma das pontuações individuais = 9,0 mas total declarado = 10,0): critérios c10 e c11 mantidos em 1,0pt cada para preservar o total declarado de 10,0 (decisão registrada). Estação 4 (Antropometria do Bebê): critérios c8, c9 e c10 redistribuídos (c8: 1,0→0,5pt; c9 e c10: 0,25→0,5pt cada). Todas as 6 estações com descrições ampliadas (detalhamento clínico completo) e auditoria linguística aplicada; sw.js v19 |
