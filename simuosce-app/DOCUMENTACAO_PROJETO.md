@@ -1,6 +1,6 @@
 # SIMUOSCE — Documentação Técnica Oficial
 
-**Versão do aplicativo:** 1.0.0 (primeira versão institucional estável) · **Documento:** 2.3 · **Data:** Junho 2026  
+**Versão do aplicativo:** 1.0.0 (primeira versão institucional estável) · **Documento:** 2.4 · **Data:** Junho 2026  
 **Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi**
 
 > Documento canônico do projeto. Para a especificação detalhada de design (tokens, componentes, estados e regras de consistência), consultar também o **`DESIGN_SYSTEM.md`** — este documento traz o resumo e as regras de negócio; o DESIGN_SYSTEM.md é a referência visual completa.
@@ -245,6 +245,36 @@ em **1,0 pt cada** para que a soma total da estação permaneça **10,0 pt**, co
 declarado no documento oficial. Os valores 0,5 impressos no documento são tratados
 como erro de digitação. Todos os demais critérios e pontuações seguem fielmente o
 barema revisado.
+
+### Decisões registradas — 3º Período, Estações 2 e 3 (17/06/2026)
+
+O barema oficial revisado do 3º Período (17/06/2026) apresenta duas inconsistências
+aritméticas entre pontuações individuais declaradas e o total de 10,0 pt por estação:
+
+**Estação 2 (Prova do Laço):** o barema separa o antigo critério combinado
+"delimitar quadrado + contar petéquias" (1,0 pt) em dois critérios independentes,
+cada um com 1,0 pt, mas sem ajustar o total — resultando em soma calculada de **10,75 pt**
+contra total declarado de **10,0 pt**.
+
+Decisão: os dois novos subcritérios "Delimitou o quadrado de 2,5 x 2,5 cm no antebraço"
+e "Contou as petéquias na área delimitada" receberam **0,5 pt cada** (total 1,0 pt —
+igual ao critério original), e o critério "Manteve o manguito insuflado por 5 minutos"
+foi ajustado de 1,0 → **1,25 pt** para redistribuir os 0,25 pt provenientes da remoção
+de "Higienizou o estetoscópio" (etapa sem aplicação clínica na Prova do Laço).
+Soma resultante: 10,0 pt. A etapa de 5 minutos é a mais crítica da prova — o ajuste é
+clinicamente justificado.
+
+**Estação 3 (Exame Físico do Tórax – DPOC):** o barema remove "Higienizou o estetoscópio"
+(0,25 pt) sem redistribuir essa pontuação — resultando em soma calculada de **9,75 pt**
+contra total declarado de **10,0 pt**.
+
+Decisão: "Realizou a inspeção do tórax" foi ajustado de 0,75 → **1,0 pt**, absorvendo
+os 0,25 pt da etapa removida. Inspeção do tórax é etapa diagnóstica primária no DPOC —
+o arredondamento para 1,0 pt é clinicamente justificado e alinhado ao peso das demais
+etapas de exame físico (percussão, palpação e ausculta: 1,0 pt cada).
+
+Adicionalmente, a Estação 3 corrige um erro clínico da versão anterior: FTV "aumentado" →
+**"reduzido"** (no DPOC/enfisema o frêmito toracovocal está reduzido, não aumentado).
 
 ### Auditoria Linguística dos Baremas — Padrão Oficial de Redação (12/06/2026)
 
@@ -901,7 +931,7 @@ Título: `SIMUOSCE`. Não reintroduzir textos como "barema oficial" nesses campo
 | 2 | p2-e5 Inspeção e Palpação de Mamas | 12 | 4min |
 | 3 | p3-e1 Ausculta Cardíaca | 16 | 5min |
 | 3 | p3-e2 Prova do Laço | 14 | 4min |
-| 3 | p3-e3 Exame Físico do Tórax – DPOC | 15 | 4min |
+| 3 | p3-e3 Exame Físico do Tórax – DPOC | 14 | 4min |
 | 3 | p3-e4 Raciocínio Clínico – Anemia Perniciosa | 6 | 3min |
 
 ---
@@ -1013,3 +1043,4 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #30 | **Release v1.0.0** — primeira versão institucional estável: criação do CHANGELOG.md, versão 1.0.0 no package.json, limpeza de 12 arquivos sem referência (boilerplate do create-next-app e imagens soltas), README da aplicação reescrito (era boilerplate), auditoria operacional final registrada; sw.js v18 |
 | #31 | **Barema 1º Período atualizado** (barema oficial revisado, 17/06/2026): Estação 1 (Aferição da Pressão Arterial) 10→11 critérios — critério 6 dividido em "Palpou a artéria radial para estimativa palpatória da PAS" (0,5pt) e "Posicionou o diafragma do estetoscópio sobre a artéria braquial" (0,5pt) com renumeração sequencial c6–c11; timer 3→4min; discrepância identificada (soma das pontuações individuais = 9,0 mas total declarado = 10,0): critérios c10 e c11 mantidos em 1,0pt cada para preservar o total declarado de 10,0 (decisão registrada). Estação 4 (Antropometria do Bebê): critérios c8, c9 e c10 redistribuídos (c8: 1,0→0,5pt; c9 e c10: 0,25→0,5pt cada). Todas as 6 estações com descrições ampliadas (detalhamento clínico completo) e auditoria linguística aplicada; sw.js v19 |
 | #32 | **Atualização 2º Período** (17/06/2026) — novo barema oficial `BAREMAS_2_PERIODO_FINAL2P.md`: E1 RCP Adulto reduzida de 13→10 critérios (timer 4→3min; pesos 1,5 para compressões e 1,0 para relação 30:2); E2 substituída de "Manobra de Heimlich em Criança" (15 critérios) por "Desengasgo em Lactente" (13 critérios, técnica de lactente: golpes dorsais + compressões torácicas); E3 "Escala de Coma de Glasgow" **removida**; Papanicolau, MRC+NMS/NMI e Mamas renumeradas (E4→E3, E5→E4, E6→E5); total: 6→5 estações; home page atualizada (6→5 estações); sw.js v20 |
+| #33 | **Barema 3º Período atualizado** (barema oficial revisado, 17/06/2026): E1 — descrições simplificadas (detalhes anatômicos dos focos removidos), "Higienizou as mãos" → "Verbalizou a higienização das mãos", c7 reescrito para "para a ausculta"; E2 — "Prova do Laço (Teste de Fragilidade Capilar)" → "Prova do Laço", "Higienizou o estetoscópio" removido, c10 "Verbalizou o tempo..." → "Manteve o manguito insuflado por 5 minutos", critério combinado de petéquias dividido em dois (Delimitou + Contou), feedback literal removido; E3 — "Exame Físico do Tórax – DPOC/Enfisema Pulmonar" → "Exame Físico do Tórax – DPOC", "Higienizou o estetoscópio" removido, critérios de percussão/palpação/ausculta simplificados, FTV "aumentado" **→ "reduzido"** (correção clínica), p3-e3: 15 → 14 critérios; E4 — "com cordialidade" removido, critérios 3–5 convertidos para pretérito perfeito. Duas inconsistências aritméticas detectadas e resolvidas (E2: 10,75→10,0; E3: 9,75→10,0) — decisões registradas na seção de baremas; sw.js v21 |
