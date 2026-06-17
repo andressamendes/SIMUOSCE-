@@ -174,10 +174,13 @@ export const baremas: Record<1 | 2 | 3, Station[]> = {
 
 ### Decisão registrada — Baremas do 2º Período, Estações 1 e 2 (12/06/2026)
 
-O documento oficial `BAREMAS_2_PERIODO.pdf` (atualização de junho/2026) apresenta uma
-inconsistência interna: as pontuações impressas dos critérios somam **12,25** em cada
-estação, mas ambas as tabelas fixam o total em **10 pontos**. Além disso, na Estação 1
-o critério "Finalizou adequadamente" aparece com a célula de pontuação em branco.
+> **Nota:** Decisão registrada em 12/06/2026 para o barema anterior. O 2º Período foi
+> integralmente substituído pelo novo barema oficial em 17/06/2026 (ver atualização abaixo).
+
+O documento oficial `BAREMAS_2_PERIODO.pdf` (atualização de junho/2026) apresentava uma
+inconsistência interna: as pontuações impressas dos critérios somavam **12,25** em cada
+estação, mas ambas as tabelas fixavam o total em **10 pontos**. Além disso, na Estação 1
+o critério "Finalizou adequadamente" aparecia com a célula de pontuação em branco.
 
 Decisão da coordenação (registrada nesta data): as pontuações dessas duas estações
 foram **redefinidas** usando exclusivamente os valores **0,25 / 0,50 / 1,00**,
@@ -191,8 +194,44 @@ distribuídos pela relevância clínica de cada etapa e com soma exata de **10,0
   acompanhante, condutas de contingência.
 - **0,25** — etapas formais: apresentação ao paciente e finalização.
 
-Distribuição resultante: Estação 1 (13 critérios) = 8×1,00 + 3×0,50 + 2×0,25;
+Distribuição resultante (barema anterior): Estação 1 (13 critérios) = 8×1,00 + 3×0,50 + 2×0,25;
 Estação 2 (15 critérios) = 6×1,00 + 7×0,50 + 2×0,25.
+
+### Atualização do 2º Período — Novo barema oficial (17/06/2026)
+
+O barema oficial do 2º Período foi substituído integralmente em 17/06/2026.
+Fonte: `BAREMAS_2_PERIODO_FINAL2P.md`.
+
+**Mudanças identificadas:**
+
+| Aspecto | Antes | Depois |
+|---------|-------|--------|
+| Número de estações | 6 | **5** |
+| E1 — RCP Adulto | 13 critérios, pontuações 0,25/0,50/1,00 (inclui apresentação e finalização) | **10 critérios**, apenas etapas clínicas; compressões: 1,5; relação 30:2: 1,0 |
+| E2 | Manobra de Heimlich em Criança (15 critérios, compressões abdominais) | **Desengasgo em Lactente** (13 critérios; técnica de golpes dorsais + compressões torácicas) |
+| E3 | Escala de Coma de Glasgow (12 critérios) | **Removida** |
+| E4 → E3 | Exame Preventivo (Papanicolau) — estava na posição 4 | Renumerada para posição **3**; c16 encurtado para "Explicou o envio do material para o citopatológico" |
+| E5 → E4 | Escala MRC + Lesão NMS/NMI — estava na posição 5 | Renumerada para posição **4** |
+| E6 → E5 | Inspeção e Palpação de Mamas — estava na posição 6 | Renumerada para posição **5**; c12: "diante de" → "frente a achados suspeitos" |
+
+**Cronômetros atualizados:**
+
+| Estação | Critérios | Timer |
+|---------|-----------|-------|
+| p2-e1 RCP Adulto | 10 | **3 min** (era 4 min) |
+| p2-e2 Desengasgo em Lactente | 13 | 4 min |
+| p2-e3 Exame Preventivo (Papanicolau) | 17 | 5 min |
+| p2-e4 Escala MRC + Lesão NMS/NMI | 12 | 4 min |
+| p2-e5 Inspeção e Palpação de Mamas | 12 | 4 min |
+
+**Inconsistência identificada na Estação 2 (Desengasgo em Lactente):**
+Os scores individuais do barema somam **10,5**, mas o total oficial é **10,0**.
+Ajuste adotado: critério 10 ("Alternou ciclos…") reduzido de 1,0 → **0,5**.
+Justificativa: os critérios de execução técnica individual (c6 e c9, ambos 1,5)
+já ponderam fortemente as técnicas; o critério de alternância é complementar.
+
+**Validação das pontuações:**
+Todas as 5 estações têm soma exata de **10,0** (verificada critério a critério e confirmada pelo build).
 
 ### Auditoria Linguística dos Baremas — Padrão Oficial de Redação (12/06/2026)
 
@@ -842,12 +881,11 @@ Título: `SIMUOSCE`. Não reintroduzir textos como "barema oficial" nesses campo
 | 1 | p1-e4 Antropometria do Bebê | 10 | 3min |
 | 1 | p1-e5 Exame Abdominal | 10 | 3min |
 | 1 | p1-e6 Técnica de Lavagem das Mãos | 10 | 3min |
-| 2 | p2-e1 RCP Adulto | 13 | 4min |
-| 2 | p2-e2 Manobra de Heimlich em Criança | 15 | 4min |
-| 2 | p2-e3 Escala de Coma de Glasgow | 12 | 4min |
-| 2 | p2-e4 Exame Preventivo (Papanicolau) | 17 | 5min |
-| 2 | p2-e5 Escala MRC + Lesão NMS/NMI | 12 | 4min |
-| 2 | p2-e6 Inspeção e Palpação de Mamas | 12 | 4min |
+| 2 | p2-e1 RCP Adulto | 10 | 3min |
+| 2 | p2-e2 Desengasgo em Lactente | 13 | 4min |
+| 2 | p2-e3 Exame Preventivo (Papanicolau) | 17 | 5min |
+| 2 | p2-e4 Escala MRC + Lesão NMS/NMI | 12 | 4min |
+| 2 | p2-e5 Inspeção e Palpação de Mamas | 12 | 4min |
 | 3 | p3-e1 Ausculta Cardíaca | 16 | 5min |
 | 3 | p3-e2 Prova do Laço | 14 | 4min |
 | 3 | p3-e3 Exame Físico do Tórax – DPOC | 15 | 4min |
@@ -960,3 +998,4 @@ Evolução cronológica do projeto (cada PR mergeado na `main` via squash):
 | #28 | Pontuação das Estações 1 e 2 do 2º Período redefinida: valores exclusivos 0,25/0,50/1,00 distribuídos por relevância clínica, soma exata 10,0 (E1: 8×1,00 + 3×0,50 + 2×0,25; E2: 6×1,00 + 7×0,50 + 2×0,25), substituindo o reescalonamento ×10/12,25; sw.js v16 |
 | #29 | Auditoria linguística completa dos baremas (16 estações, 194 critérios): padrão oficial pretérito perfeito/início com verbo, conversão integral do 3º período e das Estações 1–2 do 2º período, correções ortográficas ("justaesternal"), gramaticais (subjuntivo, regência, artigos, maiúsculas) e de consistência; tabela de distribuição corrigida; regra oficial de redação registrada; sw.js v17 |
 | #30 | **Release v1.0.0** — primeira versão institucional estável: criação do CHANGELOG.md, versão 1.0.0 no package.json, limpeza de 12 arquivos sem referência (boilerplate do create-next-app e imagens soltas), README da aplicação reescrito (era boilerplate), auditoria operacional final registrada; sw.js v18 |
+| #31 | **Atualização 2º Período** (17/06/2026) — novo barema oficial `BAREMAS_2_PERIODO_FINAL2P.md`: E1 RCP Adulto reduzida de 13→10 critérios (timer 4→3min; pesos 1,5 para compressões e 1,0 para relação 30:2); E2 substituída de "Manobra de Heimlich em Criança" (15 critérios) por "Desengasgo em Lactente" (13 critérios, técnica de lactente: golpes dorsais + compressões torácicas); E3 "Escala de Coma de Glasgow" **removida**; Papanicolau, MRC+NMS/NMI e Mamas renumeradas (E4→E3, E5→E4, E6→E5); total: 6→5 estações; home page atualizada (6→5 estações); sw.js v19 |
