@@ -16,6 +16,11 @@
   --color-violet-mid:  #8B5CF6;
   --color-violet-light:#A78BFA;
 
+  /* Gradiente Período 5 */
+  --color-amber:       #F59E0B;
+  --color-amber-mid:   #D97706;
+  --color-amber-deep:  #B45309;
+
   /* Superfícies */
   --color-surface:     #FFFFFF;
   --color-surface-dim: #F4FEFE;
@@ -151,6 +156,11 @@ body {
   }
 }
 
+/* ── Gradiente Período 5 ── */
+.bg-period5 {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 55%, #B45309 100%);
+}
+
 /* ── Checkbox glow ── */
 .check-glow-teal {
   box-shadow: 0 0 0 3px rgba(46, 201, 196, 0.25);
@@ -160,4 +170,7 @@ body {
 }
 .check-glow-period3 {
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.22);
+}
+.check-glow-period5 {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.28);
 }
