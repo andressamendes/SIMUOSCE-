@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { Station, Period } from "@/types";
-import { periodThemes } from "@/lib/themes";
+import { getTheme } from "@/lib/themes";
 import { fmt, formatTime } from "@/lib/format";
 import { getDuration } from "@/lib/timer";
+import { getPerfBadge, getPendingCriteria } from "@/lib/scoring";
 
 type Props = {
   periodNum: Period;
@@ -22,20 +23,13 @@ export default function SummaryScreen({
   periodNum, station, score, maxScore, pct,
   checkedIds, elapsed, timedOut, onNewAssessment,
 }: Props) {
-  const { headerClass, accent, accentBg } = periodThemes[periodNum] ?? periodThemes[1];
+  const { headerClass, accent, accentBg } = getTheme(periodNum);
   const duration = getDuration(station.criteria.length);
 
-  const pendingCriteria = station.criteria.filter((c) => !checkedIds.has(c.id));
+  const pendingCriteria = getPendingCriteria(station.criteria, checkedIds);
   const checkedCount    = station.criteria.length - pendingCriteria.length;
 
-  const perfWord  = pct >= 90 ? "Excelente" : pct >= 70 ? "Bom" : "Atenção";
-  const perfDesc  = pct >= 90 ? "Desempenho excelente na estação"
-                  : pct >= 70 ? "Bom desempenho na estação"
-                  : "Revise os critérios não realizados";
-  const perfColor = pct >= 90 ? "#10B981" : pct >= 70 ? "#F59E0B" : "#EF4444";
-  const perfBg    = pct >= 90 ? "rgba(16,185,129,0.09)"
-                  : pct >= 70 ? "rgba(245,158,11,0.09)"
-                  : "rgba(239,68,68,0.09)";
+  const perf = getPerfBadge(pct);
 
   // Tempo médio por critério (só quando há critérios marcados e sem timeout)
   const avgPerCriterion = !timedOut && checkedCount > 0
@@ -132,16 +126,16 @@ export default function SummaryScreen({
 
             {/* Badge de desempenho — integrado ao card hero */}
             <div className="flex items-center justify-between rounded-[14px] px-4 py-2.5"
-                 style={{ background: perfBg }}>
-              <p className="text-[13px] font-medium leading-snug" style={{ color: perfColor }}>
-                {perfDesc}
+                 style={{ background: perf.bg }}>
+              <p className="text-[13px] font-medium leading-snug" style={{ color: perf.color }}>
+                {perf.desc}
               </p>
               <span className="flex-shrink-0 inline-flex items-center gap-1.5
                                font-bold text-[12px] ml-3"
-                    style={{ color: perfColor }}>
+                    style={{ color: perf.color }}>
                 <span className="w-2 h-2 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: perfColor }} aria-hidden="true"/>
-                {perfWord}
+                      style={{ backgroundColor: perf.color }} aria-hidden="true"/>
+                {perf.word}
               </span>
             </div>
           </div>

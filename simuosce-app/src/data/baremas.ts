@@ -17,7 +17,7 @@ import { Station } from "@/types";
 //   (Paramentação, Luva estéril e punção venosa periférica, Sutura e nó,
 //   Intubação orotraqueal). Somas validadas: todas iguais a 10,0.
 
-export const baremas: Record<1 | 2 | 3 | 5, Station[]> = {
+export const baremas: Partial<Record<number, Station[]>> = {
   1: [
     {
       id: "p1-e1",

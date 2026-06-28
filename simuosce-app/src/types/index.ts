@@ -12,4 +12,6 @@ export type Station = {
   maxScore: number;
 };
 
-export type Period = 1 | 2 | 3 | 5;
+// Period is any positive integer. Not a closed union — new periods can be
+// added to baremas.ts and themes.ts without touching this type.
+export type Period = number;

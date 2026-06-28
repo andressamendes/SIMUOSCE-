@@ -3,9 +3,10 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Station, Period } from "@/types";
-import { periodThemes } from "@/lib/themes";
+import { getTheme } from "@/lib/themes";
 import { fmt, formatTime } from "@/lib/format";
 import { getDuration } from "@/lib/timer";
+import { getStatusLabel } from "@/lib/scoring";
 import SummaryScreen from "./SummaryScreen";
 import FocusMode from "./FocusMode";
 import StationProgress from "./StationProgress";
@@ -142,8 +143,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
     );
   }
 
-  const { headerClass, accent, accentBg, checkGlow, footerShadow } =
-    periodThemes[periodNum] ?? periodThemes[1];
+  const { headerClass, accent, accentBg, checkGlow, footerShadow } = getTheme(periodNum);
 
   const durationMin      = DURATION / 60;
   const warnThreshold    = Math.round(DURATION / 3);
@@ -155,9 +155,7 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                     : "#F87171";
   const timerPulse  = timerState === "danger" ? "animate-pulse" : "";
 
-  const label      = pct >= 70 ? "Aprovado" : pct >= 50 ? "Regular" : pct > 0 ? "Insuficiente" : null;
-  const labelBg    = pct >= 70 ? "rgba(16,185,129,0.22)" : pct >= 50 ? "rgba(245,158,11,0.22)" : "rgba(239,68,68,0.22)";
-  const labelColor = pct >= 70 ? "#10B981" : pct >= 50 ? "#F59E0B" : "#EF4444";
+  const status = getStatusLabel(pct, 0.22);
 
   return (
     <main className="flex flex-col min-h-dvh bg-white select-none">
@@ -384,10 +382,10 @@ export default function AssessmentClient({ periodNum, station }: Props) {
                 <span className="text-white/50 text-xl font-semibold">/ {maxScore}</span>
                 <span className="text-white font-black text-2xl ml-auto">{pct}%</span>
               </div>
-              {label && (
+              {status && (
                 <span className="inline-block mt-1.5 text-xs font-bold px-3 py-1 rounded-full"
-                      style={{ background: labelBg, color: labelColor, backdropFilter: "blur(4px)" }}>
-                  {label}
+                      style={{ background: status.bg, color: status.color, backdropFilter: "blur(4px)" }}>
+                  {status.label}
                 </span>
               )}
               <p className="text-white/55 text-[11px] font-medium mt-1">

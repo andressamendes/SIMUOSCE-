@@ -1,6 +1,6 @@
 # SIMUOSCE — Documentação Técnica Oficial
 
-**Versão do aplicativo:** 1.1.0 · **Documento:** 2.5 · **Data:** Junho 2026  
+**Versão do aplicativo:** 1.3.0 · **Documento:** 3.0 · **Data:** Junho 2026  
 **Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi**
 
 > Documento canônico do projeto. Para a especificação detalhada de design (tokens, componentes, estados e regras de consistência), consultar também o **`DESIGN_SYSTEM.md`** — este documento traz o resumo e as regras de negócio; o DESIGN_SYSTEM.md é a referência visual completa.
@@ -72,12 +72,13 @@ simuosce-app/
 │   ├── data/
 │   │   └── baremas.ts           # Dados de todos os períodos/estações (validados no build)
 │   ├── lib/
-│   │   ├── themes.ts            # Design system por período
+│   │   ├── themes.ts            # Design system por período + getTheme()
 │   │   ├── format.ts            # Formatadores: nota e tempo
 │   │   ├── timer.ts             # Regra de duração por nº de critérios
+│   │   ├── scoring.ts           # Utilitários de pontuação: labels, badge, cálculos
 │   │   └── validate.ts          # Validação estrutural dos baremas (interrompe build)
 │   └── types/
-│       └── index.ts             # Tipos: Period, Station, Criterion
+│       └── index.ts             # Tipos: Period (= number), Station, Criterion
 ```
 
 ### Fluxo Oficial da Aplicação
@@ -545,83 +546,68 @@ Período 4:
 ```
 
 **4. Adicionar o tema visual**  
-Em `src/lib/themes.ts`, adicionar a nova entrada:
+Em `src/lib/themes.ts`, adicionar a nova entrada no objeto `periodThemes`:
 
 ```typescript
 // src/lib/themes.ts
-export type PeriodTheme = { /* campos existentes */ };
-
-export const periodThemes: Record<Period, PeriodTheme> = {
-  1: { /* teal */ },
-  2: { /* osce/pink */ },
-  3: { /* violet */ },
-  4: {
-    headerClass: "bg-period4",
-    accent: "#HEX",
-    accentBg: "rgba(R,G,B,0.08)",
-    checkGlow: "check-glow-period4",
-    numGradient: "linear-gradient(135deg, #HEX 0%, #HEX 100%)",
-    shadowBtn: "rgba(R,G,B,0.32)",
-    footerShadow: "0 -4px 24px rgba(R,G,B,0.25)",
-    dotColor: "#HEX",
-    cardShadow: "0 8px 28px rgba(R,G,B,0.30), 0 2px 8px rgba(0,0,0,0.06)",
-  },
-};
+6: {                                          // substitua 6 pelo número do período
+  headerClass: "bg-period6",
+  accent:      "#HEX",
+  accentBg:    "rgba(R,G,B,0.08)",
+  checkGlow:   "check-glow-period6",
+  numGradient: "linear-gradient(135deg, #HEX 0%, #HEX 100%)",
+  shadowBtn:   "rgba(R,G,B,0.32)",
+  footerShadow:"0 -4px 24px rgba(R,G,B,0.25)",
+  dotColor:    "#HEX",
+  cardShadow:  "0 8px 28px rgba(R,G,B,0.30), 0 2px 8px rgba(0,0,0,0.06)",
+},
 ```
 
-Adicionar o gradiente e glow em `src/app/globals.css`:
+Adicionar as classes CSS correspondentes em `src/app/globals.css`:
 
 ```css
-.bg-period4 {
+.bg-period6 {
   background: linear-gradient(135deg, #HEX 0%, #HEX 55%, #HEX 100%);
 }
-.check-glow-period4 {
+.check-glow-period6 {
   box-shadow: 0 0 0 3px rgba(R, G, B, 0.22);
 }
 ```
 
-**5. Atualizar o tipo `Period`**  
-Em `src/types/index.ts`:
+> **Nota:** O tipo `Period = number` já suporta qualquer inteiro positivo — não é necessário alterar `src/types/index.ts`.
 
+**5. Adicionar os dados no baremas.ts**  
 ```typescript
-export type Period = 1 | 2 | 3 | 4;
+// Adicionar dentro do objeto baremas:
+6: [
+  {
+    id: "p6-e1",
+    number: 1,
+    name: "Nome da Estação",
+    maxScore: 10,
+    criteria: [
+      { id: "p6-e1-c1", description: "...", score: 1.0 },
+      // ...
+    ],
+  },
+  // demais estações
+],
 ```
 
-**6. Adicionar os dados no baremas.ts**  
-```typescript
-export const baremas: Record<1 | 2 | 3 | 4, Station[]> = {
-  1: [ /* existente */ ],
-  2: [ /* existente */ ],
-  3: [ /* existente */ ],
-  4: [
-    {
-      id: "p4-e1",
-      number: 1,
-      name: "Nome da Estação",
-      maxScore: 10,
-      criteria: [
-        { id: "p4-e1-c1", description: "...", score: 1.0 },
-        // ...
-      ],
-    },
-    // demais estações
-  ],
-};
-```
+> O `generateStaticParams` em ambas as rotas de período (`[period]/page.tsx` e `[period]/estacao/[stationId]/page.tsx`) deriva as páginas estáticas diretamente de `Object.keys(baremas)` — nenhuma atualização manual é necessária.
 
-**7. Atualizar a tela inicial (`src/app/page.tsx`)**  
-Adicionar o novo período ao array:
+**6. Atualizar a tela inicial (`src/app/page.tsx`)**  
+Adicionar o novo período ao array `periods`:
 
 ```typescript
 const periods: { num: Period; label: string; subtitle: string }[] = [
   { num: 1, label: "1º Período", subtitle: "6 estações" },
-  { num: 2, label: "2º Período", subtitle: "6 estações" },
-  { num: 3, label: "3º Período", subtitle: "4 estações" },
-  { num: 4, label: "4º Período", subtitle: "X estações" }, // novo
+  // ...
+  { num: 6, label: "6º Período", subtitle: "X estações" }, // novo
 ];
 ```
 
-**8. Atualizar o service worker**  
+**7. Atualizar o service worker**  
 Em `public/sw.js`, adicionar o novo período ao precache e incrementar a versão:
 
 ```javascript
@@ -630,21 +616,21 @@ const CACHE = "simuosce-vN"; // incrementar a partir da versão atual em public/
 const PRECACHE = [
   "./",
   "./periodo/1/",
-  "./periodo/2/",
-  "./periodo/3/",
-  "./periodo/4/", // novo
+  // ...
+  "./periodo/6/", // novo
   "./manifest.json",
   "./logo-casf.jpg",
 ];
 ```
 
-**9. Fazer build e testar**  
+**8. Fazer build e testar**  
 ```bash
 npm run build
 ```
-Verificar: todas as 16 estações existentes + novas estações geram páginas estáticas.
+Verificar: todas as estações existentes + novas estações geram páginas estáticas.  
+A validação de baremas (`validateBaremas`) é executada automaticamente — se houver erros de dados, o build falha com mensagem descritiva.
 
-**10. Publicar**  
+**9. Publicar**  
 Commit, push e abrir PR para `main`. O GitHub Actions faz o deploy automático.
 
 ---
@@ -988,6 +974,45 @@ O SIMUOSCE é um site **100% estático** servido pelo GitHub Pages. Isso define 
 - **Autoria:** Andressa Souza — Aluna do Curso de Medicina, Afya Faculdade de Ciências Médicas de Guanambi.
 - **Créditos institucionais:** Centro Acadêmico Sérgio Ferreira · Afya Faculdade de Ciências Médicas de Guanambi.
 - **Licença:** [CC BY-NC-SA 4.0](../LICENSE) (arquivo `LICENSE` na raiz do repositório). Escolhida por: preservar a autoria (atribuição obrigatória), permitir e incentivar uso acadêmico, proibir uso comercial e exigir que derivados mantenham a mesma licença. Crédito de autoria visível no rodapé da aplicação e no README.
+
+---
+
+## Escalabilidade do Projeto
+
+O SIMUOSCE foi estruturado para receber os períodos 6º ao 12º com o menor esforço possível e sem necessidade de refatorações estruturais.
+
+### Princípios arquiteturais que garantem a escalabilidade
+
+| Princípio | Implementação |
+|-----------|---------------|
+| **Tipo `Period = number`** | Suporta qualquer inteiro positivo. Novos períodos não alteram tipos. |
+| **`generateStaticParams` derivado de `baremas`** | As rotas SSG são geradas automaticamente a partir das chaves do objeto `baremas`. |
+| **`getTheme(period)`** | Retorna o tema do período ou o tema teal como fallback — evita erros em períodos sem tema definido. |
+| **`validateBaremas` no build** | Qualquer inconsistência de dados interrompe o build com mensagem descritiva. |
+| **Utilitários centralizados em `src/lib/`** | `scoring.ts`, `timer.ts`, `format.ts` — lógica de negócio não duplicada nos componentes. |
+| **Componentes genéricos** | `AssessmentClient`, `FocusMode`, `SummaryScreen`, `StationProgress`, `PeriodClient` — funcionam para qualquer período sem modificação. |
+
+### O que precisa ser feito ao adicionar um novo período
+
+Ao implementar o período N (N = 6, 7, …, 12), são necessárias apenas **4 alterações de código**:
+
+1. **`src/data/baremas.ts`** — adicionar os dados do período (estações e critérios).
+2. **`src/lib/themes.ts`** — adicionar o tema visual (`periodThemes[N] = { ... }`).
+3. **`src/app/globals.css`** — adicionar as classes CSS do tema (`.bg-periodN`, `.check-glow-periodN`).
+4. **`src/app/page.tsx`** — adicionar o período ao array `periods` (label + subtitle).
+5. **`public/sw.js`** — adicionar `./periodo/N/` ao precache e incrementar a versão.
+
+Nenhum componente precisa ser alterado. Nenhum tipo precisa ser atualizado.
+
+### Utilitários reutilizáveis disponíveis
+
+| Arquivo | Exportações | Finalidade |
+|---------|-------------|------------|
+| `src/lib/scoring.ts` | `getStatusLabel`, `getPerfBadge`, `calculateScore`, `calculatePct`, `getPendingCriteria` | Lógica de pontuação e labels |
+| `src/lib/timer.ts` | `getDuration`, `getDurationMin` | Regra de duração por critérios |
+| `src/lib/format.ts` | `fmt`, `formatTime` | Formatação de nota e tempo |
+| `src/lib/themes.ts` | `getTheme`, `periodThemes` | Tema visual por período |
+| `src/lib/validate.ts` | `validateBaremas` | Validação estrutural no build |
 
 ---
 
